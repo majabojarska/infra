@@ -10,4 +10,4 @@ spec:
     operation: copy
   url: oci://oci.trueforge.org/truecharts/miniflux
   ref:
-    tag: 17.13.19
+    tag: 17.13.20
