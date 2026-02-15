@@ -1,0 +1,9 @@
+---
+ansible_user: maja
+ansible_host: "rpi-3b.{{ subdomain_home }}"
+usergroup: users
+
+docker_dir: "/home/{{ username }}/docker"
+docker_dir_app_data: "{{ docker_dir }}/app_data"
+docker_dir_compose: "{{ docker_dir }}/compose"
+

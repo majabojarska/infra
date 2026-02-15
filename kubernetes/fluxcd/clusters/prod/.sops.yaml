@@ -1,0 +1,6 @@
+# https://github.com/getsops/sops?tab=readme-ov-file#id22
+# creation rules are evaluated sequentially, the first match wins
+creation_rules:
+  - path_regex: ".*.yaml"
+    encrypted_regex: "^(data|stringData)$"
+    age: "age1p54umg88pdhdt5m8zc69pfqcq08agav683vgqsp0zc8enrkg5g0skmgwv7"

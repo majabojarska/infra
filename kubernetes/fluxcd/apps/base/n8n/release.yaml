@@ -1,0 +1,33 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: n8n
+spec:
+  releaseName: n8n
+  chartRef:
+    kind: OCIRepository
+    name: n8n
+  interval: 60m
+  install:
+    remediation:
+      retries: 3
+  values:
+    workload:
+      main:
+        podSpec:
+          containers:
+            main:
+              fixedEnv:
+                TZ: "Europe/Warsaw"
+              # env:
+
+    securityContext:
+      pod:
+        fsGroup: 10001 # kubernetes GID
+        fsGroupChangePolicy: "OnRootMismatch"
+
+    cnpg:
+      main:
+        cluster:
+          instances: 1
+          singleNode: true

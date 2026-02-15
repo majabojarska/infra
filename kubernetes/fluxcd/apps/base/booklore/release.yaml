@@ -1,0 +1,31 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: booklore
+spec:
+  releaseName: booklore
+  chartRef:
+    kind: OCIRepository
+    name: booklore
+  interval: 60m
+  install:
+    remediation:
+      retries: 3
+  values:
+    workload:
+      main:
+        podSpec:
+          containers:
+            main:
+              fixedEnv:
+                TZ: "Europe/Warsaw"
+
+    securityContext:
+      pod:
+        fsGroupChangePolicy: "OnRootMismatch"
+        fsGroup: 10002 # media GID
+
+    persistence:
+      library:
+        enabled: true
+        mountPath: /library

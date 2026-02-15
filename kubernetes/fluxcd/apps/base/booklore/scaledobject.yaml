@@ -1,0 +1,36 @@
+---
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  name: booklore
+spec:
+  scaleTargetRef:
+    kind: Deployment
+    name: booklore
+  minReplicaCount: 0
+  cooldownPeriod: 300
+  triggers:
+    - type: cron
+      metadata:
+        timezone: "Europe/Warsaw"
+        start: "0 10 * * *"
+        end: "0 2 * * *"
+        desiredReplicas: "1"
+---
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  name: booklore-mariadb
+spec:
+  scaleTargetRef:
+    kind: Deployment
+    name: booklore-mariadb
+  minReplicaCount: 0
+  cooldownPeriod: 300
+  triggers:
+    - type: cron
+      metadata:
+        timezone: "Europe/Warsaw"
+        start: "0 10 * * *"
+        end: "0 2 * * *"
+        desiredReplicas: "1"

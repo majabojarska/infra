@@ -1,0 +1,13 @@
+# https://truecharts.org/charts/stable/booklore/
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: OCIRepository
+metadata:
+  name: booklore
+spec:
+  interval: 60m
+  layerSelector:
+    mediaType: "application/vnd.cncf.helm.chart.content.v1.tar+gzip"
+    operation: copy
+  url: oci://oci.trueforge.org/truecharts/booklore
+  ref:
+    tag: 1.11.13

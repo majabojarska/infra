@@ -1,0 +1,12 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata: 
+  name: ingressroute-certificate
+spec:
+  secretName: certificate-secret
+  issuerRef:
+    name: letsencrypt
+    kind: ClusterIssuer
+  dnsNames: 
+    - qbittorrent.kube-01.home.majabojarska.dev
+    - qbittorrent.home.majabojarska.dev

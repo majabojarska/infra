@@ -1,0 +1,8 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: cert-manager-webhook-ovh
+  namespace: cert-manager
+spec:
+  values:
+    groupName: majabojarska.dev

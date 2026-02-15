@@ -1,0 +1,19 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: cert-manager-webhook-ovh
+spec:
+  releaseName: cert-manager-webhook-ovh
+  chart:
+    spec:
+      chart: cert-manager-webhook-ovh
+      sourceRef:
+        kind: HelmRepository
+        name: cert-manager-webhook-ovh
+      version: 0.8.0
+  values:
+    configVersion: 0.0.2
+  interval: 1m0s
+  install:
+    remediation:
+      retries: 3

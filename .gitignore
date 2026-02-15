@@ -1,0 +1,6 @@
+.vscode
+.venv
+.fact_cache
+.vault*
+
+kubeconfig.yaml

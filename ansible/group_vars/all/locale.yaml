@@ -1,0 +1,8 @@
+---
+timezone: Europe/Warsaw
+
+ntp_timezone: '{{ timezone }}'
+
+locale: en_US.UTF-8
+
+keyboard_layout: us

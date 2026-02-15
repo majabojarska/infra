@@ -1,0 +1,46 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: qbittorrent
+spec:
+  releaseName: qbittorrent
+  chartRef:
+    kind: OCIRepository
+    name: qbittorrent
+  interval: 60m
+  install:
+    remediation:
+      retries: 3
+
+  values:
+    workload:
+      main:
+        podSpec:
+          containers:
+            main:
+              fixedEnv:
+                TZ: "Europe/Warsaw"
+
+    persistence:
+      config:
+        enabled: true
+        retain: true
+        mountPath: /config
+        storageClass: "local-path-zfs"
+        accessMode: ReadWriteOnce
+        size: 1Gi
+
+      storage-media:
+          enabled: true
+          type: hostPath
+          hostPathType: Directory
+          hostPath: /storage/media
+          mountPath: /storage/media
+
+    
+    securityContext:
+      container:
+        runAsGroup: 10002 # media
+      pod:
+        fsGroup: 10002 # media GID
+        fsGroupChangePolicy: OnRootMismatch

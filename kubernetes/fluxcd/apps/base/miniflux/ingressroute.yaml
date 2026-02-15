@@ -1,0 +1,20 @@
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: miniflux
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`rss.kube-01.majabojarska.dev`)
+      kind: Rule
+      services:
+        - name: miniflux
+          port: 10091
+    - match: Host(`rss.home.majabojarska.dev`)
+      kind: Rule
+      services:
+        - name: miniflux
+          port: 10091
+  tls:
+    secretName: certificate-secret

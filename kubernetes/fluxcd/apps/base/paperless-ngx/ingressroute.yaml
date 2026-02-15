@@ -1,0 +1,20 @@
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: paperless-ngx
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`paperless.kube-01.home.majabojarska.dev`)
+      kind: Rule
+      services:
+        - name: paperless-ngx
+          port: 10140
+    - match: Host(`paperless.home.majabojarska.dev`)
+      kind: Rule
+      services:
+        - name: paperless-ngx
+          port: 10140
+  tls:
+    secretName: certificate-secret

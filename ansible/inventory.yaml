@@ -1,0 +1,29 @@
+---
+all:
+  hosts:
+    kube-01:
+    nas:
+    vps-01:
+    rpi-3b:
+    pve-01:
+    pve-02:
+    pve-03:
+
+nixos:
+  hosts:
+    kube-01:
+    nas:
+    vps-01:
+
+debian:
+  hosts:
+    # rpi-3b:
+    pve-01:
+    pve-02:
+    pve-03:
+
+pve:
+  hosts:
+    pve-01:
+    pve-02:
+    pve-03:

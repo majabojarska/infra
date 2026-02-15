@@ -1,0 +1,33 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: changedetection-io
+spec:
+  releaseName: changedetection-io
+  chartRef:
+    kind: OCIRepository
+    name: changedetection-io
+  interval: 60m
+  install:
+    remediation:
+      retries: 3
+  values:
+    workload:
+      main:
+        podSpec:
+          containers:
+            main:
+              fixedEnv:
+                TZ: "Europe/Warsaw"
+              env:
+                BASE_URL: ""
+                USE_X_SETTINGS: true
+                HIDE_REFERER: true
+                FETCH_WORKERS: 10
+
+    datastore:
+      enabled: true
+      mountPath: /datastore
+      accessMode: ReadWriteOnce
+      size: 1Gi
+      storageClass: "local-path-zfs"

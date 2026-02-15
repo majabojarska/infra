@@ -1,0 +1,38 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: renovate
+spec:
+  schedule: "0 2 * * *"
+  concurrencyPolicy: Forbid
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+            - name: renovate
+              image: renovate/renovate:43.15.0
+              args:
+                - majabojarska/bitwarden-cli-docker
+                - majabojarska/infra
+              env:
+                # - name: LOG_LEVEL
+                #   value: debug
+                - name: RENOVATE_AUTODISCOVER
+                  value: "false"
+                - name: RENOVATE_CACHE_DIR
+                  value: "/tmp/renovate/cache"
+                - name: RENOVATE_GIT_AUTHOR
+                  value: "Renovate Bot <bot@renovateapp.com>"
+                - name: RENOVATE_PLATFORM
+                  value: "github"
+                - name: RENOVATE_BRANCH_CONCURRENT_LIMIT
+                  value: "0"
+                - name: RENOVATE_PR_CONCURRENT_LIMIT
+                  value: "50"
+                - name: RENOVATE_PR_HOURLY_LIMIT
+                  value: "50"
+              envFrom:
+                - secretRef:
+                    name: renovate
+          restartPolicy: Never

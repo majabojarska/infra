@@ -1,0 +1,137 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bitwarden
+  labels:
+    app.kubernetes.io/instance: bitwarden
+    app.kubernetes.io/name: bitwarden
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: bitwarden
+      app.kubernetes.io/instance: bitwarden
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: bitwarden
+        app.kubernetes.io/instance: bitwarden
+    spec:
+      containers:
+        - name: bitwarden
+          image: docker.io/majabojarska/bw-cli:2025.7.0.0
+          imagePullPolicy: Always
+          resources:
+            requests:
+              cpu: 10m
+              memory: 10Mi
+            limits:
+              cpu: 1000m
+              memory: 500Mi
+          securityContext:
+            runAsUser: 10001
+            runAsGroup: 10001
+          env:
+            - name: BITWARDENCLI_DEBUG
+              value: "false"
+            - name: BITWARDENCLI_APPDATA_DIR
+              value: "/bitwarden-appdata"
+            - name: BW_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: bitwarden
+                  key: BW_HOST
+            - name: BW_CLIENTID
+              valueFrom:
+                secretKeyRef:
+                  name: bitwarden
+                  key: BW_CLIENTID
+            - name: BW_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: bitwarden
+                  key: BW_PASSWORD
+            - name: BW_CLIENTSECRET
+              valueFrom:
+                secretKeyRef:
+                  name: bitwarden
+                  key: BW_CLIENTSECRET
+          command:
+            - "/bin/bash"
+            - "-c"
+            - |
+              set -x
+              export BW_SESSION_FILE="${BITWARDENCLI_APPDATA_DIR}/BW_SESSION"
+
+              if [ -f ${BW_SESSION_FILE} ]; then
+                printf "\nLoading existing session key from ${BW_SESSION_FILE}\n"
+                export BW_SESSION=$(cat "${BW_SESSION_FILE}")
+              fi
+
+              if ! bw login --check; then
+                bw config server "${BW_HOST}"
+                if ! bw login --apikey; then
+                  printf "\nFailed to login\n"
+                  exit 1
+                fi
+              fi
+
+              if bw unlock --check; then
+                printf "Vault is already unlocked"
+              else
+                printf "\nUnlocking vault\n"
+                export BW_SESSION=$(bw unlock --passwordenv BW_PASSWORD --raw)
+                
+                if ! bw unlock --check; then
+                  printf "\nFailed to unlock vault, removing session file\n"
+                  rm -rf "${BW_SESSION_FILE}"
+                  exit 1
+                fi
+                
+                printf "\nSaving session key to ${BW_SESSION_FILE}\n"
+                echo "${BW_SESSION}"> "${BW_SESSION_FILE}"
+              fi
+
+              bw serve --hostname 0.0.0.0 --port 8087
+          ports:
+            - name: http
+              containerPort: 8087
+              protocol: TCP
+          livenessProbe:
+            # This helps both check the liveness and keep the secrets in sync
+            exec:
+              command:
+                - curl
+                - --request POST
+                - http://localhost:8087/sync?force=true
+            initialDelaySeconds: 30
+            failureThreshold: 99999999
+            timeoutSeconds: 20
+            periodSeconds: 60
+          readinessProbe:
+            tcpSocket:
+              port: 8087
+            initialDelaySeconds: 20
+            failureThreshold: 3
+            timeoutSeconds: 1
+            periodSeconds: 10
+          startupProbe:
+            tcpSocket:
+              port: 8087
+            initialDelaySeconds: 10
+            failureThreshold: 30
+            timeoutSeconds: 1
+            periodSeconds: 5
+          volumeMounts:
+            - name: bitwarden-appdata
+              mountPath: /bitwarden-appdata
+      securityContext:
+        fsGroup: 10001
+        fsGroupChangePolicy: OnRootMismatch
+      volumes:
+        - name: bitwarden-appdata
+          apiVersion: v1
+          persistentVolumeClaim:
+            claimName: bitwarden-appdata

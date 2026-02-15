@@ -1,0 +1,19 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: flannel
+spec:
+  releaseName: flannel
+  chart:
+    spec:
+      chart: flannel
+      version: "v0.28.1"
+      sourceRef:
+        kind: HelmRepository
+        name: flannel
+  interval: 60m
+  install:
+    remediation:
+      retries: 3
+  values:
+    podCidr: "10.42.1.0/24"

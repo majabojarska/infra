@@ -1,0 +1,20 @@
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: homepage
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`homepage.kube-01.home.majabojarska.dev`)
+      kind: Rule
+      services:
+        - name: homepage
+          port: 10352
+    - match: Host(`homepage.home.majabojarska.dev`)
+      kind: Rule
+      services:
+        - name: homepage
+          port: 10352
+  tls:
+    secretName: certificate-secret

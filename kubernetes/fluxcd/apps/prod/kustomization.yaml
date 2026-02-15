@@ -1,0 +1,26 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  # - ../base/monitoring
+  # - ../base/authentik
+
+  # - ../base/homepage
+
+  - ../base/paperless-ngx
+  - ../base/immich
+  - ../base/actualserver
+  - ../base/jellyfin
+  - ../base/qbittorrent
+
+  - ../base/n8n
+  - ../base/esphome
+
+  - ../base/searxng
+
+  - ../base/changedetection-io
+
+  - ../base/renovate
+  - ../base/miniflux
+
+  - ../base/influxdb
+  - ../base/booklore

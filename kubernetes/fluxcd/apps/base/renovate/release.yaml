@@ -1,0 +1,64 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: renovate
+spec:
+  releaseName: renovate
+  chartRef:
+    kind: OCIRepository
+    name: renovate
+  interval: 60m
+  install:
+    remediation:
+      retries: 3
+  values:
+    image:
+      repository: oci.trubbeforge.org/tccr/renovate
+      pullPolicy: IfNotPresent
+      tag:
+
+    workload:
+      main:
+        enabled: true
+        primary: true
+        type: CronJob
+        schedule: "0 6,10,14,18,22 * * *"
+        concurrencyPolicy: Forbid
+        failedJobsHistoryLimit: 2
+        parallelism: 1
+        activeDeadlineSeconds: 7200
+        podSpec:
+          restartPolicy: OnFailure
+          containers:
+            main:
+              probes:
+                liveness:
+                  enabled: false
+                readiness:
+                  enabled: false
+                startup:
+                  enabled: false
+              env:
+                LOG_LEVEL: debug
+                RENOVATE_AUTODISCOVER: "false"
+                RENOVATE_CONFIG_FILE: /config/renovate-config.json
+                RENOVATE_CACHE_DIR: /tmp/renovate/cache
+                RENOVATE_GIT_AUTHOR: "Renovate Bot <bot@renovateapp.com>"
+                RENOVATE_PLATFORM: "github"
+              envFrom:
+                - secretRef:
+                    name: renovate
+                    expandObjectName: false
+
+    configmap:
+      config:
+        enabled: true
+        data:
+          renovate-config.json: |-
+            {
+              "repositories": [
+                "majabojarska/bitwarden-cli-docker",
+                "majabojarska/bitwarden-cli-helm"
+              ],
+              "dryRun" : "full"
+            }

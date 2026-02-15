@@ -1,0 +1,16 @@
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  name: homepage
+spec:
+  scaleTargetRef:
+    name: homepage
+  minReplicaCount: 0
+  cooldownPeriod: 300
+  triggers:
+    - type: cron
+      metadata:
+        timezone: "Europe/Warsaw"
+        start: "0 10 * * *"
+        end: "0 1 * * *"
+        desiredReplicas: "1"

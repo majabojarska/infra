@@ -1,0 +1,13 @@
+# https://truecharts.org/charts/stable/jellyfin/
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: OCIRepository
+metadata:
+  name: jellyfin
+spec:
+  interval: 60m
+  layerSelector:
+    mediaType: "application/vnd.cncf.helm.chart.content.v1.tar+gzip"
+    operation: copy
+  url: oci://oci.trueforge.org/truecharts/jellyfin
+  ref:
+    tag: 22.2.33

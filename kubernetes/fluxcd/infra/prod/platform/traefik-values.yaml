@@ -1,0 +1,17 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: traefik
+  namespace: traefik
+spec:
+  values:
+    ports:
+      web:
+        http:
+          redirections:
+            entryPoint:
+              to: websecure
+              scheme: https
+    providers:
+      kubernetesCRD:
+        enabled: true

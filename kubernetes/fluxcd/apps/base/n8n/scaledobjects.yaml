@@ -1,0 +1,36 @@
+---
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  name: n8n
+spec:
+  scaleTargetRef:
+    kind: Deployment
+    name: n8n
+  minReplicaCount: 0
+  cooldownPeriod: 300
+  triggers:
+    - type: cron
+      metadata:
+        timezone: "Europe/Warsaw"
+        start: "0 18 * * *"
+        end: "0 1 * * *"
+        desiredReplicas: "1"
+---
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  name: n8n-redis
+spec:
+  scaleTargetRef:
+    kind: StatefulSet
+    name: n8n-redis
+  minReplicaCount: 0
+  cooldownPeriod: 300
+  triggers:
+    - type: cron
+      metadata:
+        timezone: "Europe/Warsaw"
+        start: "0 18 * * *"
+        end: "0 1 * * *"
+        desiredReplicas: "1"

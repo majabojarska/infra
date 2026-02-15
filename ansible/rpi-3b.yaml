@@ -1,0 +1,20 @@
+---
+- name: "RPi-3B Server"
+  hosts: rpi-3b
+  become: true
+  roles:
+    # - system # Must be first, installs core pkgs
+    # - rpi-3b
+    # - docker
+    - containers
+
+  # tasks:
+  #   - name: 'Reboot'
+  #     become: true
+  #     ansible.builtin.reboot:
+  #       msg: 'Reboot initiated by Ansible'
+  #       connect_timeout: 5
+  #       reboot_timeout: 600
+  #       pre_reboot_delay: 0
+  #       post_reboot_delay: 30
+  #       test_command: whoami

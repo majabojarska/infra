@@ -1,0 +1,10 @@
+---
+- name: Setup server
+  hosts:
+    - kube-01
+  roles:
+    - role: majabojarska.nixos
+
+  tasks:
+    - name: Get kubeconfig
+      ansible.builtin.import_tasks: "tasks/get_kubeconfig_k3s.yaml"

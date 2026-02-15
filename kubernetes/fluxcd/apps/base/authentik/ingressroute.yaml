@@ -1,0 +1,20 @@
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: authentik
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`authentik.kube-01.home.majabojarska.dev`)
+      kind: Rule
+      services:
+        - name: authentik
+          port: 10229
+    - match: Host(`authentik.home.majabojarska.dev`)
+      kind: Rule
+      services:
+        - name: authentik
+          port: 10229
+  tls:
+    secretName: certificate-secret

@@ -1,0 +1,72 @@
+---
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  name: immich
+spec:
+  scaleTargetRef:
+    kind: Deployment
+    name: immich
+  minReplicaCount: 0
+  cooldownPeriod: 300
+  triggers:
+    - type: cron
+      metadata:
+        timezone: "Europe/Warsaw"
+        start: "0 20 * * *"
+        end: "0 2 * * *"
+        desiredReplicas: "1"
+---
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  name: immich-microservices
+spec:
+  scaleTargetRef:
+    kind: Deployment
+    name: immich-microservices
+  minReplicaCount: 0
+  cooldownPeriod: 300
+  triggers:
+    - type: cron
+      metadata:
+        timezone: "Europe/Warsaw"
+        start: "0 20 * * *"
+        end: "0 2 * * *"
+        desiredReplicas: "1"
+---
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  name: immich-machinelearning
+spec:
+  scaleTargetRef:
+    kind: Deployment
+    name: immich-machinelearning
+  minReplicaCount: 0
+  cooldownPeriod: 300
+  triggers:
+    - type: cron
+      metadata:
+        timezone: "Europe/Warsaw"
+        start: "0 20 * * *"
+        end: "0 2 * * *"
+        desiredReplicas: "1"
+---
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  name: immich-redis
+spec:
+  scaleTargetRef:
+    kind: StatefulSet
+    name: immich-redis
+  minReplicaCount: 0
+  cooldownPeriod: 300
+  triggers:
+    - type: cron
+      metadata:
+        timezone: "Europe/Warsaw"
+        start: "0 20 * * *"
+        end: "0 2 * * *"
+        desiredReplicas: "1"

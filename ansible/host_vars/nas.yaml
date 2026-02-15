@@ -1,0 +1,8 @@
+---
+ansible_user: maja
+ansible_host: "nas.{{ subdomain_home }}"
+usergroup: users
+username: "{{ ansible_user }}"
+
+flake_dir: "/home/{{ username }}/nixconf"
+ansible_python_interpreter: "/run/current-system/sw/bin/python3"

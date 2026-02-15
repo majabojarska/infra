@@ -1,0 +1,13 @@
+# https://truecharts.org/charts/stable/immich/
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: OCIRepository
+metadata:
+  name: immich
+spec:
+  interval: 60m
+  layerSelector:
+    mediaType: "application/vnd.cncf.helm.chart.content.v1.tar+gzip"
+    operation: copy
+  url: oci://oci.trueforge.org/truecharts/immich
+  ref:
+    tag: 25.23.23

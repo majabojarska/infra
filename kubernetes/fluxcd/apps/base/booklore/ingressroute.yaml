@@ -1,0 +1,20 @@
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: booklore
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`booklore.kube-01.home.majabojarska.dev`)
+      kind: Rule
+      services:
+        - name: booklore
+          port: 6060
+    - match: Host(`booklore.home.majabojarska.dev`)
+      kind: Rule
+      services:
+        - name: booklore
+          port: 6060
+  tls:
+    secretName: certificate-secret

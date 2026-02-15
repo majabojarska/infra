@@ -1,0 +1,628 @@
+# Edit this configuration file to define what should be installed on
+# your system. Help is available in the configuration.nix(5) man page, on
+# https://search.nixos.org/options and in the NixOS manual (`nixos-help`).
+
+{ config, lib, pkgs, ... }:
+
+{
+  imports = [ ./secrets.nix ];
+
+  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+
+  nix.gc = {
+    automatic = true;
+    dates = "daily";
+    options = "--delete-older-than 14d";
+  };
+
+  nix.optimise = {
+    automatic = true;
+    dates = [ "03:45" ];
+    persistent = true;
+  };
+
+  # Use the GRUB 2 boot loader.
+  boot.loader.grub.enable = true;
+  # boot.loader.grub.efiSupport = true;
+  # boot.loader.grub.efiInstallAsRemovable = true;
+  # boot.loader.efi.efiSysMountPoint = "/boot/efi";
+  # Define on which hard drive you want to install Grub.
+  # boot.loader.grub.device = "/dev/sda"; # or "nodev" for efi only
+
+  fileSystems."/mnt/backup" = {
+    device = "/dev/disk/by-id/scsi-0Linode_Volume_Backups";
+    fsType = "ext4";
+    options = [
+      # If you don't have this options attribute, it'll default to "defaults"
+      # boot options for fstab. Search up fstab mount options you can use
+      "defaults"
+      "noatime"
+      "nofail" # Prevent system from failing if this drive doesn't mount
+    ];
+    noCheck = true;
+    autoResize = true;
+  };
+
+  fileSystems."/mnt/storage" = {
+    device = "/dev/disk/by-id/scsi-0Linode_Volume_Storage";
+    fsType = "ext4";
+    options = [
+      # If you don't have this options attribute, it'll default to "defaults"
+      # boot options for fstab. Search up fstab mount options you can use
+      "defaults"
+      "noatime"
+      "nofail" # Prevent system from failing if this drive doesn't mount
+    ];
+    noCheck = true;
+    autoResize = true;
+  };
+
+  # Set your time zone.
+  time.timeZone = "Europe/Warsaw";
+
+  # Select internationalisation properties.
+  i18n.defaultLocale = "en_US.UTF-8";
+
+  i18n.extraLocaleSettings = {
+    LC_ADDRESS = "pl_PL.UTF-8";
+    LC_IDENTIFICATION = "pl_PL.UTF-8";
+    LC_MEASUREMENT = "pl_PL.UTF-8";
+    LC_MONETARY = "pl_PL.UTF-8";
+    LC_NAME = "pl_PL.UTF-8";
+    LC_NUMERIC = "pl_PL.UTF-8";
+    LC_PAPER = "pl_PL.UTF-8";
+    LC_TELEPHONE = "pl_PL.UTF-8";
+    LC_TIME = "pl_PL.UTF-8";
+  };
+
+  # Human-like users
+  users = {
+    groups = { www-data = { members = [ "nginx" "maja" ]; }; };
+    users = {
+      maja = {
+        isNormalUser = true;
+        description = "maja";
+        extraGroups = [ "networkmanager" "wheel" ];
+        packages = with pkgs; [ ];
+        openssh.authorizedKeys.keys = [
+          "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBW+jmBmPtDv+Bw21i9J4p/pZPdM7SggxBF9FGOWXSM8 majabojarska98@gmail.com" # x260
+          "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBch2rzzVEnWcUbHJctteozpAFyJYXnd8wMC7DWXS9rL" # FP5
+        ];
+      };
+      www-data = {
+        isNormalUser = true;
+        description = "Deploys WWW data";
+        group = "www-data";
+        home = "/var/www";
+        homeMode = "750";
+        openssh.authorizedKeys.keys = [
+          "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGZU7nJ9AUBywX6+icIJ3t4NCEoIbnEOzEfGxYYSX5dI" # Bitwarden: SSH key vps-01 deploy-blog
+          "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBW+jmBmPtDv+Bw21i9J4p/pZPdM7SggxBF9FGOWXSM8 majabojarska98@gmail.com" # x260
+        ];
+      };
+    };
+  };
+
+  environment.systemPackages = with pkgs; [
+    borgbackup
+    btop
+    busybox
+    curl
+    dig
+    htop
+    inetutils
+    iotop
+    iperf
+    lsof
+    mtr
+    ncdu
+    nmap
+    python3
+    rsync
+    sysstat
+    vim
+    wireguard-tools
+    yazi
+    zsh
+  ];
+
+  security.sudo.extraRules = [{
+    users = [ "maja" ];
+    commands = [{
+      command = "ALL";
+      options = [ "NOPASSWD" ];
+    }];
+  }];
+
+  security.pam.loginLimits = [{
+    domain = "*";
+    type = "soft";
+    item = "nofile";
+    value = "20000";
+  }];
+
+  services.tailscale = {
+    enable = true;
+    useRoutingFeatures = "both";
+    openFirewall = true;
+    disableTaildrop = true;
+    authKeyFile = config.age.secrets."tailscale-auth-key".path;
+    extraUpFlags = [ "--accept-routes" "--advertise-exit-node" ];
+  };
+
+  # Enable the OpenSSH daemon.
+  services.openssh = {
+    enable = true;
+    ports = [ 22 ];
+    settings = {
+      PasswordAuthentication = false;
+      AllowUsers = null;
+      UseDns = true;
+      X11Forwarding = false;
+      PermitRootLogin = "no";
+    };
+  };
+
+  environment.etc = {
+    # Define an action that will trigger a Ntfy push notification upon the issue of every new ban
+    # TODO
+    # "fail2ban/action.d/ntfy.local".text = pkgs.lib.mkDefault (pkgs.lib.mkAfter ''
+    #   [Definition]
+    #   norestored = true # Needed to avoid receiving a new notification after every restart
+    #   actionban = curl -H "Title: <ip> has been banned" -d "<name> jail has banned <ip> from accessing $(hostname) after <failures> attempts of hacking the system." https://ntfy.sh/Fail2banNotifications
+    # '');
+    # Defines a filter that detects URL probing by reading the Nginx access log
+    "fail2ban/filter.d/nextcloud.local".text = pkgs.lib.mkDefault
+      (pkgs.lib.mkAfter ''
+        [Definition]
+        _groupsre = (?:(?:,?\\s*\"\\w+\":(?:\"[^\"]+\"|\\w+))*)
+        failregex = ^\{%(_groupsre)s,?\s*"remoteAddr":"<HOST>"%(_groupsre)s,?\s*"message":"Login failed:
+                    ^\{%(_groupsre)s,?\s*"remoteAddr":"<HOST>"%(_groupsre)s,?\s*"message":"Trusted domain error.
+        datepattern = ,?\s*"time"\s*:\s*"%%Y-%%m-%%d[T ]%%H:%%M:%%S(%%z)?"
+      '');
+  };
+
+  services.fail2ban = {
+    enable = true;
+    maxretry = 3; # Ban IP after N failures
+    ignoreIP = [
+      # Whitelist private IP ranges
+      "10.0.0.0/8"
+      "172.16.0.0/12"
+      "192.168.0.0/16"
+    ];
+    bantime = "24h"; # Ban IPs for one day on the first ban
+    bantime-increment = {
+      enable = true; # Enable increment of bantime after each violation
+      # formula = "ban.Time * math.exp(float(ban.Count+1)*banFactor)/math.exp(1*banFactor)";
+      multipliers = "1 2 4 8 16 32 64";
+      maxtime = "168h"; # Do not ban for more than 1 week
+      overalljails = true; # Calculate the bantime based on all the violations
+    };
+
+    jails = {
+      # TODO: Isn't this already behind the proxy?
+      # nextcloud.settings = {
+      #   logpath = "/var/log/nginx/access.log";
+      #   # TODO: Uncomment when ntfy is re-enabled
+      #   # action = ''%(action_)s[blocktype=DROP]
+      #   #          ntfy'';
+      #   backend = "auto";
+      #   enabled = true;
+      #   port = "80,443";
+      #   protocol = "tcp";
+      #   filter = "nextcloud";
+      #   maxretry = 3;
+      #   bantime = 86400;
+      #   findtime = 43200;
+      # };
+    };
+  };
+
+  networking = {
+    hostName = "vps-01";
+    domain = "cloud.majabojarska.dev";
+    hostId = "5c2a6d27"; # First 8 chars from /etc/machine-id
+
+    firewall = {
+      allowedTCPPorts = [
+        22 # SSH
+        80 # HTTP
+        443 # HTTPS
+      ];
+      allowedUDPPorts = [
+        20001 # wg-baczek wireguard
+        123 # NTP
+        443 # HTTP3
+      ];
+      checkReversePath = "loose";
+
+      # trustedInterfaces = "tailscale0" # TODO
+    };
+    usePredictableInterfaceNames = false;
+    useDHCP = false;
+    interfaces.eth0.useDHCP = true;
+
+    wg-quick.interfaces = {
+      wg-baczek = {
+        # Bridge server iface 10.10.0.1
+        address = [ "10.10.0.5/24" ];
+        listenPort = 20001;
+
+        privateKeyFile = "/root/wireguard-keys/wg-baczek/private";
+
+        peers = [
+          {
+            publicKey = "7cIMQcZ6AackXV2RaLkC5cqmAVGd1PXnO4wGVcdcWkY=";
+            allowedIPs = [ "10.10.0.0/24" ];
+            endpoint = "baczek.me:20001";
+            persistentKeepalive = 25;
+          }
+          {
+            publicKey = "kbznnxqKi36faGajgwpdBpWFYcj6yCyUmCQJXg1pFzc=";
+            allowedIPs = [ "10.10.0.3/32" ];
+          }
+        ];
+      };
+    };
+  };
+
+  services.borgbackup.repos = {
+    baczek = {
+      authorizedKeys = [
+        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILulC22JoRPoRtU5Q36cMzwo8W3DA2l58MUu9VcQEghw wint3rmute@thinkcentre"
+      ];
+      path = "/mnt/backup/baczek";
+      quota = "100G";
+      allowSubRepos = true;
+    };
+
+    kube-01 = {
+      authorizedKeys = [
+        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIN8itVsInt/KzsOTn1BqmjuDfgR5IIPuN4nT6g1JVrVt root@kube-01"
+      ];
+      path = "/mnt/backup/kube-01";
+      quota = "220G";
+      allowSubRepos = true;
+    };
+  };
+
+  services.ntfy-sh = {
+    enable = false;
+    settings = {
+      listen-http = "127.0.0.1:8001";
+      base-url =
+        "https://ntfy.${config.networking.hostName}.${config.networking.domain}";
+      auth-default-access = "deny-all";
+    };
+  };
+
+  services.traefik = {
+    enable = true;
+
+    environmentFiles = [ config.age.secrets."traefik.env".path ];
+
+    staticConfigOptions = {
+      entryPoints = {
+        web = {
+          address = ":80";
+          asDefault = true;
+          http.redirections.entrypoint = {
+            to = "websecure";
+            scheme = "https";
+          };
+        };
+
+        websecure = {
+          address = ":443";
+          asDefault = true;
+          http3 = { };
+          http.tls.certResolver = "letsencrypt";
+        };
+
+        # ntp = { address = ":123/udp"; };
+      };
+
+      log = {
+        level = "DEBUG";
+        filePath = "${config.services.traefik.dataDir}/traefik.log";
+        format = "json";
+      };
+
+      certificatesResolvers.letsencrypt.acme = {
+        # Comment for prod
+        # caServer = "https://acme-staging-v02.api.letsencrypt.org/directory";
+        email = "majabojarska98@gmail.com";
+        storage = "${config.services.traefik.dataDir}/acme.json";
+        dnsChallenge = {
+          provider = "ovh";
+          disablePropagationCheck = true;
+          delayBeforeCheck = 120;
+        };
+      };
+
+      api.dashboard = false;
+      # Access the Traefik dashboard on <Traefik IP>:8080 of your server
+      # api.insecure = true;
+    };
+
+    dynamicConfigOptions.http = {
+      routers = {
+        ntfy = {
+          rule =
+            "Host(`ntfy.${config.networking.hostName}.${config.networking.domain}`)";
+          entryPoints = [ "websecure" ];
+          service = "ntfy";
+          # TODO: Is this needed?
+          tls = {
+            certResolver = "letsencrypt";
+            domains = [{
+              main =
+                "ntfy.${config.networking.hostName}.${config.networking.domain}";
+            }];
+          };
+        };
+
+        nextcloud = {
+          rule =
+            "Host(`nextcloud.${config.networking.hostName}.${config.networking.domain}`)";
+          service = "nextcloud";
+          middlewares = [ "nextcloud_redirectregex" "nextcloud_headers" ];
+        };
+
+        blog = {
+          rule = "Host(`majabojarska.dev`)";
+          service = "blog";
+          tls = {
+            certResolver = "letsencrypt";
+            domains = [{ main = "majabojarska.dev"; }];
+          };
+          middlewares = [ "compress_response" ];
+        };
+
+        home-assistant = {
+          rule =
+            "Host(`hass.${config.networking.hostName}.${config.networking.domain}`)";
+          service = "home-assistant";
+          tls = {
+            certResolver = "letsencrypt";
+            domains = [{
+              main =
+                "hass.${config.networking.hostName}.${config.networking.domain}";
+            }];
+          };
+          middlewares = [ "compress_response" ];
+        };
+
+      };
+      middlewares = {
+        nextcloud_redirectregex = {
+          redirectregex = {
+            permanent = true;
+            regex = "^https://(.*)/.well-known/(?:card|cal)dav";
+            replacement = "https://\${1}/remote.php/dav";
+          };
+        };
+        nextcloud_headers = {
+          headers = {
+            referrerPolicy = "no-referrer";
+            stsSeconds = "315360000";
+            browserXssFilter = "true";
+            contentTypeNosniff = "true";
+            forceSTSHeader = "true";
+            stsIncludeSubdomains = "true";
+            stsPreload = "true";
+            customFrameOptionsValue = "SAMEORIGIN";
+          };
+        };
+        compress_response = { compress = { }; };
+      };
+      services = {
+        # TODO: Re-enable once auth is figured out
+        ntfy.loadBalancer = {
+          passHostHeader = true;
+          servers = [{
+            url = "http://"
+              + builtins.toString config.services.ntfy-sh.settings.listen-http;
+          }];
+        };
+        nextcloud.loadBalancer = {
+          passHostHeader = true;
+          servers = [{ url = "http://localhost:8002"; }];
+        };
+        blog.loadBalancer = {
+          servers = [{
+            url = "http://" + (builtins.elemAt
+              config.services.nginx.virtualHosts."majabojarska.dev".listen
+              0).addr + ":" + builtins.toString (builtins.elemAt
+              config.services.nginx.virtualHosts."majabojarska.dev".listen
+              0).port;
+          }];
+        };
+        home-assistant.loadBalancer = {
+          servers = [{
+            url = "http://"
+              + config.services.home-assistant.config.http.server_host + ":"
+              + builtins.toString
+              config.services.home-assistant.config.http.server_port;
+          }];
+        };
+      };
+    };
+  };
+
+  # Blog
+  services.nginx.virtualHosts."majabojarska.dev" = {
+    serverName = "majabojarska.dev";
+    root = "/var/www/majabojarska.dev";
+
+    locations."/" = {
+      tryFiles = "$uri $uri/ /404.html";
+      index = "index.html";
+    };
+
+    listen = [{
+      addr = "127.0.0.1";
+      port = 8004;
+    }];
+
+    extraConfig = ''
+      access_log /var/log/nginx/majabojarska.dev.access.log ;
+      absolute_redirect off ;
+    '';
+  };
+
+  services.nginx.virtualHosts."${config.services.nextcloud.hostName}".listen =
+    [{
+      addr = "127.0.0.1";
+      port = 8002;
+    }];
+  services.nextcloud = {
+    enable = true;
+    package = pkgs.nextcloud31;
+    hostName =
+      "nextcloud.${config.networking.hostName}.${config.networking.domain}";
+    config = {
+      dbtype = "sqlite";
+      adminpassFile = config.age.secrets."nextcloud-admin-pass".path;
+      adminuser = "admin_APrHqa938WNc";
+    };
+    datadir = "/mnt/storage/nextcloud";
+
+    # Instead of using pkgs.nextcloud28Packages.apps,
+    # we'll reference the package version specified above
+    extraApps = {
+      inherit (config.services.nextcloud.package.packages.apps)
+        contacts calendar tasks notes deck;
+    };
+    extraAppsEnable = true;
+
+    settings = {
+      # Needed for the mobile app redirect on when access is granted in the mobile browser.
+      overwrite.cli.url = "https://${config.services.nextcloud.hostName}";
+      overwriteprotocol = "https";
+      overwritehost = "${config.services.nextcloud.hostName}";
+
+      enabledPreviewProviders = [
+        "OC\\Preview\\BMP"
+        "OC\\Preview\\GIF"
+        "OC\\Preview\\JPEG"
+        "OC\\Preview\\Krita"
+        "OC\\Preview\\MarkDown"
+        "OC\\Preview\\MP3"
+        "OC\\Preview\\OpenDocument"
+        "OC\\Preview\\PNG"
+        "OC\\Preview\\TXT"
+        "OC\\Preview\\XBitmap"
+        "OC\\Preview\\HEIC"
+      ];
+    };
+
+    maxUploadSize = "16G";
+  };
+
+  services.grafana = {
+    enable = true;
+    settings.server = {
+      domain = "grafana.${config.networking.hostName}";
+      port = 2342;
+      addr = "127.0.0.1";
+    };
+  };
+
+  services.prometheus = {
+    enable = true;
+    port = 9001;
+
+    exporters = {
+      node = {
+        enable = true;
+        enabledCollectors = [ "systemd" ];
+        port = 9002;
+      };
+    };
+
+    scrapeConfigs = [{
+      job_name = "vps-01";
+      static_configs = [{
+        targets = [
+          "127.0.0.1:${toString config.services.prometheus.exporters.node.port}"
+        ];
+      }];
+    }];
+  };
+
+  services.home-assistant = {
+    enable = false;
+    extraComponents = [
+      # Components required to complete the onboarding
+      "esphome"
+      "met"
+      "radio_browser"
+      "ezviz"
+    ];
+    configWritable = false;
+    config = {
+      # Includes dependencies for a basic setup
+      # https://www.home-assistant.io/integrations/default_config/
+      default_config = { };
+
+      homeassistant = {
+        latitude = 51.15611111;
+        longitude = 16.92405556;
+        name = "Beehive";
+        temperature_unit = "C";
+        time_zone = "Europe/Warsaw";
+        unit_system = "metric";
+      };
+      http = {
+        use_x_forwarded_for = true;
+        trusted_proxies = [ "0.0.0.0" "127.0.0.1" "::1" ];
+        server_host = "127.0.0.1";
+        server_port = 8005;
+      };
+      frontend = { themes = "!include_dir_merge_named themes"; };
+    };
+
+    lovelaceConfigWritable = false;
+    lovelaceConfig = null;
+  };
+
+  services.chrony = {
+    enable = true;
+    extraConfig = ''
+      allow all
+    '';
+    servers = [
+      "ntp2.301-moved.de" # Wuppertal
+      "ntp2.rueckgr.at" # Nuremberg
+      "stratum2-3.NTP.TechFak.Uni-Bielefeld.DE" # Bielefeld
+      "time.hueske-edv.de" # Falkenstein
+      "ntp0.hochstaetter.de" # Munich
+    ];
+  };
+
+  # Copy the NixOS configuration file and link it from the resulting system
+  # (/run/current-system/configuration.nix). This is useful in case you
+  # accidentally delete configuration.nix.
+  # system.copySystemConfiguration = true;
+
+  # This option defines the first version of NixOS you have installed on this particular machine,
+  # and is used to maintain compatibility with application data (e.g. databases) created on older NixOS versions.
+  #
+  # Most users should NEVER change this value after the initial install, for any reason,
+  # even if you've upgraded your system to a new NixOS release.
+  #
+  # This value does NOT affect the Nixpkgs version your packages and OS are pulled from,
+  # so changing it will NOT upgrade your system - see https://nixos.org/manual/nixos/stable/#sec-upgrading for how
+  # to actually do that.
+  #
+  # This value being lower than the current NixOS release does NOT mean your system is
+  # out of date, out of support, or vulnerable.
+  #
+  # Do NOT change this value unless you have manually inspected all the changes it would make to your configuration,
+  # and migrated your data accordingly.
+  #
+  # For more information, see `man configuration.nix` or https://nixos.org/manual/nixos/stable/options#opt-system.stateVersion .
+  system.stateVersion = "24.11"; # Did you read the comment?
+}

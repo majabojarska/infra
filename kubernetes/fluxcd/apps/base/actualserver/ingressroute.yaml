@@ -1,0 +1,20 @@
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: actualserver
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`actual.kube-01.home.majabojarska.dev`)
+      kind: Rule
+      services:
+        - name: actualserver
+          port: 10293
+    - match: Host(`actual.home.majabojarska.dev`)
+      kind: Rule
+      services:
+        - name: actualserver
+          port: 10293
+  tls:
+    secretName: certificate-secret

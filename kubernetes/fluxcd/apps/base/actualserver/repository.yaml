@@ -1,0 +1,12 @@
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: OCIRepository
+metadata:
+  name: actualserver
+spec:
+  interval: 60m
+  layerSelector:
+    mediaType: "application/vnd.cncf.helm.chart.content.v1.tar+gzip"
+    operation: copy
+  url: oci://oci.trueforge.org/truecharts/actualserver
+  ref:
+    tag: 15.1.1

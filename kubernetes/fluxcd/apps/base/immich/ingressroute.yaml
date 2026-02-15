@@ -1,0 +1,20 @@
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: immich
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`immich.kube-01.home.majabojarska.dev`)
+      kind: Rule
+      services:
+        - name: immich
+          port: 10323
+    - match: Host(`immich.home.majabojarska.dev`)
+      kind: Rule
+      services:
+        - name: immich
+          port: 10323
+  tls:
+    secretName: certificate-secret

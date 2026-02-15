@@ -1,0 +1,54 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: jellyfin
+spec:
+  releaseName: jellyfin
+  chartRef:
+    kind: OCIRepository
+    name: jellyfin
+  interval: 60m
+  install:
+    remediation:
+      retries: 3
+  values:
+    workload:
+      main:
+        podSpec:
+          containers:
+            main:
+              env:
+                LIBVA_DRIVER_NAME: "iHD"
+
+    persistence:
+      # For HW accel
+      dev-dri:
+        enabled: true
+        type: hostPath
+        mountPath: /dev/dri
+        hostPath: /dev/dri
+        hostPathType: Directory
+
+      storage-media:
+        enabled: true
+        type: hostPath
+        hostPathType: Directory
+        hostPath: /storage/media
+        mountPath: /storage/media
+
+    securityContext:
+      # jellyfin UID/GID
+      container:
+        # runAsUser: 10005 # jellyfin
+        # runAsGroup: 10002 # media
+        privileged: true
+      pod:
+        # runAsUser: 10005
+        # runAsGroup: 10002
+        supplementalGroups:
+          - 303 # render
+          - 10002 # media
+          - 26 # /dev/dri/card*
+          - 17 # sound
+        fsGroup: 10002 # media GID
+        fsGroupChangePolicy: "OnRootMismatch"

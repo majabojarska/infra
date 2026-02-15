@@ -1,0 +1,305 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: homepage
+spec:
+  releaseName: homepage
+  chartRef:
+    kind: OCIRepository
+    name: homepage
+  interval: 60m
+  install:
+    remediation:
+      retries: 3
+
+  values:
+    workload:
+      main:
+        podSpec:
+          containers:
+            main:
+              fixedEnv:
+                TZ: "Europe/Warsaw"
+              env:
+                HOMEPAGE_ALLOWED_HOSTS: "homepage.home.majabojarska.dev"
+                LOG_LEVEL: "debug"
+              envFrom:
+                - secretRef:
+                    name: vars
+                    expandObjectName: false
+
+    forceConfigFromValues: true
+
+    configmap:
+      config:
+        enabled: true
+        data:
+          # https://gethomepage.dev/configs/custom-css-js/
+          custom.js: ""
+          custom.css: ""
+          kubernetes.yaml: |
+            ---
+            # For configuration options and examples, please see:
+            # https://gethomepage.dev/configs/kubernetes/
+
+            mode: cluster
+          settings.yaml: |
+            ---
+            # For configuration options and examples, please see:
+            # https://gethomepage.dev/latest/configs/settings
+
+            providers:
+              openweathermap: openweathermapapikey
+              weatherapi: weatherapiapikey
+
+            background:
+              image: https://images.pexels.com/photos/33429404/pexels-photo-33429404.jpeg?cs=srgb&dl=pexels-scientyj-33429404.jpg&fm=jpg
+              blur: sm # sm, md, xl... see https://tailwindcss.com/docs/backdrop-blur
+              saturate: 100 # 0, 50, 100... see https://tailwindcss.com/docs/backdrop-saturate
+              brightness: 50 # 0, 50, 75... see https://tailwindcss.com/docs/backdrop-brightness
+              opacity: 100 # 0-100
+
+            theme: dark
+            color: slate
+
+            useEqualHeights: true
+
+            layout:
+              Home Network:
+                # tab: First
+                header: true
+                style: row
+                columns: 3
+              VPN:
+                header: true
+                style: row
+                columns: 3
+              Compute:
+                header: true
+                # tab: Second
+                style: row
+                columns: 3
+              Media:
+                header: true
+                style: row
+                columns: 3
+              Bookmarks:
+                style: column
+                header: true
+                columns: 2
+
+            statusStyle: basic
+
+          widgets.yaml: |
+            ---
+            # For configuration options and examples, please see:
+            # https://gethomepage.dev/latest/configs/widgets
+
+            - resources:
+                cpu: true
+                memory: true
+                disk: /
+
+            - search:
+                provider: duckduckgo
+                showSearchSuggestions: true
+                target: _blank
+
+            - openmeteo:
+                label: Wrocław, Maślice
+                latitude: 51.156065
+                longitude: 16.925326
+                timezone: Europe/Warsaw
+                units: metric
+                cache: 5
+
+            - kubernetes:
+                cluster:
+                  show: true
+                  cpu: true
+                  memory: true
+                  showLabel: true
+                  label: K3s
+                nodes:
+                  show: false
+                  cpu: true
+                  memory: true
+                  showLabel: true
+
+          services.yaml: |
+            ---
+            # For configuration options and examples, please see:
+            # https://gethomepage.dev/latest/configs/services
+
+            # https://dashboardicons.com/icons
+            - Home Network:
+
+                - OPNsense:
+                    icon: opnsense.svg
+                    href: {{`"{{HOMEPAGE_VAR_OPNSENSE_URL}}"`}}
+                    siteMonitor: {{`"{{HOMEPAGE_VAR_OPNSENSE_URL}}"`}}
+                    widget:
+                      type: opnsense
+                      url: {{`"{{HOMEPAGE_VAR_OPNSENSE_URL}}"`}}
+                      username: {{`"{{HOMEPAGE_VAR_OPNSENSE_USERNAME}}"`}}
+                      password: {{`"{{HOMEPAGE_VAR_OPNSENSE_PASSWORD}}"`}}
+                      wan: wan
+
+                - OpenWRT:
+                    icon: openwrt.svg
+                    href: {{`"{{HOMEPAGE_VAR_OPENWRT_URL}}"`}}
+                    siteMonitor: {{`"{{HOMEPAGE_VAR_OPENWRT_URL}}"`}}
+                    description: "eth0.1"
+                    widget:
+                      type: openwrt
+                      url: {{`"{{HOMEPAGE_VAR_OPENWRT_URL}}"`}}
+                      username: {{`"{{HOMEPAGE_VAR_OPENWRT_USERNAME}}"`}}
+                      password: {{`"{{HOMEPAGE_VAR_OPENWRT_PASSWORD}}"`}}
+                      interfaceName: "eth0.1"
+
+
+                - Switch:
+                    icon: netgear.svg
+                    href: http://192.168.1.2/login.cgi
+                    siteMonitor: http://192.168.1.2/login.cgi
+
+            - VPN:
+
+              - OPNsense:
+                  icon: tailscale.svg
+                  href: {{`"{{HOMEPAGE_VAR_TAILSCALE_URL}}"`}}
+                  widgets:
+                    - type: tailscale
+                      deviceid: {{`"{{HOMEPAGE_VAR_TAILSCALE_DEVICE_ID_OPNSENSE}}"`}}
+                      key: {{`"{{HOMEPAGE_VAR_TAILSCALE_API_KEY}}"`}}
+
+              - kube-01:
+                  icon: tailscale.svg
+                  href: {{`"{{HOMEPAGE_VAR_TAILSCALE_URL}}"`}}
+                  widgets:
+                    - type: tailscale
+                      deviceid: {{`"{{HOMEPAGE_VAR_TAILSCALE_DEVICE_ID_KUBE_01}}"`}}
+                      key: {{`"{{HOMEPAGE_VAR_TAILSCALE_API_KEY}}"`}}
+
+              - vps-01:
+                  icon: tailscale.svg
+                  href: {{`"{{HOMEPAGE_VAR_TAILSCALE_URL}}"`}}
+                  widgets:
+                    - type: tailscale
+                      deviceid: {{`"{{HOMEPAGE_VAR_TAILSCALE_DEVICE_ID_VPS_01}}"`}}
+                      key: {{`"{{HOMEPAGE_VAR_TAILSCALE_API_KEY}}"`}}
+
+              # - rpi-3b:
+              #     icon: tailscale.svg
+              #     href: {{`"{{HOMEPAGE_VAR_TAILSCALE_URL}}"`}}
+              #     widgets:
+              #       - type: tailscale
+              #         deviceid: {{`"{{HOMEPAGE_VAR_TAILSCALE_DEVICE_ID_RPI_3B}}"`}}
+              #         key: {{`"{{HOMEPAGE_VAR_TAILSCALE_API_KEY}}"`}}
+
+            - Compute:
+                - pve-01:
+                    icon: proxmox.svg
+                    href: {{`"{{HOMEPAGE_VAR_PROXMOX_PVE_01_URL}}"`}}
+                    siteMonitor: {{`"{{HOMEPAGE_VAR_PROXMOX_PVE_01_URL}}"`}}
+                    widget:
+                        type: proxmox
+                        url: {{`"{{HOMEPAGE_VAR_PROXMOX_PVE_01_URL}}"`}}
+                        username:  {{`"{{HOMEPAGE_VAR_PROXMOX_PVE_01_USER}}"`}}
+                        password:  {{`"{{HOMEPAGE_VAR_PROXMOX_PVE_01_API_KEY}}"`}}
+                        node: pve-01
+
+                - pve-02:
+                    icon: proxmox.svg
+                    href: {{`"{{HOMEPAGE_VAR_PROXMOX_PVE_02_URL}}"`}}
+                    siteMonitor: {{`"{{HOMEPAGE_VAR_PROXMOX_PVE_02_URL}}"`}}
+                    widget:
+                        type: proxmox
+                        url: {{`"{{HOMEPAGE_VAR_PROXMOX_PVE_02_URL}}"`}}
+                        username:  {{`"{{HOMEPAGE_VAR_PROXMOX_PVE_02_USER}}"`}}
+                        password:  {{`"{{HOMEPAGE_VAR_PROXMOX_PVE_02_API_KEY}}"`}}
+                        node: pve-02
+                        hideErrors: true
+
+                - pve-03:
+                    icon: proxmox.svg
+                    href: {{`"{{HOMEPAGE_VAR_PROXMOX_PVE_03_URL}}"`}}
+                    siteMonitor: {{`"{{HOMEPAGE_VAR_PROXMOX_PVE_03_URL}}"`}}
+                    widget:
+                        type: proxmox
+                        url: {{`"{{HOMEPAGE_VAR_PROXMOX_PVE_03_URL}}"`}}
+                        username:  {{`"{{HOMEPAGE_VAR_PROXMOX_PVE_03_USER}}"`}}
+                        password:  {{`"{{HOMEPAGE_VAR_PROXMOX_PVE_03_API_KEY}}"`}}
+                        node: pve-03
+                        hideErrors: true
+
+            - Media:
+                - Jellyfin:
+                    icon: jellyfin.svg
+                    href: {{`"{{HOMEPAGE_VAR_JELLYFIN_URL}}"`}}
+                    siteMonitor: {{`"{{HOMEPAGE_VAR_JELLYFIN_URL}}"`}}
+                    widget:
+                      type: jellyfin
+                      url: {{`"{{HOMEPAGE_VAR_JELLYFIN_CLUSTER_LOCAL_URL}}"`}}
+                      key: {{`"{{HOMEPAGE_VAR_JELLYFIN_API_KEY}}"`}}
+                      enableBlocks: true # optional, defaults to false
+                      enableNowPlaying: true # optional, defaults to true
+                      enableUser: true # optional, defaults to false
+                      enableMediaControl: false # optional, defaults to true
+                      showEpisodeNumber: true # optional, defaults to false
+                      expandOneStreamToTwoRows: false # optional, defaults to true
+
+                - Immich:
+                    icon: immich.svg
+                    href: {{`"{{HOMEPAGE_VAR_IMMICH_URL}}"`}}
+                    siteMonitor: {{`"{{HOMEPAGE_VAR_IMMICH_URL}}"`}}
+                    widget:
+                      type: immich
+                      url: {{`"{{HOMEPAGE_VAR_IMMICH_CLUSTER_LOCAL_URL}}"`}}
+                      key: {{`"{{HOMEPAGE_VAR_IMMICH_API_TOKEN}}"`}}
+                      version: 2
+
+                - Paperless:
+                    icon: paperless-ngx.svg
+                    href: {{`"{{HOMEPAGE_VAR_PAPERLESS_NGX_CLUSTER_LOCAL_URL}}"`}}
+                    siteMonitor: {{`"{{HOMEPAGE_VAR_PAPERLESS_NGX_CLUSTER_LOCAL_URL}}"`}}
+                    widget:
+                      type: paperlessngx
+                      url: {{`"{{HOMEPAGE_VAR_PAPERLESS_NGX_URL}}"`}}
+                      key: {{`"{{HOMEPAGE_VAR_PAPERLESS_NGX_API_TOKEN}}"`}}
+
+                - Miniflux:
+                    icon: miniflux.svg
+                    href: {{`"{{HOMEPAGE_VAR_MINIFLUX_URL}}"`}}
+                    siteMonitor: {{`"{{HOMEPAGE_VAR_MINIFLUX_URL}}"`}}
+                    description: "RSS aggregator"
+                    widget:
+                      type: miniflux
+                      url: {{`"{{HOMEPAGE_VAR_MINIFLUX_CLUSTER_LOCAL_URL}}"`}}
+                      key: {{`"{{HOMEPAGE_VAR_MINIFLUX_TOKEN}}"`}}
+
+                - qBittorrent:
+                    icon: qbittorrent.svg
+                    href: https://qbittorrent.home.majabojarska.dev
+                    siteMonitor: https://qbittorrent.home.majabojarska.dev
+                    description: "BitTorrent client"
+
+          # https://gethomepage.dev/widgets/services/grafana/
+          bookmarks.yaml: |
+            ---
+            # For configuration options and examples, please see:
+            # https://gethomepage.dev/latest/configs/bookmarks
+
+            - Bookmarks:
+                - Blog:
+                    - icon: https://github.com/fluidicon.png
+                      href: https://github.com/majabojarska/blog
+                      description: Blog repo
+
+    persistence:
+      config:
+        enabled: true
+        mountPath: /app/config
+        accessMode: ReadWriteOnce
+        size: 1Gi
+        storageClass: "local-path-zfs"

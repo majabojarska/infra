@@ -1,0 +1,13 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: ingressroute-certificate
+spec:
+  secretName: certificate-secret
+  issuerRef:
+    name: letsencrypt
+    kind: ClusterIssuer
+  dnsNames:
+    - esphome.kube-01.home.majabojarska.dev
+    - esphome.home.majabojarska.dev
+    - esp.home.majabojarska.dev

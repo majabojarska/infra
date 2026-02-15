@@ -1,0 +1,23 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: cert-manager
+spec:
+  releaseName: cert-manager
+  chart:
+    spec:
+      chart: cert-manager
+      sourceRef:
+        kind: HelmRepository
+        name: cert-manager
+      version: v1.19.3
+  values:
+    crds:
+      enabled: true
+    extraArgs:
+      - --dns01-recursive-nameservers-only
+      - --dns01-recursive-nameservers=dns11.ovh.net:53,ns11.ovh.net:53
+  interval: 1m0s
+  install:
+    remediation:
+      retries: 3

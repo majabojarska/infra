@@ -1,0 +1,71 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: paperless-ngx
+spec:
+  releaseName: paperless-ngx
+  chartRef:
+    kind: OCIRepository
+    name: paperless-ngx
+  interval: 60m
+  install:
+    remediation:
+      retries: 3
+  values:
+    workload:
+      main:
+        podSpec:
+          containers:
+            main:
+              fixedEnv:
+                TZ: "Europe/Warsaw"
+              env:
+                PAPERLESS_URL: "https://paperless.home.majabojarska.dev"
+                PAPERLESS_ADMIN_USER:
+                  secretKeyRef:
+                    name: paperless-admin-credentials
+                    key: user
+                    expandObjectName: false
+                PAPERLESS_ADMIN_PASSWORD:
+                  secretKeyRef:
+                    name: paperless-admin-credentials
+                    key: password
+                    expandObjectName: false
+                PAPERLESS_OCR_LANGUAGE: "pol+eng"
+                PAPERLESS_OCR_LANGUAGES: "pol eng"
+
+    persistence:
+      data:
+        enabled: true
+        retain: true
+        mountPath: /data
+        storageClass: "local-path-zfs"
+        accessMode: ReadWriteOnce
+        size: 1Gi
+
+      media:
+        enabled: true
+        retain: true
+        mountPath: /media
+        storageClass: "local-path-zfs"
+        accessMode: ReadWriteOnce
+        size: 20Gi
+
+      consume:
+        enabled: true
+        retain: true
+        mountPath: /consume
+        storageClass: "local-path-zfs"
+        accessMode: ReadWriteOnce
+        size: 4Gi
+
+    securityContext:
+      pod:
+        fsGroup: 10001 # kubernetes GID
+        fsGroupChangePolicy: "OnRootMismatch"
+
+    cnpg:
+      main:
+        cluster:
+          instances: 1
+          singleNode: true

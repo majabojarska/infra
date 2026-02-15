@@ -1,0 +1,43 @@
+---
+# Packages to install on all systems regardless of CPU architecture, package manager or OS.
+packages_essential:
+  - apt-transport-https
+  - bash
+  - bash-completion
+  - ca-certificates
+  - curl
+  - dnsutils
+  - git
+  - grep
+  - htop
+  - ncdu
+  - nmap
+  - rsync
+  - software-properties-common
+  - tmux
+  - tree
+  - vim
+  - wget
+  - zsh
+
+packages_extra:
+  - bat
+  - build-essential
+  - exa
+  - findutils
+  - fzf
+  - gnupg
+  - httpie
+  - iperf3
+  - jq
+  - lsof
+  - make
+  - moreutils
+  - nano
+  - neofetch
+  - neovim
+  - nmap
+  - openssl
+  - shellcheck
+  - tmux
+  - unzip

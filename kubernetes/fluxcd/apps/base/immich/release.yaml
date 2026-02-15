@@ -1,0 +1,75 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: immich
+spec:
+  releaseName: immich
+  chartRef:
+    kind: OCIRepository
+    name: immich
+  interval: 60m
+  install:
+    remediation:
+      retries: 3
+  values:
+    persistence:
+      # For HW accel
+      dev-dri:
+        enabled: true
+        type: hostPath
+        mountPath: /dev/dri
+        hostPath: /dev/dri
+        hostPathType: Directory
+
+      # Needed to run as non-root
+      # https://immich.app/docs/FAQ/#how-can-i-run-as-a-non-root-user
+      mlcache:
+        enabled: true
+        type: pvc
+        targetSelector:
+          machinelearning:
+            machinelearning:
+              mountPath: /mlcache
+
+      root-dot-cache:
+        enabled: true
+        type: emptyDir
+        targetSelector:
+          machinelearning:
+            machinelearning:
+              mountPath: /.cache
+              readOnly: false
+
+      root-dot-config:
+        enabled: true
+        type: emptyDir
+        targetSelector:
+          machinelearning:
+            machinelearning:
+              mountPath: /.config
+              readOnly: false
+
+      # redis-data:
+      #   enabled: true
+      #   type: emptyDir
+      #   targetSelector:
+      #     redis:
+      #       redis:
+      #         mountPath: /data
+      #         readOnly: false
+
+    securityContext:
+      container:
+        runAsUser: 10003 # immich UID
+        runAsGroup: 10001 # kubernetes GID
+      pod:
+        runAsUser: 10003 # immich UID
+        runAsGroup: 10001 # kubernetes GID
+        fsGroup: 10001 # kubernetes GID
+        fsGroupChangePolicy: "OnRootMismatch"
+
+    cnpg:
+      main:
+        cluster:
+          instances: 1
+          singleNode: true

@@ -1,0 +1,20 @@
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: prometheus
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`prometheus.kube-01.home.majabojarska.dev`)
+      kind: Rule
+      services:
+        - name: kube-prometheus-stack-prometheus 
+          port: 9090
+    - match: Host(`prometheus.home.majabojarska.dev`)
+      kind: Rule
+      services:
+        - name: kube-prometheus-stack-prometheus 
+          port: 9090
+  tls:
+    secretName: prometheus-certificate-secret

@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: auth
+type: Opaque
+stringData:
+  admin-password: ENC[AES256_GCM,data:z3xyG0TDVLpbetWqH9Y15t9WbiqvnW+0pgZ33D6yd5c=,iv:x5oyT/ySpolVXZRhdbQI4YI3niIHpMYgwtevOhF5UkI=,tag:Sd4la/V90CwB5SP8JcCXsQ==,type:str]
+  admin-token: ENC[AES256_GCM,data:/nRtVFZsTW7NfvwahpqqObMXJ+Qs0d2tHFg0oj4IOd0=,iv:fnd0qxJsdxuMImsH+RGia0a5qXObVTLecPnOlQ7leSQ=,tag:iS2sUDdxUzEJ1lLmDHSRMg==,type:str]
+sops:
+  age:
+    - recipient: age1p54umg88pdhdt5m8zc69pfqcq08agav683vgqsp0zc8enrkg5g0skmgwv7
+      enc: |
+        -----BEGIN AGE ENCRYPTED FILE-----
+        YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBIMEl0MFU2RHR0NFhtSmZs
+        RGhwUWt4MG1Id25VekNjU2FIdWxrVm81SzM4Cm1QUDI3MjhBZjA1V0xFVUNjc0lz
+        WFV2SnYrTGFRVHBKdkRGdDdiSjlLMlUKLS0tIE1QNHl6T055L1liU1UyS05HYWgv
+        TlU3Q2x6Z2ZnWWxFNVovUTBGRENaaFUK5o1hLc6rKIVqNpZ+GNmt9TdSRHuD9zn/
+        ownavpu6tK3Vuvlk0TfNQC5hmOoMcJ4r5HHja6WAOHh6BrG5scDQGA==
+        -----END AGE ENCRYPTED FILE-----
+  lastmodified: "2025-12-20T01:12:47Z"
+  mac: ENC[AES256_GCM,data:vGc/FFlvDDmj1/fJZmPDIltMbQl5X7aYmYqQkiTEFSN+yGbBgLBNJE0z3NyOebuTcoaZN2tM7J4RQdiX6Pu7NdAm8qeuZN43huj+4Y1wOoHfJmLX3YWi85G2IEIevlrTKFjaPhrHBN6fgu1max4YGxOn0nliZMR0vmyfvzdMcMg=,iv:3FdaZNiR2xL6ydygxeg2vrjyR2PgPRU67ogy9IOYew8=,tag:0cByewdpip7NY5mQI5lDvw==,type:str]
+  encrypted_regex: ^(data|stringData)$
+  version: 3.11.0

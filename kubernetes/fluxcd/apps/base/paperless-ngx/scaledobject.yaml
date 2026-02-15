@@ -1,0 +1,36 @@
+---
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  name: app
+spec:
+  scaleTargetRef:
+    kind: Deployment
+    name: paperless-ngx
+  minReplicaCount: 0
+  cooldownPeriod: 300
+  triggers:
+    - type: cron
+      metadata:
+        timezone: "Europe/Warsaw"
+        start: "0 10 * * *"
+        end: "0 1 * * *"
+        desiredReplicas: "1"
+---
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  name: redis
+spec:
+  scaleTargetRef:
+    kind: StatefulSet
+    name: paperless-ngx-redis
+  minReplicaCount: 0
+  cooldownPeriod: 300
+  triggers:
+    - type: cron
+      metadata:
+        timezone: "Europe/Warsaw"
+        start: "0 10 * * *"
+        end: "0 1 * * *"
+        desiredReplicas: "1"

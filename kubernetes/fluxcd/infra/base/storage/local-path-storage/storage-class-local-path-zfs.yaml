@@ -1,0 +1,16 @@
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: local-path-zfs
+  annotations:
+    storageclass.kubernetes.io/is-default-class: "true"
+    defaultVolumeType: "local"
+provisioner: rancher.io/local-path
+parameters:
+  pathPattern: "{{ .PVC.Namespace }}/{{ .PVC.Name }}/"
+  # allowUnsafePathPattern: "true"
+# Must be WaitForFirstConsumer to first determine the node
+# Immediate mode would require setting the target node via an annotation
+# https://github.com/rancher/local-path-provisioner/issues/332#issuecomment-1521505034
+volumeBindingMode: WaitForFirstConsumer
+reclaimPolicy: Retain

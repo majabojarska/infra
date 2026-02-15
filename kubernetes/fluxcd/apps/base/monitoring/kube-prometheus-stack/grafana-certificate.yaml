@@ -1,0 +1,12 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata: 
+  name: grafana-ingressroute-certificate
+spec:
+  secretName: grafana-certificate-secret
+  issuerRef:
+    name: letsencrypt
+    kind: ClusterIssuer
+  dnsNames: 
+    - grafana.kube-01.home.majabojarska.dev
+    - grafana.home.majabojarska.dev

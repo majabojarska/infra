@@ -1,0 +1,7 @@
+---
+- name: Upgrade PVE hosts
+  hosts:
+    - pve
+  roles:
+    - role: majabojarska.apt_upgrade
+    - role: majabojarska.pve_rm_notice
