@@ -10,4 +10,4 @@ spec:
     operation: copy
   url: oci://oci.trueforge.org/truecharts/booklore
   ref:
-    tag: 1.11.13
+    tag: 1.11.14
