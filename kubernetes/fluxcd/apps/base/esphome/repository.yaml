@@ -10,4 +10,4 @@ spec:
     operation: copy
   url: oci://oci.trueforge.org/truecharts/esphome
   ref:
-    tag: 24.0.10
+    tag: 24.0.11
