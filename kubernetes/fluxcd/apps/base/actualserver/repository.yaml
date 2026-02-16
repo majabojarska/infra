@@ -9,4 +9,4 @@ spec:
     operation: copy
   url: oci://oci.trueforge.org/truecharts/actualserver
   ref:
-    tag: 15.1.2
+    tag: 15.2.0
