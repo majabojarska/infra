@@ -6,5 +6,6 @@ resources:
   - ./cert-manager
   - ./cloudnative-pg
   - ./metrics-server
+  - ./monitoring
   - ./reloader
   - ./keda
