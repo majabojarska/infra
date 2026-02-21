@@ -13,7 +13,6 @@ resources:
   - ../base/qbittorrent
 
   - ../base/n8n
-  - ../base/esphome
 
   - ../base/searxng
 
