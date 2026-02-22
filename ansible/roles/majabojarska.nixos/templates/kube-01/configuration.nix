@@ -2,12 +2,19 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, lib, ... }:
+{ config
+, pkgs
+, lib
+, ...
+}:
 
 {
   imports = [ ./secrets.nix ];
 
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nix.settings.experimental-features = [
+    "nix-command"
+    "flakes"
+  ];
 
   nix.gc = {
     automatic = true;
@@ -54,10 +61,15 @@
     loader = {
       systemd-boot.enable = true;
       efi.canTouchEfiVariables = true;
-      grub = { configurationLimit = 20; };
+      grub = {
+        configurationLimit = 20;
+      };
     };
     supportedFilesystems = [ "zfs" ];
-    zfs.extraPools = [ "storage" "media" ];
+    zfs.extraPools = [
+      "storage"
+      "media"
+    ];
   };
 
   # Enable sound with pipewire.
@@ -70,7 +82,9 @@
     pulse.enable = true;
   };
 
-  environment.sessionVariables = { LIBVA_DRIVER_NAME = "iHD"; };
+  environment.sessionVariables = {
+    LIBVA_DRIVER_NAME = "iHD";
+  };
   hardware = {
     # enableAllFirmware = true;
     graphics = {
@@ -94,7 +108,10 @@
     interfaces.ens18.useDHCP = true;
 
     firewall = {
-      trustedInterfaces = [ "ens18" "tailscale0" ];
+      trustedInterfaces = [
+        "ens18"
+        "tailscale0"
+      ];
 
       allowedTCPPorts = [
         6443 # kube api server
@@ -117,13 +134,27 @@
   };
 
   users.groups = {
-    kubernetes = { gid = 10001; };
-    media = { gid = 10002; };
-    immich = { gid = 10003; };
-    openwebrx = { gid = 10004; };
-    jellyfin = { gid = 10005; };
-    arr = { gid = 10006; };
-    zigbee = { gid = 10007; };
+    kubernetes = {
+      gid = 10001;
+    };
+    media = {
+      gid = 10002;
+    };
+    immich = {
+      gid = 10003;
+    };
+    openwebrx = {
+      gid = 10004;
+    };
+    jellyfin = {
+      gid = 10005;
+    };
+    arr = {
+      gid = 10006;
+    };
+    zigbee = {
+      gid = 10007;
+    };
   };
 
   # Human-like users
@@ -131,7 +162,12 @@
     maja = {
       isNormalUser = true;
       description = "maja";
-      extraGroups = [ "networkmanager" "wheel" "media" "kubernetes" ];
+      extraGroups = [
+        "networkmanager"
+        "wheel"
+        "media"
+        "kubernetes"
+      ];
       packages = with pkgs; [ ];
       openssh.authorizedKeys.keys = [
         "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBW+jmBmPtDv+Bw21i9J4p/pZPdM7SggxBF9FGOWXSM8 majabojarska98@gmail.com" # x260
@@ -190,7 +226,10 @@
       group = "arr";
       uid = 10006;
       description = "Arr stack";
-      extraGroups = [ "kubernetes" "media" ];
+      extraGroups = [
+        "kubernetes"
+        "media"
+      ];
     };
     zigbee = {
       isSystemUser = true;
@@ -200,13 +239,17 @@
     };
   };
 
-  security.sudo.extraRules = [{
-    users = [ "maja" ];
-    commands = [{
-      command = "ALL";
-      options = [ "NOPASSWD" ];
-    }];
-  }];
+  security.sudo.extraRules = [
+    {
+      users = [ "maja" ];
+      commands = [
+        {
+          command = "ALL";
+          options = [ "NOPASSWD" ];
+        }
+      ];
+    }
+  ];
 
   security.pam.loginLimits = [
     {
@@ -312,6 +355,13 @@
     };
   };
 
+  services.cron = {
+    enable = true;
+    systemCronJobs = [
+      "1 0 * * * root shutdown now"
+    ];
+  };
+
   services.prometheus.exporters.zfs.enable = true;
 
   services.openssh = {
@@ -406,8 +456,7 @@
       Type = "simple";
       ExecStartPre = "${pkgs.k3s}/bin/kubectl uncordon %i";
       ExecStart = "${pkgs.coreutils}/bin/sleep inf";
-      ExecStop =
-        "${pkgs.k3s}/bin/kubectl drain %i --ignore-daemonsets --delete-emptydir-data --disable-eviction";
+      ExecStop = "${pkgs.k3s}/bin/kubectl drain %i --ignore-daemonsets --delete-emptydir-data --disable-eviction";
     };
   };
 
@@ -426,15 +475,16 @@
       exclude_patterns = [
         "*/.zfs" # Contains ZFS snapdir, backing this up would be redundant.
       ];
-      repositories = [{
-        label = "kubernetes-offsite-vps-01";
-        path =
-          "ssh://borg@vps-01.cloud.majabojarska.dev/mnt/backup/kube-01/kubernetes";
-      }];
+      repositories = [
+        {
+          label = "kubernetes-offsite-vps-01";
+          path = "ssh://borg@vps-01.cloud.majabojarska.dev/mnt/backup/kube-01/kubernetes";
+        }
+      ];
       exclude_if_present = [ ".nobackup" ];
       encryption_passcommand = "${pkgs.coreutils}/bin/cat ${
-          config.age.secrets."borgmatic-kubernetes-enc-pass".path
-        }";
+        config.age.secrets."borgmatic-kubernetes-enc-pass".path
+      }";
       relocated_repo_access_is_ok = true;
       compression = "auto,zstd,10";
       before_backup = [
