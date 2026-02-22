@@ -358,7 +358,7 @@
   services.cron = {
     enable = true;
     systemCronJobs = [
-      "1 0 * * * root shutdown now"
+      "0 1 * * * root shutdown now"
     ];
   };
 
