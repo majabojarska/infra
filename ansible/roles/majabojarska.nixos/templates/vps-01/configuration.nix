@@ -501,8 +501,12 @@
 
     # create a group
     groups = {
-      admin = [
+      admins = [
         "maja"
+      ];
+      users = [
+        "maja"
+        "baczek"
       ];
     };
 
@@ -519,6 +523,7 @@
           # users "ed" and "k" get read-write
           rw = [
             "maja"
+            "baczek"
           ];
         };
         # see `copyparty --help-flags` for available options
