@@ -2,12 +2,19 @@
 # your system. Help is available in the configuration.nix(5) man page, on
 # https://search.nixos.org/options and in the NixOS manual (`nixos-help`).
 
-{ config, lib, pkgs, ... }:
+{ config
+, lib
+, pkgs
+, ...
+}:
 
 {
   imports = [ ./secrets.nix ];
 
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nix.settings.experimental-features = [
+    "nix-command"
+    "flakes"
+  ];
 
   nix.gc = {
     automatic = true;
@@ -77,12 +84,22 @@
 
   # Human-like users
   users = {
-    groups = { www-data = { members = [ "nginx" "maja" ]; }; };
+    groups = {
+      www-data = {
+        members = [
+          "nginx"
+          "maja"
+        ];
+      };
+    };
     users = {
       maja = {
         isNormalUser = true;
         description = "maja";
-        extraGroups = [ "networkmanager" "wheel" ];
+        extraGroups = [
+          "networkmanager"
+          "wheel"
+        ];
         packages = with pkgs; [ ];
         openssh.authorizedKeys.keys = [
           "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBW+jmBmPtDv+Bw21i9J4p/pZPdM7SggxBF9FGOWXSM8 majabojarska98@gmail.com" # x260
@@ -126,20 +143,26 @@
     zsh
   ];
 
-  security.sudo.extraRules = [{
-    users = [ "maja" ];
-    commands = [{
-      command = "ALL";
-      options = [ "NOPASSWD" ];
-    }];
-  }];
+  security.sudo.extraRules = [
+    {
+      users = [ "maja" ];
+      commands = [
+        {
+          command = "ALL";
+          options = [ "NOPASSWD" ];
+        }
+      ];
+    }
+  ];
 
-  security.pam.loginLimits = [{
-    domain = "*";
-    type = "soft";
-    item = "nofile";
-    value = "20000";
-  }];
+  security.pam.loginLimits = [
+    {
+      domain = "*";
+      type = "soft";
+      item = "nofile";
+      value = "20000";
+    }
+  ];
 
   services.tailscale = {
     enable = true;
@@ -147,7 +170,10 @@
     openFirewall = true;
     disableTaildrop = true;
     authKeyFile = config.age.secrets."tailscale-auth-key".path;
-    extraUpFlags = [ "--accept-routes" "--advertise-exit-node" ];
+    extraUpFlags = [
+      "--accept-routes"
+      "--advertise-exit-node"
+    ];
   };
 
   # Enable the OpenSSH daemon.
@@ -172,14 +198,6 @@
     #   actionban = curl -H "Title: <ip> has been banned" -d "<name> jail has banned <ip> from accessing $(hostname) after <failures> attempts of hacking the system." https://ntfy.sh/Fail2banNotifications
     # '');
     # Defines a filter that detects URL probing by reading the Nginx access log
-    "fail2ban/filter.d/nextcloud.local".text = pkgs.lib.mkDefault
-      (pkgs.lib.mkAfter ''
-        [Definition]
-        _groupsre = (?:(?:,?\\s*\"\\w+\":(?:\"[^\"]+\"|\\w+))*)
-        failregex = ^\{%(_groupsre)s,?\s*"remoteAddr":"<HOST>"%(_groupsre)s,?\s*"message":"Login failed:
-                    ^\{%(_groupsre)s,?\s*"remoteAddr":"<HOST>"%(_groupsre)s,?\s*"message":"Trusted domain error.
-        datepattern = ,?\s*"time"\s*:\s*"%%Y-%%m-%%d[T ]%%H:%%M:%%S(%%z)?"
-      '');
   };
 
   services.fail2ban = {
@@ -200,23 +218,7 @@
       overalljails = true; # Calculate the bantime based on all the violations
     };
 
-    jails = {
-      # TODO: Isn't this already behind the proxy?
-      # nextcloud.settings = {
-      #   logpath = "/var/log/nginx/access.log";
-      #   # TODO: Uncomment when ntfy is re-enabled
-      #   # action = ''%(action_)s[blocktype=DROP]
-      #   #          ntfy'';
-      #   backend = "auto";
-      #   enabled = true;
-      #   port = "80,443";
-      #   protocol = "tcp";
-      #   filter = "nextcloud";
-      #   maxretry = 3;
-      #   bantime = 86400;
-      #   findtime = 43200;
-      # };
-    };
+    jails = { };
   };
 
   networking = {
@@ -237,7 +239,6 @@
       ];
       checkReversePath = "loose";
 
-      # trustedInterfaces = "tailscale0" # TODO
     };
     usePredictableInterfaceNames = false;
     useDHCP = false;
@@ -291,8 +292,7 @@
     enable = false;
     settings = {
       listen-http = "127.0.0.1:8001";
-      base-url =
-        "https://ntfy.${config.networking.hostName}.${config.networking.domain}";
+      base-url = "https://ntfy.${config.networking.hostName}.${config.networking.domain}";
       auth-default-access = "deny-all";
     };
   };
@@ -349,25 +349,18 @@
     dynamicConfigOptions.http = {
       routers = {
         ntfy = {
-          rule =
-            "Host(`ntfy.${config.networking.hostName}.${config.networking.domain}`)";
+          rule = "Host(`ntfy.${config.networking.hostName}.${config.networking.domain}`)";
           entryPoints = [ "websecure" ];
           service = "ntfy";
           # TODO: Is this needed?
           tls = {
             certResolver = "letsencrypt";
-            domains = [{
-              main =
-                "ntfy.${config.networking.hostName}.${config.networking.domain}";
-            }];
+            domains = [
+              {
+                main = "ntfy.${config.networking.hostName}.${config.networking.domain}";
+              }
+            ];
           };
-        };
-
-        nextcloud = {
-          rule =
-            "Host(`nextcloud.${config.networking.hostName}.${config.networking.domain}`)";
-          service = "nextcloud";
-          middlewares = [ "nextcloud_redirectregex" "nextcloud_headers" ];
         };
 
         blog = {
@@ -380,212 +373,61 @@
           middlewares = [ "compress_response" ];
         };
 
-        home-assistant = {
-          rule =
-            "Host(`hass.${config.networking.hostName}.${config.networking.domain}`)";
-          service = "home-assistant";
-          tls = {
-            certResolver = "letsencrypt";
-            domains = [{
-              main =
-                "hass.${config.networking.hostName}.${config.networking.domain}";
-            }];
-          };
-          middlewares = [ "compress_response" ];
-        };
-
       };
-      middlewares = {
-        nextcloud_redirectregex = {
-          redirectregex = {
-            permanent = true;
-            regex = "^https://(.*)/.well-known/(?:card|cal)dav";
-            replacement = "https://\${1}/remote.php/dav";
-          };
-        };
-        nextcloud_headers = {
-          headers = {
-            referrerPolicy = "no-referrer";
-            stsSeconds = "315360000";
-            browserXssFilter = "true";
-            contentTypeNosniff = "true";
-            forceSTSHeader = "true";
-            stsIncludeSubdomains = "true";
-            stsPreload = "true";
-            customFrameOptionsValue = "SAMEORIGIN";
-          };
-        };
-        compress_response = { compress = { }; };
-      };
+      middlewares = { };
       services = {
         # TODO: Re-enable once auth is figured out
         ntfy.loadBalancer = {
           passHostHeader = true;
-          servers = [{
-            url = "http://"
-              + builtins.toString config.services.ntfy-sh.settings.listen-http;
-          }];
-        };
-        nextcloud.loadBalancer = {
-          passHostHeader = true;
-          servers = [{ url = "http://localhost:8002"; }];
+          servers = [
+            {
+              url = "http://" + builtins.toString config.services.ntfy-sh.settings.listen-http;
+            }
+          ];
         };
         blog.loadBalancer = {
-          servers = [{
-            url = "http://" + (builtins.elemAt
-              config.services.nginx.virtualHosts."majabojarska.dev".listen
-              0).addr + ":" + builtins.toString (builtins.elemAt
-              config.services.nginx.virtualHosts."majabojarska.dev".listen
-              0).port;
-          }];
-        };
-        home-assistant.loadBalancer = {
-          servers = [{
-            url = "http://"
-              + config.services.home-assistant.config.http.server_host + ":"
-              + builtins.toString
-              config.services.home-assistant.config.http.server_port;
-          }];
+          servers = [
+            {
+              url =
+                "http://"
+                + (builtins.elemAt config.services.nginx.virtualHosts."majabojarska.dev".listen 0).addr
+                + ":"
+                +
+                builtins.toString
+                  (builtins.elemAt config.services.nginx.virtualHosts."majabojarska.dev".listen 0).port;
+            }
+          ];
         };
       };
     };
   };
 
   # Blog
-  services.nginx.virtualHosts."majabojarska.dev" = {
-    serverName = "majabojarska.dev";
-    root = "/var/www/majabojarska.dev";
-
-    locations."/" = {
-      tryFiles = "$uri $uri/ /404.html";
-      index = "index.html";
-    };
-
-    listen = [{
-      addr = "127.0.0.1";
-      port = 8004;
-    }];
-
-    extraConfig = ''
-      access_log /var/log/nginx/majabojarska.dev.access.log ;
-      absolute_redirect off ;
-    '';
-  };
-
-  services.nginx.virtualHosts."${config.services.nextcloud.hostName}".listen =
-    [{
-      addr = "127.0.0.1";
-      port = 8002;
-    }];
-  services.nextcloud = {
+  services.nginx = {
     enable = true;
-    package = pkgs.nextcloud31;
-    hostName =
-      "nextcloud.${config.networking.hostName}.${config.networking.domain}";
-    config = {
-      dbtype = "sqlite";
-      adminpassFile = config.age.secrets."nextcloud-admin-pass".path;
-      adminuser = "admin_APrHqa938WNc";
-    };
-    datadir = "/mnt/storage/nextcloud";
 
-    # Instead of using pkgs.nextcloud28Packages.apps,
-    # we'll reference the package version specified above
-    extraApps = {
-      inherit (config.services.nextcloud.package.packages.apps)
-        contacts calendar tasks notes deck;
-    };
-    extraAppsEnable = true;
+    virtualHosts."majabojarska.dev" = {
+      serverName = "majabojarska.dev";
+      root = "/var/www/majabojarska.dev";
 
-    settings = {
-      # Needed for the mobile app redirect on when access is granted in the mobile browser.
-      overwrite.cli.url = "https://${config.services.nextcloud.hostName}";
-      overwriteprotocol = "https";
-      overwritehost = "${config.services.nextcloud.hostName}";
+      locations."/" = {
+        tryFiles = "$uri $uri/ /404.html";
+        index = "index.html";
+      };
 
-      enabledPreviewProviders = [
-        "OC\\Preview\\BMP"
-        "OC\\Preview\\GIF"
-        "OC\\Preview\\JPEG"
-        "OC\\Preview\\Krita"
-        "OC\\Preview\\MarkDown"
-        "OC\\Preview\\MP3"
-        "OC\\Preview\\OpenDocument"
-        "OC\\Preview\\PNG"
-        "OC\\Preview\\TXT"
-        "OC\\Preview\\XBitmap"
-        "OC\\Preview\\HEIC"
+      listen = [
+        {
+          addr = "127.0.0.1";
+          port = 8004;
+        }
       ];
+
+      extraConfig = ''
+        access_log /var/log/nginx/majabojarska.dev.access.log ;
+        absolute_redirect off ;
+      '';
     };
 
-    maxUploadSize = "16G";
-  };
-
-  services.grafana = {
-    enable = true;
-    settings.server = {
-      domain = "grafana.${config.networking.hostName}";
-      port = 2342;
-      addr = "127.0.0.1";
-    };
-  };
-
-  services.prometheus = {
-    enable = true;
-    port = 9001;
-
-    exporters = {
-      node = {
-        enable = true;
-        enabledCollectors = [ "systemd" ];
-        port = 9002;
-      };
-    };
-
-    scrapeConfigs = [{
-      job_name = "vps-01";
-      static_configs = [{
-        targets = [
-          "127.0.0.1:${toString config.services.prometheus.exporters.node.port}"
-        ];
-      }];
-    }];
-  };
-
-  services.home-assistant = {
-    enable = false;
-    extraComponents = [
-      # Components required to complete the onboarding
-      "esphome"
-      "met"
-      "radio_browser"
-      "ezviz"
-    ];
-    configWritable = false;
-    config = {
-      # Includes dependencies for a basic setup
-      # https://www.home-assistant.io/integrations/default_config/
-      default_config = { };
-
-      homeassistant = {
-        latitude = 51.15611111;
-        longitude = 16.92405556;
-        name = "Beehive";
-        temperature_unit = "C";
-        time_zone = "Europe/Warsaw";
-        unit_system = "metric";
-      };
-      http = {
-        use_x_forwarded_for = true;
-        trusted_proxies = [ "0.0.0.0" "127.0.0.1" "::1" ];
-        server_host = "127.0.0.1";
-        server_port = 8005;
-      };
-      frontend = { themes = "!include_dir_merge_named themes"; };
-    };
-
-    lovelaceConfigWritable = false;
-    lovelaceConfig = null;
   };
 
   services.chrony = {
