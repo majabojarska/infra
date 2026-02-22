@@ -125,6 +125,7 @@
     btop
     busybox
     curl
+    copyparty
     dig
     htop
     inetutils
@@ -382,6 +383,15 @@
           };
           middlewares = [ "compress_response" ];
         };
+        copyparty = {
+          rule = "Host(`copyparty.cloud.majabojarska.dev`)";
+          service = "copyparty";
+          tls = {
+            certResolver = "letsencrypt";
+            domains = [{ main = "copyparty.cloud.majabojarska.dev"; }];
+          };
+          middlewares = [ "compress_response" ];
+        };
 
       };
       middlewares = {
@@ -412,6 +422,17 @@
             }
           ];
         };
+        copyparty.loadBalancer = {
+          servers = [
+            {
+              url =
+                "http://"
+                + config.services.copyparty.settings.i
+                + ":"
+                + builtins.toString (builtins.elemAt config.services.copyparty.settings.p 0);
+            }
+          ];
+        };
       };
     };
   };
@@ -438,6 +459,77 @@
       access_log /var/log/nginx/majabojarska.dev.access.log ;
       absolute_redirect off ;
     '';
+  };
+
+  # https://github.com/9001/copyparty?tab=readme-ov-file#nixos-module
+  services.copyparty = {
+    enable = true;
+    # the user to run the service as
+    user = "copyparty";
+    # the group to run the service as
+    group = "copyparty";
+    # directly maps to values in the [global] section of the copyparty config.
+    # see `copyparty --help` for available options
+    settings = {
+      i = "127.0.0.1";
+      # use lists to set multiple values
+      p = [
+        8005
+      ];
+      # use booleans to set binary flags
+      no-reload = false;
+      # using 'false' will do nothing and omit the value when generating a config
+      ignored-flag = false;
+    };
+
+    # create users
+    accounts = {
+      maja = {
+        # provide the path to a file containing the password, keeping it out of /nix/store
+        # must be readable by the copyparty service user
+        passwordFile = config.age.secrets."copyparty-pass-maja".path;
+      };
+    };
+
+    # create a group
+    groups = {
+      admin = [
+        "maja"
+      ];
+    };
+
+    # create a volume
+    volumes = {
+      # create a volume at "/" (the webroot), which will
+      "/" = {
+        # share the contents of "/srv/copyparty"
+        path = "/mnt/storage/copyparty";
+        # see `copyparty --help-accounts` for available options
+        access = {
+          # everyone gets read-access, but
+          # r = "*";
+          # users "ed" and "k" get read-write
+          rw = [
+            "maja"
+          ];
+        };
+        # see `copyparty --help-flags` for available options
+        flags = {
+          # "fk" enables filekeys (necessary for upget permission) (4 chars long)
+          fk = 4;
+          # scan for new files every 60sec
+          scan = 60;
+          # volflag "e2d" enables the uploads database
+          e2d = true;
+          # "d2t" disables multimedia parsers (in case the uploads are malicious)
+          d2t = true;
+          # skips hashing file contents if path matches *.iso
+          nohash = "\.iso$";
+        };
+      };
+    };
+    # you may increase the open file limit for the process
+    openFilesLimit = 8192;
   };
 
   services.chrony = {
