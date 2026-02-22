@@ -5,12 +5,12 @@
         file = ./secrets/ovh.age;
         mode = "0400";
       };
-      "nextcloud-admin-pass" = {
-        file = ./secrets/nextcloud-admin-pass.age;
-        mode = "0400";
-        owner = "nextcloud";
-        group = "nextcloud";
-      };
+      # "nextcloud-admin-pass" = {
+      #   file = ./secrets/nextcloud-admin-pass.age;
+      #   mode = "0400";
+      #   owner = "nextcloud";
+      #   group = "nextcloud";
+      # };
       "fah-token" = {
         file = ./secrets/fah-token.age;
         mode = "0400";
