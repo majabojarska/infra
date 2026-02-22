@@ -492,9 +492,10 @@
     # create users
     accounts = {
       maja = {
-        # provide the path to a file containing the password, keeping it out of /nix/store
-        # must be readable by the copyparty service user
         passwordFile = config.age.secrets."copyparty-pass-maja".path;
+      };
+      baczek = {
+        passwordFile = config.age.secrets."copyparty-pass-baczek".path;
       };
     };
 
