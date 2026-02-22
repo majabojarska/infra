@@ -329,6 +329,11 @@
           asDefault = true;
           http3 = { };
           http.tls.certResolver = "letsencrypt";
+          transport = {
+            respondingTimeouts = {
+              readTimeout = "0s";
+            };
+          };
         };
 
         # ntp = { address = ":123/udp"; };
@@ -480,6 +485,8 @@
       no-reload = false;
       # using 'false' will do nothing and omit the value when generating a config
       ignored-flag = false;
+      xff-src = "127.0.0.1"; # IP of the reverse proxy
+      xff-hdr = "x-forwarded-for"; # HTTP header containing the real client's IP
     };
 
     # create users
