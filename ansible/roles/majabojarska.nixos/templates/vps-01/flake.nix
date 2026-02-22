@@ -18,7 +18,7 @@
           # (optional) install the package globally
           environment.systemPackages = [ pkgs.copyparty ];
           # configure the copyparty module
-          services.copyparty.enable = false;
+          services.copyparty.enable = true;
         })
       ];
     };
