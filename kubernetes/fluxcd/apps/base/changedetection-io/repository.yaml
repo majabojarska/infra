@@ -10,4 +10,4 @@ spec:
     operation: copy
   url: oci://oci.trueforge.org/truecharts/changedetection-io
   ref:
-    tag: 5.17.3
+    tag: 5.18.1
