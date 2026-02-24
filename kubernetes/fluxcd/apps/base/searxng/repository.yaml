@@ -9,4 +9,4 @@ spec:
     operation: copy
   url: oci://oci.trueforge.org/truecharts/searxng
   ref:
-    tag: 10.15.0
+    tag: 10.16.0

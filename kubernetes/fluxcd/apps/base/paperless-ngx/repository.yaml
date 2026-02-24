@@ -10,4 +10,4 @@ spec:
     operation: copy
   url: oci://oci.trueforge.org/truecharts/paperless-ngx
   ref:
-    tag: 11.41.0
+    tag: 11.42.0
