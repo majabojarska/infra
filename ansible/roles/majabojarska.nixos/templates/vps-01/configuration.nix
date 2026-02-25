@@ -139,6 +139,7 @@
     python3
     rsync
     sysstat
+    tmux
     vim
     wireguard-tools
     yazi
