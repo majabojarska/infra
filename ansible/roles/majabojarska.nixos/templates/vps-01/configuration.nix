@@ -127,6 +127,7 @@
     curl
     copyparty
     dig
+    git
     htop
     inetutils
     iotop
