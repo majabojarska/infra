@@ -10,4 +10,4 @@ spec:
     operation: copy
   url: oci://oci.trueforge.org/truecharts/jellyfin
   ref:
-    tag: 22.5.0
+    tag: 22.5.1
