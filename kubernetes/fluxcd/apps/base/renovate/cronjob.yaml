@@ -3,7 +3,7 @@ kind: CronJob
 metadata:
   name: renovate
 spec:
-  schedule: "0 2 * * *"
+  schedule: "0 */6 * * *"
   concurrencyPolicy: Forbid
   jobTemplate:
     spec:
@@ -17,8 +17,6 @@ spec:
                 - majabojarska/infra
                 - majabojarska/fibo
               env:
-                # - name: LOG_LEVEL
-                #   value: debug
                 - name: RENOVATE_AUTODISCOVER
                   value: "false"
                 - name: RENOVATE_CACHE_DIR
