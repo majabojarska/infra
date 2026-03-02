@@ -526,6 +526,7 @@
       ignored-flag = false;
       xff-src = "127.0.0.1"; # IP of the reverse proxy
       xff-hdr = "x-forwarded-for"; # HTTP header containing the real client's IP
+      rproxy = 1;
     };
 
     # create users
