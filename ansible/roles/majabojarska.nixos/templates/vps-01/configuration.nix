@@ -82,8 +82,6 @@
     LC_TIME = "pl_PL.UTF-8";
   };
 
-  virtualisation.docker.enable = true;
-
   # Human-like users
   users = {
     groups = {
@@ -549,6 +547,30 @@
     openFilesLimit = 8192;
   };
 
+  virtualisation = {
+    docker.enable = true;
+    oci-containers = {
+      backend = "docker";
+      containers = {
+        fibo = {
+          image = "majabojarska/fibo:0.0.1";
+          ports = [
+            "127.0.0.1:8006:8006"
+            "127.0.0.1:9091:9091"
+          ];
+          environment = {
+            POSTGRESS_PASSWORD = "password";
+            FIBO_DEBUG = "false";
+            FIBO_API_ADDR = "127.0.0.1:8006";
+            FIBO_METRICS_ENABLED = "true";
+            FIBO_METRICS_ADDR = "127.0.0.1:9091";
+            FIBO_METRICS_PATH = "/metrics";
+            FIBO_LOGGING_LEVEL = "info";
+          };
+        };
+      };
+    };
+  };
   services.chrony = {
     enable = true;
     extraConfig = ''
