@@ -82,6 +82,8 @@
     LC_TIME = "pl_PL.UTF-8";
   };
 
+  virtualisation.docker.enable = true;
+
   # Human-like users
   users = {
     groups = {
@@ -99,6 +101,7 @@
         extraGroups = [
           "networkmanager"
           "wheel"
+          "docker"
         ];
         packages = with pkgs; [ ];
         openssh.authorizedKeys.keys = [
@@ -166,7 +169,6 @@
       value = "20000";
     }
   ];
-
   services.tailscale = {
     enable = true;
     useRoutingFeatures = "both";
