@@ -591,7 +591,7 @@
       backend = "docker";
       containers = {
         fibo = {
-          image = "majabojarska/fibo:0.0.2";
+          image = "majabojarska/fibo:0.0.3";
           ports = [
             "127.0.0.1:8006:8006"
           ];
