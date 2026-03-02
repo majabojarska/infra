@@ -390,6 +390,7 @@
           };
           middlewares = [ "compress_response" ];
         };
+
         copyparty = {
           rule = "Host(`copyparty.cloud.majabojarska.dev`)";
           service = "copyparty";
@@ -400,10 +401,36 @@
           middlewares = [ "compress_response" ];
         };
 
+        fibo = {
+          rule = "Host(`fibo.cloud.majabojarska.dev`)";
+          service = "fibo";
+          tls = {
+            certResolver = "letsencrypt";
+            domains = [{ main = "fibo.cloud.majabojarska.dev"; }];
+          };
+          middlewares = [
+            "compress_response"
+            "rate_limit"
+            "fibo_redirect_swagger"
+          ];
+        };
       };
       middlewares = {
         compress_response = {
           compress = { };
+        };
+        rate_limit = {
+          rateLimit = {
+            average = 10;
+            period = "1s";
+            burst = 20;
+          };
+        };
+        fibo_redirect_swagger = {
+          redirectRegex = {
+            regex = "^https://fibo\.cloud\.majabojarska\.dev/(swagger)?$";
+            replacement = "https://fibo.cloud.majabojarska.dev/swagger/index.html";
+          };
         };
       };
       services = {
@@ -416,6 +443,7 @@
             }
           ];
         };
+
         blog.loadBalancer = {
           servers = [
             {
@@ -429,6 +457,7 @@
             }
           ];
         };
+
         copyparty.loadBalancer = {
           servers = [
             {
@@ -437,6 +466,14 @@
                 + config.services.copyparty.settings.i
                 + ":"
                 + builtins.toString (builtins.elemAt config.services.copyparty.settings.p 0);
+            }
+          ];
+        };
+
+        fibo.loadBalancer = {
+          servers = [
+            {
+              url = "http://127.0.0.1:8006";
             }
           ];
         };
@@ -560,9 +597,9 @@
           environment = {
             POSTGRESS_PASSWORD = "password";
             FIBO_DEBUG = "false";
-            FIBO_API_ADDR = "127.0.0.1:8006";
+            FIBO_API_ADDR = "0.0.0.0:8006";
             FIBO_METRICS_ENABLED = "true";
-            FIBO_METRICS_ADDR = "127.0.0.1:8006";
+            FIBO_METRICS_ADDR = "0.0.0.0:8006";
             FIBO_METRICS_PATH = "/metrics";
             FIBO_LOGGING_LEVEL = "info";
           };
@@ -570,6 +607,7 @@
       };
     };
   };
+
   services.chrony = {
     enable = true;
     extraConfig = ''
