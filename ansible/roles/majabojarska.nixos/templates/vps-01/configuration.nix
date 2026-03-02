@@ -556,14 +556,13 @@
           image = "majabojarska/fibo:0.0.1";
           ports = [
             "127.0.0.1:8006:8006"
-            "127.0.0.1:9091:9091"
           ];
           environment = {
             POSTGRESS_PASSWORD = "password";
             FIBO_DEBUG = "false";
             FIBO_API_ADDR = "127.0.0.1:8006";
             FIBO_METRICS_ENABLED = "true";
-            FIBO_METRICS_ADDR = "127.0.0.1:9091";
+            FIBO_METRICS_ADDR = "127.0.0.1:8006";
             FIBO_METRICS_PATH = "/metrics";
             FIBO_LOGGING_LEVEL = "info";
           };
