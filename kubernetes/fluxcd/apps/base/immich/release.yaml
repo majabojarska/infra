@@ -14,12 +14,12 @@ spec:
   values:
     persistence:
       # For HW accel
-      dev-dri:
-        enabled: true
-        type: hostPath
-        mountPath: /dev/dri
-        hostPath: /dev/dri
-        hostPathType: Directory
+      # dev-dri:
+      #   enabled: true
+      #   type: hostPath
+      #   mountPath: /dev/dri
+      #   hostPath: /dev/dri
+      #   hostPathType: Directory
 
       # Needed to run as non-root
       # https://immich.app/docs/FAQ/#how-can-i-run-as-a-non-root-user
