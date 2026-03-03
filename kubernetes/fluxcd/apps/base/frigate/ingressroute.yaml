@@ -10,11 +10,11 @@ spec:
       kind: Rule
       services:
         - name: frigate
-          port: 10095
+          port: 10500
     - match: Host(`frigate.home.majabojarska.dev`)
       kind: Rule
       services:
         - name: frigate
-          port: 10095
+          port: 10500
   tls:
     secretName: certificate-secret
