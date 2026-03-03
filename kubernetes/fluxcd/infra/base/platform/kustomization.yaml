@@ -10,3 +10,4 @@ resources:
   - ./reloader
   - ./keda
   - ./intel-device-plugins-operator
+  - ./node-feature-discovery
