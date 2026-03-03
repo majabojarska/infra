@@ -12,7 +12,7 @@ spec:
       sourceRef:
         kind: HelmRepository
         name: traefik
-  interval: 1m0s
+  interval: 60m
   install:
     remediation:
       retries: 3

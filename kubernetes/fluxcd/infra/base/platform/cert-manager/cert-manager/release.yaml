@@ -17,7 +17,7 @@ spec:
     extraArgs:
       - --dns01-recursive-nameservers-only
       - --dns01-recursive-nameservers=dns11.ovh.net:53,ns11.ovh.net:53
-  interval: 1m0s
+  interval: 60m
   install:
     remediation:
       retries: 3

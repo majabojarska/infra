@@ -5,7 +5,7 @@ metadata:
   name: apps
   namespace: flux-system
 spec:
-  interval: 5m
+  interval: 60m
   dependsOn:
     - name: platform
   timeout: 20m
