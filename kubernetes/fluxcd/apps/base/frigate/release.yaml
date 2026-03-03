@@ -52,7 +52,6 @@ spec:
       pod:
         supplementalGroups:
           - 303 # render
-          - 10002 # media
           - 26 # /dev/dri/card*
           - 17 # sound
       fsGroupChangePolicy: "OnRootMismatch"
