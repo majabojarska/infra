@@ -9,3 +9,4 @@ resources:
   - ./monitoring
   - ./reloader
   - ./keda
+  - ./intel-device-plugins-operator
