@@ -49,11 +49,10 @@ spec:
         size: 100Gi
 
     securityContext:
-      container:
-        # privileged: true
       pod:
         supplementalGroups:
           - 303 # render
           - 10002 # media
           - 26 # /dev/dri/card*
           - 17 # sound
+      fsGroupChangePolicy: "OnRootMismatch"
