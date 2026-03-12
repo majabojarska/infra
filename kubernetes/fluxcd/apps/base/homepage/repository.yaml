@@ -10,4 +10,4 @@ spec:
     operation: copy
   url: oci://oci.trueforge.org/truecharts/homepage
   ref:
-    tag: 11.23.0
+    tag: 11.23.1

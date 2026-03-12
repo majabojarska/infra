@@ -10,4 +10,4 @@ spec:
     operation: copy
   url: oci://oci.trueforge.org/truecharts/booklore
   ref:
-    tag: 2.3.0
+    tag: 2.4.1
