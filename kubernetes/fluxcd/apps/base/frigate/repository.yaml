@@ -9,4 +9,4 @@ spec:
     operation: copy
   url: oci://oci.trueforge.org/truecharts/frigate
   ref:
-    tag: 18.21.1
+    tag: 18.21.2
