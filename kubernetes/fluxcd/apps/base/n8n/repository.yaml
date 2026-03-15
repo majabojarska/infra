@@ -10,4 +10,4 @@ spec:
     operation: copy
   url: oci://oci.trueforge.org/truecharts/n8n
   ref:
-    tag: 18.19.5
+    tag: 18.19.6
