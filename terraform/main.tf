@@ -3,7 +3,7 @@ terraform {
   required_providers {
     linode = {
       source  = "linode/linode"
-      version = "~> 3.10.0"
+      version = "~> 3.11.0"
     }
     ovh = {
       source  = "ovh/ovh"
