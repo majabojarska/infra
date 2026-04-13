@@ -1,3 +1,5 @@
 ---
 domain: majabojarska.dev
 subdomain_home: "home.{{ domain }}"
+
+subdomain_hswro: "hswro.{{ domain }}"

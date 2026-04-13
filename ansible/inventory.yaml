@@ -7,7 +7,7 @@ all:
     rpi-3b:
     pve-01:
     pve-02:
-    pve-03:
+    sp6cat-01:
 
 nixos:
   hosts:
@@ -20,10 +20,10 @@ debian:
     # rpi-3b:
     pve-01:
     pve-02:
-    pve-03:
+    sp6cat-01:
 
 pve:
   hosts:
     pve-01:
     pve-02:
-    pve-03:
+    sp6cat-01:
