@@ -9,4 +9,4 @@ spec:
     operation: copy
   url: oci://oci.trueforge.org/truecharts/qbittorrent
   ref:
-    tag: 25.0.2
+    tag: 25.0.3
