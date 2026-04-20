@@ -7,4 +7,3 @@ resources:
   - release.yaml
   - ingressroute.yaml
   - certificate.yaml
-  - scaledobject.yaml
