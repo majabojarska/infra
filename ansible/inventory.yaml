@@ -14,6 +14,7 @@ nixos:
     kube-01:
     nas:
     vps-01:
+    sp6cat-vm-01:
 
 debian:
   hosts:
