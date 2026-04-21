@@ -1,0 +1,6 @@
+---
+- name: Setup server
+  hosts:
+    - sp6cat-vm-01
+  roles:
+    - role: majabojarska.nixos
