@@ -182,6 +182,9 @@
   #   ];
   # };
 
+  services.qemuGuest.enable = true;
+  services.spice-vdagentd.enable = true; # enable copy and paste between host and guest
+
   # Enable the OpenSSH daemon.
   services.openssh = {
     enable = true;

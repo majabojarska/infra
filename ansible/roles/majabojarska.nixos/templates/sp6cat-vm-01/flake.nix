@@ -12,7 +12,7 @@
     ,
     }:
     {
-      nixosConfigurations."nixos" = nixpkgs.lib.nixosSystem {
+      nixosConfigurations."sp6cat-vm-01" = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         modules = [
           ./hardware-configuration.nix
