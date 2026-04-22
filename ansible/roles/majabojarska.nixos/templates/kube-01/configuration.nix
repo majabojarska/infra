@@ -358,7 +358,7 @@
   services.cron = {
     enable = true;
     systemCronJobs = [
-      "0 1 * * * root shutdown now"
+      # "0 1 * * * root shutdown now" # TODO: re-enable after May 4th
     ];
   };
 
