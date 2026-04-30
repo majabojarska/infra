@@ -107,6 +107,16 @@
           "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBch2rzzVEnWcUbHJctteozpAFyJYXnd8wMC7DWXS9rL" # FP5
         ];
       };
+      root = {
+        isSystemUser = true;
+
+        packages = with pkgs; [ ];
+        openssh.authorizedKeys.keys = [
+          "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBW+jmBmPtDv+Bw21i9J4p/pZPdM7SggxBF9FGOWXSM8 majabojarska98@gmail.com" # x260
+          "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBch2rzzVEnWcUbHJctteozpAFyJYXnd8wMC7DWXS9rL" # FP5
+        ];
+        shell = pkgs.bashInteractive;
+      };
       www-data = {
         isNormalUser = true;
         description = "Deploys WWW data";
@@ -188,7 +198,7 @@
       AllowUsers = null;
       UseDns = true;
       X11Forwarding = false;
-      PermitRootLogin = "no";
+      PermitRootLogin = "yes";
     };
   };
 
