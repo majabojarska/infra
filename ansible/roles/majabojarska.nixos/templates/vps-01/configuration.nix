@@ -114,6 +114,7 @@
         openssh.authorizedKeys.keys = [
           "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBW+jmBmPtDv+Bw21i9J4p/pZPdM7SggxBF9FGOWXSM8 majabojarska98@gmail.com" # x260
           "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBch2rzzVEnWcUbHJctteozpAFyJYXnd8wMC7DWXS9rL" # FP5
+          "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILjpxvbmIPz4MXmkbLjwCJN4MJ1Wg6TWgzi4eK/MuyNd" # kube-01
         ];
         shell = pkgs.bashInteractive;
       };
