@@ -36,34 +36,34 @@
   # Define on which hard drive you want to install Grub.
   # boot.loader.grub.device = "/dev/sda"; # or "nodev" for efi only
 
-  fileSystems."/mnt/backup" = {
-    device = "/dev/disk/by-id/scsi-0Linode_Volume_Backups";
-    fsType = "ext4";
-    options = [
-      # If you don't have this options attribute, it'll default to "defaults"
-      # boot options for fstab. Search up fstab mount options you can use
-      "defaults"
-      "noatime"
-      "nofail" # Prevent system from failing if this drive doesn't mount
-    ];
-    noCheck = true;
-    autoResize = true;
-  };
+  # fileSystems."/mnt/backup" = {
+  #   device = "/dev/disk/by-id/scsi-0Linode_Volume_Backups";
+  #   fsType = "ext4";
+  #   options = [
+  #     # If you don't have this options attribute, it'll default to "defaults"
+  #     # boot options for fstab. Search up fstab mount options you can use
+  #     "defaults"
+  #     "noatime"
+  #     "nofail" # Prevent system from failing if this drive doesn't mount
+  #   ];
+  #   noCheck = true;
+  #   autoResize = true;
+  # };
 
-  fileSystems."/mnt/storage" = {
-    device = "/dev/disk/by-id/scsi-0Linode_Volume_Storage";
-    fsType = "ext4";
-    options = [
-      # If you don't have this options attribute, it'll default to "defaults"
-      # boot options for fstab. Search up fstab mount options you can use
-      "defaults"
-      "noatime"
-      "nofail" # Prevent system from failing if this drive doesn't mount
-    ];
-    noCheck = true;
-    autoResize = true;
-  };
-
+  # fileSystems."/mnt/storage" = {
+  #   device = "/dev/disk/by-id/scsi-0Linode_Volume_Storage";
+  #   fsType = "ext4";
+  #   options = [
+  #     # If you don't have this options attribute, it'll default to "defaults"
+  #     # boot options for fstab. Search up fstab mount options you can use
+  #     "defaults"
+  #     "noatime"
+  #     "nofail" # Prevent system from failing if this drive doesn't mount
+  #   ];
+  #   noCheck = true;
+  #   autoResize = true;
+  # };
+  #
   # Set your time zone.
   time.timeZone = "Europe/Warsaw";
 
@@ -137,7 +137,7 @@
     btop
     busybox
     curl
-    copyparty
+    # copyparty
     dig
     git
     htop
@@ -267,51 +267,51 @@
     usePredictableInterfaceNames = false;
     useDHCP = false;
     interfaces.eth0.useDHCP = true;
-
-    wg-quick.interfaces = {
-      wg-baczek = {
-        # Bridge server iface 10.10.0.1
-        address = [ "10.10.0.5/24" ];
-        listenPort = 20001;
-
-        privateKeyFile = "/root/wireguard-keys/wg-baczek/private";
-
-        peers = [
-          {
-            publicKey = "7cIMQcZ6AackXV2RaLkC5cqmAVGd1PXnO4wGVcdcWkY=";
-            allowedIPs = [ "10.10.0.0/24" ];
-            endpoint = "baczek.me:20001";
-            persistentKeepalive = 25;
-          }
-          {
-            publicKey = "kbznnxqKi36faGajgwpdBpWFYcj6yCyUmCQJXg1pFzc=";
-            allowedIPs = [ "10.10.0.3/32" ];
-          }
-        ];
-      };
-    };
+    #
+    # wg-quick.interfaces = {
+    #   wg-baczek = {
+    #     # Bridge server iface 10.10.0.1
+    #     address = [ "10.10.0.5/24" ];
+    #     listenPort = 20001;
+    #
+    #     privateKeyFile = "/root/wireguard-keys/wg-baczek/private";
+    #
+    #     peers = [
+    #       {
+    #         publicKey = "7cIMQcZ6AackXV2RaLkC5cqmAVGd1PXnO4wGVcdcWkY=";
+    #         allowedIPs = [ "10.10.0.0/24" ];
+    #         endpoint = "baczek.me:20001";
+    #         persistentKeepalive = 25;
+    #       }
+    #       {
+    #         publicKey = "kbznnxqKi36faGajgwpdBpWFYcj6yCyUmCQJXg1pFzc=";
+    #         allowedIPs = [ "10.10.0.3/32" ];
+    #       }
+    #     ];
+    #   };
+    # };
   };
-
-  services.borgbackup.repos = {
-    baczek = {
-      authorizedKeys = [
-        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILulC22JoRPoRtU5Q36cMzwo8W3DA2l58MUu9VcQEghw wint3rmute@thinkcentre"
-      ];
-      path = "/mnt/backup/baczek";
-      quota = "100G";
-      allowSubRepos = true;
-    };
-
-    kube-01 = {
-      authorizedKeys = [
-        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIN8itVsInt/KzsOTn1BqmjuDfgR5IIPuN4nT6g1JVrVt root@kube-01"
-      ];
-      path = "/mnt/backup/kube-01";
-      quota = "220G";
-      allowSubRepos = true;
-    };
-  };
-
+  #
+  # services.borgbackup.repos = {
+  #   baczek = {
+  #     authorizedKeys = [
+  #       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILulC22JoRPoRtU5Q36cMzwo8W3DA2l58MUu9VcQEghw wint3rmute@thinkcentre"
+  #     ];
+  #     path = "/mnt/backup/baczek";
+  #     quota = "100G";
+  #     allowSubRepos = true;
+  #   };
+  #
+  #   kube-01 = {
+  #     authorizedKeys = [
+  #       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIN8itVsInt/KzsOTn1BqmjuDfgR5IIPuN4nT6g1JVrVt root@kube-01"
+  #     ];
+  #     path = "/mnt/backup/kube-01";
+  #     quota = "220G";
+  #     allowSubRepos = true;
+  #   };
+  # };
+  #
   services.ntfy-sh = {
     enable = false;
     settings = {
@@ -402,16 +402,16 @@
           middlewares = [ "compress_response" ];
         };
 
-        copyparty = {
-          rule = "Host(`copyparty.cloud.majabojarska.dev`)";
-          service = "copyparty";
-          tls = {
-            certResolver = "letsencrypt";
-            domains = [{ main = "copyparty.cloud.majabojarska.dev"; }];
-          };
-          middlewares = [ "compress_response" ];
-        };
-
+        # copyparty = {
+        #   rule = "Host(`copyparty.cloud.majabojarska.dev`)";
+        #   service = "copyparty";
+        #   tls = {
+        #     certResolver = "letsencrypt";
+        #     domains = [{ main = "copyparty.cloud.majabojarska.dev"; }];
+        #   };
+        #   middlewares = [ "compress_response" ];
+        # };
+        #
         fibo = {
           rule = "Host(`fibo.cloud.majabojarska.dev`)";
           service = "fibo";
@@ -469,18 +469,18 @@
           ];
         };
 
-        copyparty.loadBalancer = {
-          servers = [
-            {
-              url =
-                "http://"
-                + config.services.copyparty.settings.i
-                + ":"
-                + builtins.toString (builtins.elemAt config.services.copyparty.settings.p 0);
-            }
-          ];
-        };
-
+        # copyparty.loadBalancer = {
+        #   servers = [
+        #     {
+        #       url =
+        #         "http://"
+        #         + config.services.copyparty.settings.i
+        #         + ":"
+        #         + builtins.toString (builtins.elemAt config.services.copyparty.settings.p 0);
+        #     }
+        #   ];
+        # };
+        #
         fibo.loadBalancer = {
           servers = [
             {
@@ -517,85 +517,85 @@
   };
 
   # https://github.com/9001/copyparty?tab=readme-ov-file#nixos-module
-  services.copyparty = {
-    enable = true;
-    # the user to run the service as
-    user = "copyparty";
-    # the group to run the service as
-    group = "copyparty";
-    # directly maps to values in the [global] section of the copyparty config.
-    # see `copyparty --help` for available options
-    settings = {
-      i = "127.0.0.1";
-      # use lists to set multiple values
-      p = [
-        8005
-      ];
-      # use booleans to set binary flags
-      no-reload = false;
-      # using 'false' will do nothing and omit the value when generating a config
-      ignored-flag = false;
-      xff-src = "127.0.0.1"; # IP of the reverse proxy
-      xff-hdr = "x-forwarded-for"; # HTTP header containing the real client's IP
-      rproxy = 1;
-    };
-
-    # create users
-    accounts = {
-      maja = {
-        passwordFile = config.age.secrets."copyparty-pass-maja".path;
-      };
-      baczek = {
-        passwordFile = config.age.secrets."copyparty-pass-baczek".path;
-      };
-    };
-
-    # create a group
-    groups = {
-      admins = [
-        "maja"
-      ];
-      users = [
-        "maja"
-        "baczek"
-      ];
-    };
-
-    # create a volume
-    volumes = {
-      # create a volume at "/" (the webroot), which will
-      "/" = {
-        # share the contents of "/srv/copyparty"
-        path = "/mnt/storage/copyparty";
-        # see `copyparty --help-accounts` for available options
-        access = {
-          # everyone gets read-access, but
-          # r = "*";
-          # users "ed" and "k" get read-write
-          rw = [
-            "maja"
-            "baczek"
-          ];
-        };
-        # see `copyparty --help-flags` for available options
-        flags = {
-          # "fk" enables filekeys (necessary for upget permission) (4 chars long)
-          fk = 4;
-          # scan for new files every 60sec
-          scan = 60;
-          # volflag "e2d" enables the uploads database
-          e2d = true;
-          # "d2t" disables multimedia parsers (in case the uploads are malicious)
-          d2t = true;
-          # skips hashing file contents if path matches *.iso
-          nohash = "\.iso$";
-        };
-      };
-    };
-    # you may increase the open file limit for the process
-    openFilesLimit = 8192;
-  };
-
+  # services.copyparty = {
+  #   enable = true;
+  #   # the user to run the service as
+  #   user = "copyparty";
+  #   # the group to run the service as
+  #   group = "copyparty";
+  #   # directly maps to values in the [global] section of the copyparty config.
+  #   # see `copyparty --help` for available options
+  #   settings = {
+  #     i = "127.0.0.1";
+  #     # use lists to set multiple values
+  #     p = [
+  #       8005
+  #     ];
+  #     # use booleans to set binary flags
+  #     no-reload = false;
+  #     # using 'false' will do nothing and omit the value when generating a config
+  #     ignored-flag = false;
+  #     xff-src = "127.0.0.1"; # IP of the reverse proxy
+  #     xff-hdr = "x-forwarded-for"; # HTTP header containing the real client's IP
+  #     rproxy = 1;
+  #   };
+  #
+  #   # create users
+  #   accounts = {
+  #     maja = {
+  #       passwordFile = config.age.secrets."copyparty-pass-maja".path;
+  #     };
+  #     baczek = {
+  #       passwordFile = config.age.secrets."copyparty-pass-baczek".path;
+  #     };
+  #   };
+  #
+  #   # create a group
+  #   groups = {
+  #     admins = [
+  #       "maja"
+  #     ];
+  #     users = [
+  #       "maja"
+  #       "baczek"
+  #     ];
+  #   };
+  #
+  #   # create a volume
+  #   volumes = {
+  #     # create a volume at "/" (the webroot), which will
+  #     "/" = {
+  #       # share the contents of "/srv/copyparty"
+  #       path = "/mnt/storage/copyparty";
+  #       # see `copyparty --help-accounts` for available options
+  #       access = {
+  #         # everyone gets read-access, but
+  #         # r = "*";
+  #         # users "ed" and "k" get read-write
+  #         rw = [
+  #           "maja"
+  #           "baczek"
+  #         ];
+  #       };
+  #       # see `copyparty --help-flags` for available options
+  #       flags = {
+  #         # "fk" enables filekeys (necessary for upget permission) (4 chars long)
+  #         fk = 4;
+  #         # scan for new files every 60sec
+  #         scan = 60;
+  #         # volflag "e2d" enables the uploads database
+  #         e2d = true;
+  #         # "d2t" disables multimedia parsers (in case the uploads are malicious)
+  #         d2t = true;
+  #         # skips hashing file contents if path matches *.iso
+  #         nohash = "\.iso$";
+  #       };
+  #     };
+  #   };
+  #   # you may increase the open file limit for the process
+  #   openFilesLimit = 8192;
+  # };
+  #
   virtualisation = {
     docker.enable = true;
     oci-containers = {

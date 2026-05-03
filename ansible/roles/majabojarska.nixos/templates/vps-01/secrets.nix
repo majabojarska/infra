@@ -5,18 +5,18 @@
         file = ./secrets/ovh.age;
         mode = "0400";
       };
-      "copyparty-pass-maja" = {
-        file = ./secrets/copyparty-pass-maja.age;
-        mode = "0400";
-        owner = "copyparty";
-        group = "copyparty";
-      };
-      "copyparty-pass-baczek" = {
-        file = ./secrets/copyparty-pass-baczek.age;
-        mode = "0400";
-        owner = "copyparty";
-        group = "copyparty";
-      };
+      # "copyparty-pass-maja" = {
+      #   file = ./secrets/copyparty-pass-maja.age;
+      #   mode = "0400";
+      #   owner = "copyparty";
+      #   group = "copyparty";
+      # };
+      # "copyparty-pass-baczek" = {
+      #   file = ./secrets/copyparty-pass-baczek.age;
+      #   mode = "0400";
+      #   owner = "copyparty";
+      #   group = "copyparty";
+      # };
       "fah-token" = {
         file = ./secrets/fah-token.age;
         mode = "0400";

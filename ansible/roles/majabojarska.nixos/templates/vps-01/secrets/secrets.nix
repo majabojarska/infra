@@ -8,8 +8,8 @@ let
 in
 {
   "ovh.age".publicKeys = [ vps-01 ] ++ developers;
-  "copyparty-pass-maja.age".publicKeys = [ vps-01 ] ++ developers;
-  "copyparty-pass-baczek.age".publicKeys = [ vps-01 ] ++ developers;
+  # "copyparty-pass-maja.age".publicKeys = [ vps-01 ] ++ developers;
+  # "copyparty-pass-baczek.age".publicKeys = [ vps-01 ] ++ developers;
   "fah-token.age".publicKeys = [ vps-01 ] ++ developers;
   "searx-secret-key.age".publicKeys = [ vps-01 ] ++ developers;
   "tailscale-auth-key.age".publicKeys = [ vps-01 ] ++ developers;
