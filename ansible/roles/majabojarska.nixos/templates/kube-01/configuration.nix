@@ -461,7 +461,7 @@
   };
 
   services.borgmatic = {
-    enable = true;
+    enable = false; # TODO: retarget to new host, reenable
     enableConfigCheck = true;
     configurations."kubernetes" = {
       # zfs = { }; # Enables ZFS in borgmatic # TODO:
