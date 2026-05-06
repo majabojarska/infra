@@ -10,9 +10,9 @@ resources:
   # - ../base/frigate
   - ../base/qbittorrent
 
-  - ../base/n8n
+  # - ../base/n8n
 
-  - ../base/searxng
+  # - ../base/searxng
 
   - ../base/changedetection-io
 
