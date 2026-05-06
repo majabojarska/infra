@@ -179,7 +179,7 @@
     }
   ];
   services.tailscale = {
-    enable = true;
+    enable = false;
     useRoutingFeatures = "both";
     openFirewall = true;
     disableTaildrop = true;
