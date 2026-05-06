@@ -5,7 +5,7 @@ resources:
 
   - ../base/paperless-ngx
   - ../base/immich
-  - ../base/actualserver
+  # - ../base/actualserver
   - ../base/jellyfin
   # - ../base/frigate
   - ../base/qbittorrent
