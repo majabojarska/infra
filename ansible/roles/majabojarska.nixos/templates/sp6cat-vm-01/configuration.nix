@@ -409,19 +409,19 @@
         #   middlewares = [ "compress_response" ];
         # };
         #
-        # fibo = {
-        #   rule = "Host(`fibo.cloud.majabojarska.dev`)";
-        #   service = "fibo";
-        #   tls = {
-        #     certResolver = "letsencrypt";
-        #     domains = [{ main = "fibo.cloud.majabojarska.dev"; }];
-        #   };
-        #   middlewares = [
-        #     "compress_response"
-        #     "rate_limit"
-        #     "fibo_redirect_swagger"
-        #   ];
-        # };
+        fibo = {
+          rule = "Host(`fibo.cloud.majabojarska.dev`)";
+          service = "fibo";
+          tls = {
+            certResolver = "letsencrypt";
+            domains = [{ main = "fibo.cloud.majabojarska.dev"; }];
+          };
+          middlewares = [
+            "compress_response"
+            "rate_limit"
+            "fibo_redirect_swagger"
+          ];
+        };
       };
       middlewares = {
         compress_response = {
@@ -434,12 +434,12 @@
             burst = 20;
           };
         };
-        # fibo_redirect_swagger = {
-        #   redirectRegex = {
-        #     regex = "^https://fibo\.cloud\.majabojarska\.dev/(swagger)?$";
-        #     replacement = "https://fibo.cloud.majabojarska.dev/swagger/index.html";
-        #   };
-        # };
+        fibo_redirect_swagger = {
+          redirectRegex = {
+            regex = "^https://fibo\.cloud\.majabojarska\.dev/(swagger)?$";
+            replacement = "https://fibo.cloud.majabojarska.dev/swagger/index.html";
+          };
+        };
       };
       services = {
         # TODO: Re-enable once auth is figured out
@@ -478,13 +478,13 @@
         #   ];
         # };
         #
-        # fibo.loadBalancer = {
-        #   servers = [
-        #     {
-        #       url = "http://127.0.0.1:8006";
-        #     }
-        #   ];
-        # };
+        fibo.loadBalancer = {
+          servers = [
+            {
+              url = "http://127.0.0.1:8006";
+            }
+          ];
+        };
       };
     };
   };
@@ -593,32 +593,32 @@
     openFilesLimit = 8192;
   };
 
-  # virtualisation = {
-  #   docker.enable = true;
-  #   oci-containers = {
-  #     backend = "docker";
-  #     containers = {
-  #       fibo = {
-  #         image = "majabojarska/fibo:0.0.3";
-  #         ports = [
-  #           "127.0.0.1:8006:8006"
-  #         ];
-  #         environment = {
-  #           POSTGRESS_PASSWORD = "password";
-  #           FIBO_DEBUG = "false";
-  #           FIBO_API_ADDR = "0.0.0.0:8006";
-  #           FIBO_API_ROOT_URL = "https://fibo.cloud.majabojarska.dev";
-  #           FIBO_API_ALLOW_ORIGINS = "https://fibo.cloud.majabojarska.dev";
-  #           FIBO_METRICS_ENABLED = "true";
-  #           FIBO_METRICS_ADDR = "0.0.0.0:8006";
-  #           FIBO_METRICS_PATH = "/metrics";
-  #           FIBO_LOGGING_LEVEL = "info";
-  #         };
-  #       };
-  #     };
-  #   };
-  # };
-  #
+  virtualisation = {
+    docker.enable = true;
+    oci-containers = {
+      backend = "docker";
+      containers = {
+        fibo = {
+          image = "majabojarska/fibo:0.0.3";
+          ports = [
+            "127.0.0.1:8006:8006"
+          ];
+          environment = {
+            POSTGRESS_PASSWORD = "password";
+            FIBO_DEBUG = "false";
+            FIBO_API_ADDR = "0.0.0.0:8006";
+            FIBO_API_ROOT_URL = "https://fibo.cloud.majabojarska.dev";
+            FIBO_API_ALLOW_ORIGINS = "https://fibo.cloud.majabojarska.dev";
+            FIBO_METRICS_ENABLED = "true";
+            FIBO_METRICS_ADDR = "0.0.0.0:8006";
+            FIBO_METRICS_PATH = "/metrics";
+            FIBO_LOGGING_LEVEL = "info";
+          };
+        };
+      };
+    };
+  };
+
   services.chrony = {
     enable = true;
     extraConfig = ''
