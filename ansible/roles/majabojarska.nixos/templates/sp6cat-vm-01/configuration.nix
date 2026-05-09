@@ -143,6 +143,7 @@
     python3
     rsync
     sysstat
+    tcpdump
     tmux
     vim
     wireguard-tools
