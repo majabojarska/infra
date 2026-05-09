@@ -390,7 +390,11 @@
           service = "blog";
           tls = {
             certResolver = "letsencrypt";
-            domains = [{ main = "majabojarska.dev"; }];
+            domains = [
+              {
+                main = "majabojarska.dev";
+              }
+            ];
           };
           middlewares = [ "compress_response" ];
         };
@@ -492,7 +496,7 @@
     root = "/var/www/majabojarska.dev";
 
     locations."/" = {
-      tryFiles = "$uri $uri/ /404.html";
+      tryFiles = "$uri $uri/ /404.html =404";
       index = "index.html";
     };
 
