@@ -261,49 +261,48 @@
     useDHCP = false;
     interfaces.eth0.useDHCP = true;
 
-    #   wg-quick.interfaces = {
-    #     wg-baczek = {
-    #       # Bridge server iface 10.10.0.1
-    #       address = [ "10.10.0.5/24" ];
-    #       listenPort = 20001;
-    #
-    #       privateKeyFile = "/root/wireguard-keys/wg-baczek/private";
-    #
-    #       peers = [
-    #         {
-    #           publicKey = "7cIMQcZ6AackXV2RaLkC5cqmAVGd1PXnO4wGVcdcWkY=";
-    #           allowedIPs = [ "10.10.0.0/24" ];
-    #           endpoint = "baczek.me:20001";
-    #           persistentKeepalive = 25;
-    #         }
-    #         {
-    #           publicKey = "kbznnxqKi36faGajgwpdBpWFYcj6yCyUmCQJXg1pFzc=";
-    #           allowedIPs = [ "10.10.0.3/32" ];
-    #         }
-    #       ];
-    #     };
-    #   };
-    # };
+    wg-quick.interfaces = {
+      wg-baczek = {
+        # Bridge server iface 10.10.0.1
+        address = [ "10.10.0.1/24" ];
+        listenPort = 20001;
 
-    # services.borgbackup.repos = {
-    #   baczek = {
-    #     authorizedKeys = [
-    #       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILulC22JoRPoRtU5Q36cMzwo8W3DA2l58MUu9VcQEghw wint3rmute@thinkcentre"
-    #     ];
-    #     path = "/mnt/backup/baczek";
-    #     quota = "100G";
-    #     allowSubRepos = true;
-    #   };
-    #
-    #   kube-01 = {
-    #     authorizedKeys = [
-    #       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIN8itVsInt/KzsOTn1BqmjuDfgR5IIPuN4nT6g1JVrVt root@kube-01"
-    #     ];
-    #     path = "/mnt/backup/kube-01";
-    #     quota = "220G";
-    #     allowSubRepos = true;
-    #   };
+        privateKeyFile = config.age.secrets."wg-baczek-priv-key".path;
+
+        peers = [
+          # {
+          #   publicKey = "7cIMQcZ6AackXV2RaLkC5cqmAVGd1PXnO4wGVcdcWkY=";
+          #   allowedIPs = [ "10.10.0.0/24" ];
+          #   endpoint = "baczek.me:20001";
+          #   persistentKeepalive = 25;
+          # }
+          {
+            publicKey = "kbznnxqKi36faGajgwpdBpWFYcj6yCyUmCQJXg1pFzc=";
+            allowedIPs = [ "10.10.0.3/32" ];
+          }
+        ];
+      };
+    };
   };
+
+  # services.borgbackup.repos = {
+  #   baczek = {
+  #     authorizedKeys = [
+  #       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILulC22JoRPoRtU5Q36cMzwo8W3DA2l58MUu9VcQEghw wint3rmute@thinkcentre"
+  #     ];
+  #     path = "/mnt/backup/baczek";
+  #     quota = "100G";
+  #     allowSubRepos = true;
+  #   };
+  #
+  #   kube-01 = {
+  #     authorizedKeys = [
+  #       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIN8itVsInt/KzsOTn1BqmjuDfgR5IIPuN4nT6g1JVrVt root@kube-01"
+  #     ];
+  #     path = "/mnt/backup/kube-01";
+  #     quota = "220G";
+  #     allowSubRepos = true;
+  #   };
 
   services.ntfy-sh = {
     enable = false;
@@ -477,7 +476,7 @@
         #     }
         #   ];
         # };
-        #
+
         fibo.loadBalancer = {
           servers = [
             {

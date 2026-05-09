@@ -25,6 +25,12 @@
         file = ./secrets/searx-secret-key.age;
         mode = "0400";
       };
+      "wg-baczek-priv-key" = {
+        file = ./secrets/wg-baczek-priv-key.age;
+        mode = "0400";
+        owner = "root";
+        group = "root";
+      };
     };
   };
 }
