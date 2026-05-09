@@ -257,6 +257,9 @@
         443 # HTTP3
       ];
       checkReversePath = "loose";
+      trustedInterfaces = [
+        "wg-baczek"
+      ];
     };
     usePredictableInterfaceNames = false;
     useDHCP = false;
