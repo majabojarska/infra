@@ -402,16 +402,16 @@
           middlewares = [ "compress_response" ];
         };
 
-        # copyparty = {
-        #   rule = "Host(`copyparty.cloud.majabojarska.dev`)";
-        #   service = "copyparty";
-        #   tls = {
-        #     certResolver = "letsencrypt";
-        #     domains = [{ main = "copyparty.cloud.majabojarska.dev"; }];
-        #   };
-        #   middlewares = [ "compress_response" ];
-        # };
-        #
+        copyparty = {
+          rule = "Host(`copyparty.cloud.majabojarska.dev`)";
+          service = "copyparty";
+          tls = {
+            certResolver = "letsencrypt";
+            domains = [{ main = "copyparty.cloud.majabojarska.dev"; }];
+          };
+          middlewares = [ "compress_response" ];
+        };
+
         fibo = {
           rule = "Host(`fibo.cloud.majabojarska.dev`)";
           service = "fibo";
@@ -469,17 +469,17 @@
           ];
         };
 
-        # copyparty.loadBalancer = {
-        #   servers = [
-        #     {
-        #       url =
-        #         "http://"
-        #         + config.services.copyparty.settings.i
-        #         + ":"
-        #         + builtins.toString (builtins.elemAt config.services.copyparty.settings.p 0);
-        #     }
-        #   ];
-        # };
+        copyparty.loadBalancer = {
+          servers = [
+            {
+              url =
+                "http://"
+                + config.services.copyparty.settings.i
+                + ":"
+                + builtins.toString (builtins.elemAt config.services.copyparty.settings.p 0);
+            }
+          ];
+        };
 
         fibo.loadBalancer = {
           servers = [
