@@ -349,7 +349,7 @@
       };
 
       log = {
-        level = "DEBUG";
+        level = "TRACE";
         filePath = "${config.services.traefik.dataDir}/traefik.log";
         format = "json";
       };
@@ -373,6 +373,19 @@
 
     dynamicConfigOptions.http = {
       routers = {
+        anubis = {
+          rule = "Host(`anubis.cloud.majabojarska.dev`)";
+          service = "anubis";
+          entrypoints = "websecure";
+          tls = {
+            certResolver = "letsencrypt";
+            domains = [
+              {
+                main = "anubis.cloud.majabojarska.dev";
+              }
+            ];
+          };
+        };
         # ntfy = {
         #   rule = "Host(`ntfy.${config.networking.hostName}.${config.networking.domain}`)";
         #   entryPoints = [ "websecure" ];
@@ -399,7 +412,21 @@
               }
             ];
           };
-          middlewares = [ "compress_response" ];
+          middlewares = [ ];
+        };
+
+        blogBeta = {
+          rule = "Host(`beta.majabojarska.dev`)";
+          service = "blog";
+          tls = {
+            certResolver = "letsencrypt";
+            domains = [
+              {
+                main = "beta.majabojarska.dev";
+              }
+            ];
+          };
+          middlewares = [ "anubis" ];
         };
 
         copyparty = {
@@ -409,7 +436,7 @@
             certResolver = "letsencrypt";
             domains = [{ main = "copyparty.cloud.majabojarska.dev"; }];
           };
-          middlewares = [ "compress_response" ];
+          middlewares = [ ];
         };
 
         fibo = {
@@ -420,16 +447,19 @@
             domains = [{ main = "fibo.cloud.majabojarska.dev"; }];
           };
           middlewares = [
-            "compress_response"
             "rate_limit"
             "fibo_redirect_swagger"
           ];
         };
       };
+
       middlewares = {
-        compress_response = {
-          compress = { };
+        anubis = {
+          forwardAuth = {
+            address = "http://127.0.0.1:8080/.within.website/x/cmd/anubis/api/check";
+          };
         };
+
         rate_limit = {
           rateLimit = {
             average = 10;
@@ -437,6 +467,7 @@
             burst = 20;
           };
         };
+
         fibo_redirect_swagger = {
           redirectRegex = {
             regex = "^https://fibo\.cloud\.majabojarska\.dev/(swagger)?$";
@@ -444,13 +475,12 @@
           };
         };
       };
+
       services = {
-        # TODO: Re-enable once auth is figured out
-        ntfy.loadBalancer = {
-          passHostHeader = true;
+        anubis.loadBalancer = {
           servers = [
             {
-              url = "http://" + builtins.toString config.services.ntfy-sh.settings.listen-http;
+              url = "http://127.0.0.1:8080";
             }
           ];
         };
@@ -493,11 +523,12 @@
   };
 
   services.anubis.instances.blog.settings = {
-    TARGET = "http://127.0.0.1:3000";
-    BIND = ":3001";
+    BIND = ":8080";
     BIND_NETWORK = "tcp";
-    METRICS_BIND = ":9001";
-    METRICS_BIND_NETWORK = "tcp";
+    TARGET = " ";
+    REDIRECT_DOMAINS = "beta.majabojarska.dev,majabojarska.dev";
+    PUBLIC_URL = "https://anubis.cloud.majabojarska.dev";
+    COOKIE_DOMAIN = "majabojarska.dev";
   };
 
   # Blog
