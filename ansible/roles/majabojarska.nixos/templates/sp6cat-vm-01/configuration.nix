@@ -349,7 +349,7 @@
       };
 
       log = {
-        level = "TRACE";
+        level = "INFO";
         filePath = "${config.services.traefik.dataDir}/traefik.log";
         format = "json";
       };
