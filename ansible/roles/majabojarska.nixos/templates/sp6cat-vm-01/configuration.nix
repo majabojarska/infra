@@ -518,9 +518,9 @@
       botPolicy = {
 
         bots = [
-          {
-            import = "(data)/meta/default-config.yaml";
-          }
+          { import = "(data)/meta/default-config.yaml"; }
+          { import = "(data)/bots/ai-catchall.yaml"; }
+          { import = "(data)/bots/cloudflare-workers.yaml"; }
         ];
         status_codes = {
           CHALLENGE = 403;
