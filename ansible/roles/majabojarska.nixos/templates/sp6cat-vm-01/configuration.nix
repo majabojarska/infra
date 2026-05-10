@@ -199,26 +199,6 @@
     };
   };
 
-  environment.etc = {
-    # Define an action that will trigger a Ntfy push notification upon the issue of every new ban
-    # TODO
-    # "fail2ban/action.d/ntfy.local".text = pkgs.lib.mkDefault (pkgs.lib.mkAfter ''
-    #   [Definition]
-    #   norestored = true # Needed to avoid receiving a new notification after every restart
-    #   actionban = curl -H "Title: <ip> has been banned" -d "<name> jail has banned <ip> from accessing $(hostname) after <failures> attempts of hacking the system." https://ntfy.sh/Fail2banNotifications
-    # '');
-    # Defines a filter that detects URL probing by reading the Nginx access log
-    # "fail2ban/filter.d/nextcloud.local".text = pkgs.lib.mkDefault (
-    #   pkgs.lib.mkAfter ''
-    #     [Definition]
-    #     _groupsre = (?:(?:,?\\s*\"\\w+\":(?:\"[^\"]+\"|\\w+))*)
-    #     failregex = ^\{%(_groupsre)s,?\s*"remoteAddr":"<HOST>"%(_groupsre)s,?\s*"message":"Login failed:
-    #                 ^\{%(_groupsre)s,?\s*"remoteAddr":"<HOST>"%(_groupsre)s,?\s*"message":"Trusted domain error.
-    #     datepattern = ,?\s*"time"\s*:\s*"%%Y-%%m-%%d[T ]%%H:%%M:%%S(%%z)?"
-    #   ''
-    # );
-  };
-
   services.fail2ban = {
     enable = true;
     maxretry = 3; # Ban IP after N failures
@@ -308,15 +288,6 @@
   #     allowSubRepos = true;
   #   };
 
-  services.ntfy-sh = {
-    enable = false;
-    settings = {
-      listen-http = "127.0.0.1:8001";
-      base-url = "https://ntfy.${config.networking.hostName}.${config.networking.domain}";
-      auth-default-access = "deny-all";
-    };
-  };
-
   services.traefik = {
     enable = true;
 
@@ -386,20 +357,6 @@
             ];
           };
         };
-        # ntfy = {
-        #   rule = "Host(`ntfy.${config.networking.hostName}.${config.networking.domain}`)";
-        #   entryPoints = [ "websecure" ];
-        #   service = "ntfy";
-        #   # TODO: Is this needed?
-        #   tls = {
-        #     certResolver = "letsencrypt";
-        #     domains = [
-        #       {
-        #         main = "ntfy.${config.networking.hostName}.${config.networking.domain}";
-        #       }
-        #     ];
-        #   };
-        # };
 
         blog = {
           rule = "Host(`majabojarska.dev`)";
