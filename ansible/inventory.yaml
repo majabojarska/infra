@@ -3,8 +3,6 @@ all:
   hosts:
     kube-01:
     nas:
-    vps-01:
-    rpi-3b:
     pve-01:
     pve-02:
     sp6cat-01:
@@ -13,7 +11,6 @@ nixos:
   hosts:
     kube-01:
     nas:
-    vps-01:
     sp6cat-vm-01:
 
 debian:
