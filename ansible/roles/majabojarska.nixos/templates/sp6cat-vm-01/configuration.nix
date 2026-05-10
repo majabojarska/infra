@@ -492,6 +492,14 @@
     };
   };
 
+  services.anubis.instances.blog.settings = {
+    TARGET = "http://127.0.0.1:3000";
+    BIND = ":3001";
+    BIND_NETWORK = "tcp";
+    METRICS_BIND = ":9001";
+    METRICS_BIND_NETWORK = "tcp";
+  };
+
   # Blog
   services.nginx.enable = true;
   services.nginx.virtualHosts."majabojarska.dev" = {
