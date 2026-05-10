@@ -538,7 +538,7 @@
             action = "CHALLENGE";
             challenge = {
               algorithm = "fast";
-              difficulty = 3;
+              difficulty = 4;
             };
           }
           {
@@ -563,7 +563,7 @@
             action = "CHALLENGE";
             challenge = {
               algorithm = "fast";
-              difficulty = 7;
+              difficulty = 6;
             };
           }
           {
@@ -572,7 +572,7 @@
             action = "CHALLENGE";
             challenge = {
               algorithm = "fast";
-              difficulty = 8;
+              difficulty = 7;
             };
           }
         ];
