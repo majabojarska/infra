@@ -1,6 +1,0 @@
----
-- name: Setup server
-  hosts:
-    - vps-01
-  roles:
-    - role: majabojarska.nixos
