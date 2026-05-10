@@ -415,20 +415,6 @@
           middlewares = [ "anubis" ];
         };
 
-        # blogBeta = {
-        #   rule = "Host(`beta.majabojarska.dev`)";
-        #   service = "blog";
-        #   tls = {
-        #     certResolver = "letsencrypt";
-        #     domains = [
-        #       {
-        #         main = "beta.majabojarska.dev";
-        #       }
-        #     ];
-        #   };
-        #   middlewares = [ "anubis" ];
-        # };
-        #
         copyparty = {
           rule = "Host(`copyparty.cloud.majabojarska.dev`)";
           service = "copyparty";
@@ -597,7 +583,7 @@
       BIND = ":8080";
       BIND_NETWORK = "tcp";
       TARGET = " ";
-      REDIRECT_DOMAINS = "beta.majabojarska.dev,majabojarska.dev";
+      REDIRECT_DOMAINS = "majabojarska.dev";
       PUBLIC_URL = "https://anubis.cloud.majabojarska.dev";
       COOKIE_DOMAIN = "majabojarska.dev";
       DIFFICULTY = 20;
