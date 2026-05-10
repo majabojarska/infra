@@ -495,7 +495,7 @@
             action = "CHALLENGE";
             challenge = {
               algorithm = "fast";
-              difficulty = 4;
+              difficulty = 3;
             };
           }
           {
@@ -508,7 +508,7 @@
             challenge = {
               # https://anubis.techaro.lol/docs/admin/configuration/challenges/proof-of-work
               algorithm = "fast";
-              difficulty = 5;
+              difficulty = 4;
             };
           }
           {
@@ -520,7 +520,7 @@
             action = "CHALLENGE";
             challenge = {
               algorithm = "fast";
-              difficulty = 6;
+              difficulty = 5;
             };
           }
           {
@@ -529,7 +529,7 @@
             action = "CHALLENGE";
             challenge = {
               algorithm = "fast";
-              difficulty = 7;
+              difficulty = 6;
             };
           }
         ];
