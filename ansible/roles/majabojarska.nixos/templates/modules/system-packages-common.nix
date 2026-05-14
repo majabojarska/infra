@@ -1,0 +1,48 @@
+{ pkgs, ... }:
+
+{
+  environment.systemPackages = with pkgs; [
+    borgbackup
+    btop
+    busybox
+    curl
+    delta
+    dig
+    dmidecode
+    file
+    git
+    htop
+    iftop
+    inetutils
+    iotop
+    iperf
+    jq
+    k9s
+    lsof
+    mtr
+    ncdu
+    nmap
+    parallel
+    parted
+    pciutils
+    powertop
+    python3
+    rclone
+    ripgrep
+    rsync
+    rsync
+    smartmontools
+    stress
+    sysstat
+    tcpdump
+    tmux
+    tree
+    unzip
+    vim
+    wget
+    yazi
+    yq
+    zerofree
+    zsh
+  ];
+}
