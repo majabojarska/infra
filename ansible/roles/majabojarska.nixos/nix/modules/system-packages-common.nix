@@ -30,7 +30,6 @@
     rclone
     ripgrep
     rsync
-    rsync
     smartmontools
     stress
     sysstat

@@ -1,7 +1,7 @@
 ---
 - name: Nix flake update
   ansible.builtin.shell:
-    cmd: "nix flake update --flake {{ role_path }}/templates/{{ inventory_hostname }}"
+    cmd: "nix flake update --flake {{ role_path }}/nix/hosts/{{ inventory_hostname }}"
   delegate_to: localhost
 
 - name: Remove configuration directory tree
@@ -19,23 +19,20 @@
 
 - name: Populate configuration tree
   copy:
-    src: "templates/{{ inventory_hostname }}/"
+    src: "nix/"
     dest: "{{ flake_dir }}/"
 
 - name: NixOS build flake
   become: true
   ansible.builtin.shell:
-    chdir: "{{ flake_dir }}"
-    cmd: "nixos-rebuild build --flake {{ flake_dir }}"
+    cmd: "nixos-rebuild build --flake {{ flake_dir }}/hosts/{{ inventory_hostname }}"
 
 - name: NixOS test flake
   become: true
   ansible.builtin.shell:
-    chdir: "{{ flake_dir }}"
-    cmd: "nixos-rebuild test --flake {{ flake_dir }}"
+    cmd: "nixos-rebuild test --flake {{ flake_dir }}/hosts/{{ inventory_hostname }}"
 
 - name: NixOS rebuild from flake
   become: true
   ansible.builtin.shell:
-    chdir: "{{ flake_dir }}"
-    cmd: "nixos-rebuild switch --flake {{ flake_dir }}"
+    cmd: "nixos-rebuild switch --flake {{ flake_dir }}/hosts/{{ inventory_hostname }}"
