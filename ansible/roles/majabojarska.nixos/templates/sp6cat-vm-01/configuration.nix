@@ -28,8 +28,13 @@
     persistent = true;
   };
   # Bootloader.
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
+  boot = {
+    blacklistedKernelModules = [
+      "algif_aead"
+    ];
+    loader.systemd-boot.enable = true;
+    loader.efi.canTouchEfiVariables = true;
+  };
 
   # Use the GRUB 2 boot loader.
   # boot.loader.grub.enable = true;

@@ -65,6 +65,9 @@
         configurationLimit = 20;
       };
     };
+    blacklistedKernelModules = [
+      "algif_aead"
+    ];
     supportedFilesystems = [ "zfs" ];
     zfs.extraPools = [
       "storage"
