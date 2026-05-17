@@ -20,6 +20,5 @@ jobs:
           github_access_token: ${{ secrets.GITHUB_TOKEN }}
           nix_path: nixpkgs=channel:nixos-25.11
 
-      - run: nix flake check ./ansible/roles/majabojarska.nixos/nix
-
-      - run: nix-shell --run "echo OK"
+      - name: Nix Flake check
+        run: nix flake check ./ansible/roles/majabojarska.nixos/nix
