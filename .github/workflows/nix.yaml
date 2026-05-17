@@ -2,10 +2,10 @@ name: ""
 on:
   pull_request:
     paths:
-      - "*.nix"
+      - "**.nix"
   push:
     paths:
-      - "*.nix"
+      - "**.nix"
 
 jobs:
   tests:
