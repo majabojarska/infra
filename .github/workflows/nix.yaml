@@ -1,4 +1,4 @@
-name: ""
+name: "Nix"
 on:
   pull_request:
     paths:
@@ -8,17 +8,17 @@ on:
       - "**.nix"
 
 jobs:
-  tests:
+  flake-check:
+    name: Flake check
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
-      - uses: cachix/install-nix-action@v31
+      - name: Install Nix
+        uses: cachix/install-nix-action@v31
         with:
           github_access_token: ${{ secrets.GITHUB_TOKEN }}
           nix_path: nixpkgs=channel:nixos-25.11
-
-      - uses: cachix/cachix-action@v14
 
       - run: nix flake check ./ansible/roles/majabojarska.nixos/nix
 
