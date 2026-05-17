@@ -2,6 +2,7 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11";
     agenix.url = "github:ryantm/agenix";
+    copyparty.url = "github:9001/copyparty";
   };
   outputs = { self, agenix, nixpkgs, copyparty, }: {
     nixosConfigurations = {
