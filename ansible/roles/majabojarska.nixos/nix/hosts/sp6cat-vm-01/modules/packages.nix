@@ -1,7 +1,7 @@
 { pkgs, ... }:
 
 {
-  imports = [ ../../modules/system-packages-common.nix ];
+  imports = [ ../../../modules/system-packages-common.nix ];
 
   environment.systemPackages = with pkgs; [
     busybox

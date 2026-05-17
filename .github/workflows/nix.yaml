@@ -1,0 +1,19 @@
+name: "Nix"
+on:
+  push:
+
+jobs:
+  flake-check:
+    name: Flake check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Nix
+        uses: cachix/install-nix-action@v31
+        with:
+          github_access_token: ${{ secrets.GITHUB_TOKEN }}
+          nix_path: nixpkgs=channel:nixos-25.11
+
+      - name: Nix Flake check
+        run: nix flake check ./ansible/roles/majabojarska.nixos/nix
