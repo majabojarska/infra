@@ -1,11 +1,7 @@
 name: "Nix"
 on:
   pull_request:
-    paths:
-      - "**.nix"
   push:
-    paths:
-      - "**.nix"
 
 jobs:
   flake-check:
