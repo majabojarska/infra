@@ -1,5 +1,7 @@
 # Infra
 
+[![Nix check](https://github.com/majabojarska/infra/actions/workflows/nix.yaml/badge.svg)](https://github.com/majabojarska/infra/actions/workflows/nix.yaml)
+
 Version control for my homelab's infrastructure and services.
 
 ## Repo structure
