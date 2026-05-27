@@ -1,10 +1,10 @@
-name: "Nix"
+name: "Status"
 on:
   push:
 
 jobs:
   flake-check:
-    name: Flake check
+    name: Nix Flake check
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
