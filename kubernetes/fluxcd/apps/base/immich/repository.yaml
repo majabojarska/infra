@@ -10,4 +10,4 @@ spec:
     operation: copy
   url: oci://oci.trueforge.org/truecharts/immich
   ref:
-    tag: 28.6.1
+    tag: 28.6.2
