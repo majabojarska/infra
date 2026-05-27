@@ -29,7 +29,7 @@ jobs:
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v8
         with:
-          token: ${{ steps.app-token.outputs.token }}
+          token: ${{ secrets.PR_CREATE_PAT }}
           commit-message: Update Nix Flake
           branch: chore/update-nix-flake
           delete-branch: true
