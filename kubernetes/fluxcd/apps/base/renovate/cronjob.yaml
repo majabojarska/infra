@@ -11,7 +11,7 @@ spec:
         spec:
           containers:
             - name: renovate
-              image: renovate/renovate:43.207.3
+              image: renovate/renovate:43.207.4
               args:
                 - majabojarska/bitwarden-cli-docker
                 - majabojarska/infra
