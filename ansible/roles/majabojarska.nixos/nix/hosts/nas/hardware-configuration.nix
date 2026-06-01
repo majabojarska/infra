@@ -59,7 +59,7 @@
 
   networking = {
     domain = "home.majabojarska.dev";
-    hostName = "nas";
+    hostName = "nas-old";
     hostId = "53423d02"; # First 8 chars from /etc/machine-id
 
     networkmanager.enable = true;

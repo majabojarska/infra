@@ -33,7 +33,7 @@
         ];
       };
 
-      nas = nixpkgs.lib.nixosSystem {
+      nas-old = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         modules = [
           ./hosts/nas/hardware-configuration.nix
