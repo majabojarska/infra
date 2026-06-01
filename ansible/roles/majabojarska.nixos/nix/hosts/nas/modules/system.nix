@@ -6,9 +6,13 @@
   ...
 }:
 
+let
+  proxmoxBridge = "vmbr0";
+in
 {
   imports = [
     (modulesPath + "/profiles/qemu-guest.nix")
+    (modulesPath + "/virtualisation/proxmox-image.nix")
   ];
 
   boot = {
@@ -35,10 +39,6 @@
 
   services.qemuGuest.enable = true;
 
-  system.build.qcow2 = import "${modulesPath}/../lib/make-disk-image.nix" {
-    inherit lib config pkgs;
-    diskSize = 10240;
-    format = "qcow2";
-    partitionTableType = "hybrid";
-  };
+  proxmox.qemuConf.net0 = "virtio,bridge=${proxmoxBridge},firewall=1";
+
 }

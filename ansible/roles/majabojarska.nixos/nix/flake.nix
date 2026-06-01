@@ -55,5 +55,11 @@
           ];
         };
       };
+
+      packages.x86_64-linux = {
+        nas-vma = self.nixosConfigurations.nas.config.system.build.VMA;
+        # Keep `default` aligned with the Proxmox import artifact.
+        default = self.nixosConfigurations.nas.config.system.build.VMA;
+      };
     };
 }

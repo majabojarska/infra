@@ -7,3 +7,4 @@ kubeconfig.yaml
 **/*.qcow2
 **/nix-support
 **/result
+ansible/roles/majabojarska.nixos/nix/result
