@@ -1,19 +1,18 @@
-{ config, lib, pkgs, ... }: {
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+{
   imports = [
     ../../modules/i18n.nix
-    ../../modules/system-packages-common.nix
-  ];
+    ../../modules/users.nix
+    ../../modules/ssh.nix
 
-  users.users = {
-    maja = {
-      isNormalUser = true;
-      extraGroups = [ "wheel" ];
-      password = "";
-    };
-  };
-
-  environment.systemPackages = with pkgs; [
-    python3
+    ./modules/system.nix
+    ./modules/storage.nix
+    ./modules/packages.nix
   ];
 
   system.stateVersion = "26.05";

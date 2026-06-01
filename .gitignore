@@ -4,3 +4,6 @@
 .vault*
 
 kubeconfig.yaml
+**/*.qcow2
+**/nix-support
+**/result
