@@ -6,6 +6,6 @@
     loader.systemd-boot.enable = true;
     loader.efi.canTouchEfiVariables = true;
 
-    zfs = { forceImportRoot = false; };
+    zfs.forceImportRoot = false;
   };
 }
