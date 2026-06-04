@@ -5,17 +5,13 @@
     loader = {
       systemd-boot.enable = true;
       efi.canTouchEfiVariables = true;
-      grub = {
-        configurationLimit = 20;
-      };
+      grub = { configurationLimit = 20; };
     };
-    blacklistedKernelModules = [
-      "algif_aead"
-    ];
+    blacklistedKernelModules = [ "algif_aead" ];
     supportedFilesystems = [ "zfs" ];
-    zfs.extraPools = [
-      "storage"
-      "media"
-    ];
+    zfs = {
+      forceImportRoot = false;
+      extraPools = [ "storage" "media" ];
+    };
   };
 }
