@@ -99,6 +99,19 @@
           middlewares = [ ];
         };
 
+        vikunja = {
+          rule = "Host(`${config.services.vikunja.frontendHostname}`)";
+          service = "vikunja";
+          tls = {
+            certResolver = "letsencrypt";
+            domains = [
+              {
+                main = config.services.vikunja.frontendHostname;
+              }
+            ];
+          };
+        };
+
         fibo = {
           rule = "Host(`fibo.cloud.majabojarska.dev`)";
           service = "fibo";
@@ -156,8 +169,17 @@
                 "http://"
                 + (builtins.elemAt config.services.nginx.virtualHosts."majabojarska.dev".listen 0).addr
                 + ":"
-                + builtins.toString
-                  (builtins.elemAt config.services.nginx.virtualHosts."majabojarska.dev".listen 0).port;
+                +
+                  builtins.toString
+                    (builtins.elemAt config.services.nginx.virtualHosts."majabojarska.dev".listen 0).port;
+            }
+          ];
+        };
+
+        vikunja.loadBalancer = {
+          servers = [
+            {
+              url = "http://127.0.0.1" + ":" + builtins.toString (config.services.vikunja.port);
             }
           ];
         };

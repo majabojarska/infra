@@ -11,5 +11,9 @@
     ./services/fibo.nix
     ./services/nginx.nix
     ./services/traefik.nix
+    (import ./services/vikunja.nix {
+      hostname = "vikunja.cloud.majabojarska.dev";
+      port = 3456;
+    })
   ];
 }
