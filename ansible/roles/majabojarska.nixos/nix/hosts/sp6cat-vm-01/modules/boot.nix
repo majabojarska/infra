@@ -10,8 +10,8 @@
       network = {
         ssh = {
 
-        }
-      }
+        }; 
+      }; 
       availableKernelModules = [
         "aesni_intel"
         "cryptd"
