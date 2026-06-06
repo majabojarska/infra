@@ -69,8 +69,8 @@
       ];
     };
     usePredictableInterfaceNames = false;
-    useDHCP = false;
-    interfaces.eth0.useDHCP = true;
+    useDHCP = true;
+    # interfaces.eth0.useDHCP = true;
 
     wg-quick.interfaces = {
       wg-baczek = {

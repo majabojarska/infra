@@ -12,12 +12,6 @@
       };
     };
     users = {
-      root = {
-        openssh.authorizedKeys.keys = [
-          "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBW+jmBmPtDv+Bw21i9J4p/pZPdM7SggxBF9FGOWXSM8 majabojarska98@gmail.com" # x260
-        ];
-      };
-
       maja = {
         isNormalUser = true;
         description = "maja";
