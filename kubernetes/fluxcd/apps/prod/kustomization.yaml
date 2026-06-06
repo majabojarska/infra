@@ -6,6 +6,7 @@ resources:
   - ../base/paperless-ngx
   - ../base/immich
   # - ../base/actualserver
+  - ../base/audiomuse-ai
   - ../base/jellyfin
   # - ../base/frigate
   - ../base/qbittorrent
