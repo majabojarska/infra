@@ -73,7 +73,7 @@ spec:
       external:
         host: "" # e.g. "audiomuse-postgresql-rw" (CNPG rw service)
         port: 5432
-      image: "postgres:15-alpine"
+      image: "postgres:18-alpine"
       user: "audiomuse"
       password: "audiomusepassword" # IMPORTANT: Change this for production or use --set
       db: "audiomusedb"
