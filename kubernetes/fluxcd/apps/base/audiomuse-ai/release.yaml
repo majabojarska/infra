@@ -55,7 +55,7 @@ spec:
       enabled: false
       external:
         url: "" # e.g. "redis://my-redis-cluster:6379/0"
-      image: "redis:7-alpine"
+      image: "redis:8-alpine"
       service:
         port: 6379
       resources: {}
