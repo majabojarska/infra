@@ -10,4 +10,4 @@ spec:
     operation: copy
   url: oci://oci.trueforge.org/truecharts/authentik
   ref:
-    tag: 40.7.4
+    tag: 40.8.0

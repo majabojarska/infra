@@ -23,7 +23,7 @@ spec:
       pullPolicy: Always
       # AudioMuse-AI version to deploy. Defaults to "latest" if empty.
       # Pin to a specific version (e.g. "1.1.3") for reproducible deployments.
-      tag: "2.1.4"
+      tag: "2.1.5"
 
     flask:
       replicaCount: 1
