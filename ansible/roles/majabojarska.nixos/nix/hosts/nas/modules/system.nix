@@ -17,7 +17,6 @@ in
 
   boot = {
     kernelParams = [ "console=ttyS0" ];
-    loader.grub.device = lib.mkDefault "/dev/vda";
     zfs.forceImportRoot = false;
   };
 
@@ -40,6 +39,17 @@ in
 
   services.qemuGuest.enable = true;
 
-  proxmox.qemuConf.net0 = "virtio,bridge=${proxmoxBridge},firewall=1";
+  virtualisation.diskSize = 32 * 1024; # 32 GB
+
+  proxmox = {
+    qemuConf = {
+      bios = "ovmf";
+      cores = 4;
+      memory = 8192;
+      agent = true;
+      net0 = "virtio,bridge=${proxmoxBridge},firewall=1";
+    };
+    cloudInit.enable = false;
+  };
 
 }
