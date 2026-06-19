@@ -18,6 +18,7 @@ in
   boot = {
     kernelParams = [ "console=ttyS0" ];
     loader.grub.device = lib.mkDefault "/dev/vda";
+    zfs.forceImportRoot = false;
   };
 
   nix = {
