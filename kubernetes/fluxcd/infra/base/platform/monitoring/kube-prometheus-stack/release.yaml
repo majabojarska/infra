@@ -10,7 +10,7 @@ spec:
       sourceRef:
         kind: HelmRepository
         name: prometheus-community
-      version: 86.3.2
+      version: 87.0.0
   values:
     additionalPrometheusRulesMap:
       {}
