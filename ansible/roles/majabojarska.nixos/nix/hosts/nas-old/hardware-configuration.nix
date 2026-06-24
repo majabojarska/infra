@@ -35,6 +35,7 @@
 
     supportedFilesystems = [ "zfs" ];
     zfs.extraPools = [ "storage" ];
+    zfs.forceImportRoot = false;
   };
 
   fileSystems."/" = {
