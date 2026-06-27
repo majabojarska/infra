@@ -2,7 +2,6 @@
 # and may be overwritten by future invocations.  Please make changes
 # to /etc/nixos/configuration.nix instead.
 {
-  config,
   lib,
   modulesPath,
   ...
@@ -12,56 +11,6 @@
   imports = [
     (modulesPath + "/profiles/qemu-guest.nix")
   ];
-
-  boot.initrd.availableKernelModules = [
-    "ata_piix"
-    "uhci_hcd"
-    "virtio_pci"
-    "virtio_scsi"
-    "sd_mod"
-    "sr_mod"
-  ];
-  boot.initrd.kernelModules = [ ];
-  boot.kernelModules = [ ];
-  boot.extraModulePackages = [ ];
-
-  fileSystems."/" = {
-    device = "/dev/mapper/luks-af1757e6-0789-4cd6-99aa-311e7b6ae5cf";
-    fsType = "ext4";
-  };
-
-  boot.initrd.luks.devices."luks-af1757e6-0789-4cd6-99aa-311e7b6ae5cf".device =
-    "/dev/disk/by-uuid/af1757e6-0789-4cd6-99aa-311e7b6ae5cf";
-
-  fileSystems."/boot" = {
-    device = "/dev/disk/by-uuid/CB58-531A";
-    fsType = "vfat";
-    options = [
-      "fmask=0077"
-      "dmask=0077"
-    ];
-  };
-
-  # WD 1TB USB HDD
-  environment.etc.crypttab = {
-    mode = "0600";
-    text = ''
-      # <volume-name> <encrypted-device> [key-file] [options]
-      crypt-wd-usb-hdd /dev/disk/by-label/CRYPT_WD_USB_HDD ${config.age.secrets."wd-usb-hdd-key".path} luks
-    '';
-  };
-
-  fileSystems."/mnt/wd-usd-hdd" = {
-    device = "/dev/mapper/crypt-wd-usb-hdd";
-    fsType = "ext4";
-    options = [
-      "noatime" # prevent atime updates on the filesystem
-      "users" # allows any user to mount and unmount
-      "nofail" # prevent system from failing if this drive doesn't mount
-    ];
-  };
-
-  swapDevices = [ ];
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
 }

@@ -2,21 +2,19 @@
 
 {
   boot = {
-    kernelParams = [
-      "ip=dhcp"
-    ];
-
-    blacklistedKernelModules = [ "algif_aead" ];
-
-    loader = {
-      efi.canTouchEfiVariables = true;
-      systemd-boot.enable = true;
-    };
-
-    zfs.forceImportRoot = false;
-
     initrd = {
+      kernelModules = [ ];
+      luks.devices = {
+        "luks-af1757e6-0789-4cd6-99aa-311e7b6ae5cf".device =
+          "/dev/disk/by-uuid/af1757e6-0789-4cd6-99aa-311e7b6ae5cf";
+      };
       availableKernelModules = [
+        "ata_piix"
+        "uhci_hcd"
+        "virtio_pci"
+        "virtio_scsi"
+        "sd_mod"
+        "sr_mod"
         "virtio_net"
         "virtio_pci"
       ];
@@ -39,5 +37,18 @@
         };
       };
     };
+
+    kernelParams = [ "ip=dhcp" ];
+    kernelModules = [ ];
+    blacklistedKernelModules = [ "algif_aead" ];
+
+    loader = {
+      efi.canTouchEfiVariables = true;
+      systemd-boot.enable = true;
+    };
+
+    zfs.forceImportRoot = false;
+
+    extraModulePackages = [ ];
   };
 }
