@@ -136,19 +136,6 @@
           ];
         };
 
-        nitter = {
-          rule = "Host(`nitter.${config.globals.cloudDomain}`)";
-          service = "nitter";
-          tls = {
-            certResolver = "letsencrypt";
-            domains = [
-              {
-                main = "nitter.${config.globals.cloudDomain}";
-              }
-            ];
-          };
-        };
-
         redlib = {
           rule = "Host(`redlib.${config.globals.cloudDomain}`)";
           service = "redlib";
@@ -238,15 +225,6 @@
             }
           ];
         };
-
-        nitter.loadBalancer = {
-          servers = [
-            {
-              url = "http://127.0.0.1:${toString config.sp6catVm01.ports.nitter}";
-            }
-          ];
-        };
-
 
         redlib.loadBalancer = {
           servers = [
