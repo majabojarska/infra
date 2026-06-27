@@ -1,6 +1,11 @@
 { ... }:
 
 {
+  _module.args = {
+    wdUsbHddCryptName = "crypt-wd-usb-hdd";
+    wdUsbHddMountPath = "/mnt/wd-usb-hdd";
+  };
+
   imports = [
     ../../modules/i18n.nix
 

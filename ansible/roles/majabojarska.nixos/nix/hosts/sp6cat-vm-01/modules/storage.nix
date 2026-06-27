@@ -1,8 +1,4 @@
-{ config, ... }:
-
-let
-  _wd_usb_hdd_name = "crypt-wd-usb-hdd";
-in
+{ config, wdUsbHddMountPath, wdUsbHddCryptName, ... }:
 
 {
 
@@ -10,7 +6,7 @@ in
     mode = "0600";
     text = ''
       # <volume-name> <encrypted-device> [key-file] [options]
-      ${_wd_usb_hdd_name} /dev/disk/by-label/CRYPT_WD_USB_HDD ${
+      ${wdUsbHddCryptName} /dev/disk/by-label/CRYPT_WD_USB_HDD ${
         config.age.secrets."wd-usb-hdd-key".path
       } luks
     '';
@@ -31,8 +27,8 @@ in
       fsType = "ext4";
     };
 
-    "/mnt/wd-usd-hdd" = {
-      device = "/dev/mapper/${_wd_usb_hdd_name}";
+    "${wdUsbHddMountPath}" = {
+      device = "/dev/mapper/${wdUsbHddCryptName}";
       fsType = "ext4";
       options = [
         "noatime" # prevent atime updates on the filesystem

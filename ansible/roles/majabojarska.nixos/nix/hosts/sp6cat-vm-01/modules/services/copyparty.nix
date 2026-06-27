@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, wdUsbHddMountPath, ... }:
 {
   # https://github.com/9001/copyparty?tab=readme-ov-file#nixos-module
   services.copyparty = {
@@ -59,7 +59,7 @@
 
     volumes = {
       "/public" = {
-        path = "/mnt/wd-usb-hdd/copyparty/public";
+        path = "${wdUsbHddMountPath}/copyparty/public";
         # see `copyparty --help-accounts` for available options
         access = {
           r = "*";
@@ -74,7 +74,7 @@
       };
       "/private" = {
         # share the contents of "/srv/copyparty"
-        path = "/mnt/wd-usb-hdd/copyparty/private";
+        path = "${wdUsbHddMountPath}/copyparty/private";
         # see `copyparty --help-accounts` for available options
         access = {
           rw = [ "@users" ];

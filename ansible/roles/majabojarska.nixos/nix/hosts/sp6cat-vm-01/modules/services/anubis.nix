@@ -1,4 +1,4 @@
-{ config, ...}:
+{ ... }:
 
 {
   services.anubis = {
@@ -82,6 +82,5 @@
       SERVE_ROBOTS_TXT = true;
     };
   };
-
 
 }

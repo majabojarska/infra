@@ -1,4 +1,4 @@
-{ config, ... }:
+{ ... }:
 
 {
   services.nginx.virtualHosts."majabojarska.dev" = {
@@ -22,6 +22,4 @@
       absolute_redirect off ;
     '';
   };
-
-
 }
