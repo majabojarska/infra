@@ -1,3 +1,0 @@
----
-ansible_user: root
-ansible_host: "pve-02.{{ subdomain_home }}"
