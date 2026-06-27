@@ -192,7 +192,7 @@
                 + (builtins.elemAt config.services.nginx.virtualHosts."${config.globals.baseDomain}".listen 0).addr
                 + ":"
                 +
-                  builtins.toString
+                  toString
                     (builtins.elemAt config.services.nginx.virtualHosts."${config.globals.baseDomain}".listen 0).port;
             }
           ];
@@ -201,7 +201,7 @@
         vikunja.loadBalancer = {
           servers = [
             {
-              url = "http://127.0.0.1" + ":" + builtins.toString (config.services.vikunja.port);
+              url = "http://127.0.0.1" + ":" + toString (config.services.vikunja.port);
             }
           ];
         };
@@ -213,7 +213,7 @@
                 "http://"
                 + config.services.copyparty.settings.i
                 + ":"
-                + builtins.toString (builtins.elemAt config.services.copyparty.settings.p 0);
+                + toString (builtins.elemAt config.services.copyparty.settings.p 0);
             }
           ];
         };
