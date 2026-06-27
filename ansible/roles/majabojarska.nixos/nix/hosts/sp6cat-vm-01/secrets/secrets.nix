@@ -11,4 +11,5 @@ in
   "fah-token.age".publicKeys = [ sp6cat-vm-01 ] ++ developers;
   "searx-secret-key.age".publicKeys = [ sp6cat-vm-01 ] ++ developers;
   "wg-baczek-priv-key.age".publicKeys = [ sp6cat-vm-01 ] ++ developers;
+  "wd-usb-hdd-key.age".publicKeys = [ sp6cat-vm-01 ] ++ developers;
 }

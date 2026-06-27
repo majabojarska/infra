@@ -31,6 +31,12 @@
         owner = "root";
         group = "root";
       };
+      "wd-usb-hdd-key" = {
+        file = ./secrets/wd-usb-hdd-key.age;
+        mode = "0400";
+        owner = "root";
+        group = "root";
+      };
     };
   };
 }

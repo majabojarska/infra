@@ -6,7 +6,7 @@
   };
   outputs = { self, agenix, nixpkgs, copyparty, }: {
     nixosConfigurations = {
-      
+
       kube-01 = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         modules = [
@@ -15,7 +15,7 @@
           agenix.nixosModules.default
         ];
       };
-      
+
       sp6cat-vm-01 = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         modules = [
@@ -24,7 +24,7 @@
           agenix.nixosModules.default
           copyparty.nixosModules.default
           (
-            { pkgs, ... }:
+            { ... }:
             {
               # add the copyparty overlay to expose the package to the module
               nixpkgs.overlays = [ copyparty.overlays.default ];
