@@ -1,0 +1,45 @@
+extends: default
+
+rules:
+  # Line length (off for URLs and long strings)
+  line-length:
+    max: 120
+    level: warning
+    allow-non-breakable-words: true
+    allow-non-breakable-inline-mappings: true
+
+  # Indentation
+  indentation:
+    spaces: 2
+    indent-sequences: true
+
+  # Comments
+  comments:
+    min-spaces-from-content: 1
+
+  # Empty lines
+  empty-lines:
+    max: 2
+
+  # Truthy values (allow yes/no/on/off)
+  truthy:
+    allowed-values: ['true', 'false', 'yes', 'no', 'on', 'off']
+    check-keys: false
+
+  # Document start (don't require ---)
+  document-start: disable
+
+  # Brackets
+  brackets:
+    min-spaces-inside: 0
+    max-spaces-inside: 1
+
+  # Key duplicates
+  key-duplicates: enable
+
+ignore: |
+  .git/
+  .github/
+  node_modules/
+  .venv/
+  .fact_cache/

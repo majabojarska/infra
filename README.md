@@ -1,6 +1,7 @@
 # Infra
 
-[![Nix check](https://github.com/majabojarska/infra/actions/workflows/nix.yaml/badge.svg)](https://github.com/majabojarska/infra/actions/workflows/nix.yaml)
+[![Status](https://github.com/majabojarska/infra/actions/workflows/validation.yaml/badge.svg)](https://github.com/majabojarska/infra/actions/workflows/validation.yaml)
+[![Security Audit](https://github.com/majabojarska/infra/actions/workflows/security-audit.yaml/badge.svg)](https://github.com/majabojarska/infra/actions/workflows/security-audit.yaml)
 
 Version control for my homelab's infrastructure and services.
 

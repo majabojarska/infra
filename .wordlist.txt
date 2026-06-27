@@ -1,0 +1,28 @@
+# Custom dictionary for spell checking
+# Add project-specific terms, proper nouns, and technical terms here
+
+# Project names
+FluxCD
+Kubernetes
+NixOS
+Ansible
+OVH
+Linode
+Proxmox
+
+# Technical terms
+homelab
+kubeconfig
+kustomization
+playbook
+playbooks
+SOPS
+webhook
+ACME
+cert-manager
+kubernetes
+nixos
+
+# Usernames and domains
+majabojarska
+github
