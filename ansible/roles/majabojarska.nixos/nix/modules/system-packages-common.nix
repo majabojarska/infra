@@ -2,11 +2,9 @@
 
 {
   environment.systemPackages = with pkgs; [
-    borgbackup
     btop
-    busybox
     curl
-    delta
+    cryptsetup
     dig
     dmidecode
     file
@@ -16,8 +14,6 @@
     inetutils
     iotop
     iperf
-    jq
-    k9s
     lsof
     mtr
     ncdu
@@ -25,12 +21,8 @@
     parallel
     parted
     pciutils
-    powertop
     python3
-    rclone
-    ripgrep
     rsync
-    smartmontools
     stress
     sysstat
     tcpdump
@@ -39,8 +31,6 @@
     unzip
     vim
     wget
-    yazi
-    yq
     zerofree
     zsh
   ];
