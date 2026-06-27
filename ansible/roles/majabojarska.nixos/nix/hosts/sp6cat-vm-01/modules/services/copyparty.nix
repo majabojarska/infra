@@ -1,4 +1,4 @@
-{ config, pkgs, wdUsbHddMountPath, ... }:
+{ config, pkgs, ... }:
 {
   # https://github.com/9001/copyparty?tab=readme-ov-file#nixos-module
   services.copyparty = {
@@ -59,7 +59,7 @@
 
     volumes = {
       "/public" = {
-        path = "${wdUsbHddMountPath}/copyparty/public";
+        path = "${config.sp6catVm01.storage.wdUsbHddMountPath}/copyparty/public";
         # see `copyparty --help-accounts` for available options
         access = {
           r = "*";
@@ -74,7 +74,7 @@
       };
       "/private" = {
         # share the contents of "/srv/copyparty"
-        path = "${wdUsbHddMountPath}/copyparty/private";
+        path = "${config.sp6catVm01.storage.wdUsbHddMountPath}/copyparty/private";
         # see `copyparty --help-accounts` for available options
         access = {
           rw = [ "@users" ];

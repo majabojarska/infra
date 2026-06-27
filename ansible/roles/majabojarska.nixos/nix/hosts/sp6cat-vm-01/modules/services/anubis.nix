@@ -72,7 +72,7 @@
     };
 
     instances.blog.settings = {
-      BIND = ":8080";
+      BIND = ":${toString config.sp6catVm01.ports.anubis}";
       BIND_NETWORK = "tcp";
       TARGET = " ";
       REDIRECT_DOMAINS = config.globals.baseDomain;

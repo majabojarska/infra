@@ -13,7 +13,7 @@
     listen = [
       {
         addr = "127.0.0.1";
-        port = 8004;
+        port = config.sp6catVm01.ports.blog;
       }
     ];
 

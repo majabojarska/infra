@@ -133,7 +133,7 @@
       middlewares = {
         anubis = {
           forwardAuth = {
-            address = "http://127.0.0.1:8080/.within.website/x/cmd/anubis/api/check";
+            address = "http://127.0.0.1:${toString config.sp6catVm01.ports.anubis}/.within.website/x/cmd/anubis/api/check";
           };
         };
 
@@ -157,7 +157,7 @@
         anubis.loadBalancer = {
           servers = [
             {
-              url = "http://127.0.0.1:8080";
+              url = "http://127.0.0.1:${toString config.sp6catVm01.ports.anubis}";
             }
           ];
         };
@@ -199,7 +199,7 @@
         fibo.loadBalancer = {
           servers = [
             {
-              url = "http://127.0.0.1:8006";
+              url = "http://127.0.0.1:${toString config.sp6catVm01.ports.fibo}";
             }
           ];
         };
