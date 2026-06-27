@@ -6,6 +6,8 @@
 
 {
   imports = [
+    ../../modules/globals.nix
+
     ./modules/networking.nix
     ./modules/i18n.nix
     ./modules/packages.nix

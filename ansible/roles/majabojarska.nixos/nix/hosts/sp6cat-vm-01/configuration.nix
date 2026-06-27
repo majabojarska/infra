@@ -8,6 +8,7 @@
 
   imports = [
     ../../modules/i18n.nix
+    ../../modules/globals.nix
 
     ./secrets.nix
     ./modules/boot.nix

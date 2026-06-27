@@ -1,5 +1,6 @@
 { config, lib, pkgs, ... }: {
   imports = [
+    ../../modules/globals.nix
     ../../modules/i18n.nix
     ../../modules/system-packages-common.nix
   ];

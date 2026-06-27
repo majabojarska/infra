@@ -1,10 +1,10 @@
-{ ... }:
+{ adminEmail, ... }:
 
 {
   services.anubis = {
     defaultOptions = {
       settings = {
-        WEBMASTER_EMAIL = "majabojarska98@gmail.com";
+        WEBMASTER_EMAIL = adminEmail;
         DIFFICULTY = 6;
       };
 

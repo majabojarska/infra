@@ -1,4 +1,4 @@
-{ config, ... }:
+{ config, adminEmail, ... }:
 
 {
   services.traefik = {
@@ -41,7 +41,7 @@
       certificatesResolvers.letsencrypt.acme = {
         # Comment for prod
         # caServer = "https://acme-staging-v02.api.letsencrypt.org/directory";
-        email = "majabojarska98@gmail.com";
+        email = adminEmail;
         storage = "${config.services.traefik.dataDir}/acme.json";
         dnsChallenge = {
           provider = "ovh";

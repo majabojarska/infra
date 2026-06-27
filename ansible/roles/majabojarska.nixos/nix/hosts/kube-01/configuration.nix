@@ -4,6 +4,8 @@
 
 {
   imports = [
+    ../../modules/globals.nix
+
     ./modules/boot.nix
     ./modules/hardware.nix
     ./modules/system.nix
