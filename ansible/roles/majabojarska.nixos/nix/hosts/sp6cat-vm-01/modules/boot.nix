@@ -1,8 +1,9 @@
-{ config, ... }:
+{ pkgs, config, ... }:
 
 {
   boot = {
     initrd = {
+      verbose = true;
       kernelModules = [ ];
       luks.devices = {
         "luks-af1757e6-0789-4cd6-99aa-311e7b6ae5cf".device =
@@ -38,9 +39,40 @@
       };
     };
 
-    kernelParams = [ "ip=dhcp" ];
+    kernelParams = [
+      "ip=dhcp"
+      "console=ttyS0,115200n8"
+    ];
     kernelModules = [ ];
     blacklistedKernelModules = [ "algif_aead" ];
+
+    # Disable the upstream getty module's automatic configuration for serial-getty@
+    # This prevents conflicts with our custom configuration
+    systemd.services."serial-getty@" = {
+      enable = false;
+    };
+
+    # Configure our own serial-getty@ttyS0 service
+    systemd.services."serial-getty@ttyS0" = {
+      enable = true;
+      wantedBy = [ "getty.target" ];
+      after = [ "systemd-user-sessions.service" ];
+      wants = [ "systemd-user-sessions.service" ];
+      serviceConfig = {
+        Type = "idle";
+        Restart = "always";
+        Environment = "TERM=vt220";
+        ExecStart = "${pkgs.util-linux}/bin/agetty --login-program ${pkgs.shadow}/bin/login --noclear --keep-baud ttyS0 115200,57600,38400,9600 vt220";
+        UtmpIdentifier = "ttyS0";
+        StandardInput = "tty";
+        StandardOutput = "tty";
+        TTYPath = "/dev/ttyS0";
+        TTYReset = "yes";
+        TTYVHangup = "yes";
+        IgnoreSIGPIPE = "no";
+        SendSIGHUP = "yes";
+      };
+    };
 
     loader = {
       efi.canTouchEfiVariables = true;
