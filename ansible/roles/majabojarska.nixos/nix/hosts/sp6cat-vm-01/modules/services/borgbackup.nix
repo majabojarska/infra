@@ -7,7 +7,7 @@
         "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILulC22JoRPoRtU5Q36cMzwo8W3DA2l58MUu9VcQEghw wint3rmute@thinkcentre"
       ];
       path = "${wdUsbHddMountPath}/borg/baczek";
-      quota = "100G";
+      quota = "200G";
       allowSubRepos = true;
     };
 
