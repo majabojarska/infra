@@ -47,6 +47,15 @@
     jails = { };
   };
 
+  age.secrets = {
+    "wg-baczek-priv-key" = {
+      file = ../secrets/wg-baczek-priv-key.age;
+      mode = "0400";
+      owner = "root";
+      group = "root";
+    };
+  };
+
   networking = {
     hostName = "sp6cat-vm-01";
     domain = config.globals.cloudDomain;

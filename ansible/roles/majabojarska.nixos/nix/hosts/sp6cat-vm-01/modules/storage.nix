@@ -1,16 +1,24 @@
 { config, ... }:
 
 {
-
-  environment.etc.crypttab = {
-    mode = "0600";
-    text = ''
-      # <volume-name> <encrypted-device> [key-file] [options]
-      ${config.sp6catVm01.storage.wdUsbHddCryptName} /dev/disk/by-label/CRYPT_WD_USB_HDD ${
-        config.age.secrets."wd-usb-hdd-key".path
-      } luks
-    '';
+  age.secrets = {
+    "wd-usb-hdd-key" = {
+      file = ./secrets/wd-usb-hdd-key.age;
+      mode = "0400";
+      owner = "root";
+      group = "root";
+    };
   };
+
+  # environment.etc.crypttab = {
+  #   mode = "0600";
+  #   text = ''
+  #     # <volume-name> <encrypted-device> [key-file] [options]
+  #     ${config.sp6catVm01.storage.wdUsbHddCryptName} /dev/disk/by-label/CRYPT_WD_USB_HDD ${
+  #       config.age.secrets."wd-usb-hdd-key".path
+  #     } luks
+  #   '';
+  # };
 
   fileSystems = {
     "/boot" = {
@@ -27,15 +35,15 @@
       fsType = "ext4";
     };
 
-    "${config.sp6catVm01.storage.wdUsbHddMountPath}" = {
-      device = "/dev/mapper/${config.sp6catVm01.storage.wdUsbHddCryptName}";
-      fsType = "ext4";
-      options = [
-        "noatime" # prevent atime updates on the filesystem
-        "users" # allows any user to mount and unmount
-        "nofail" # prevent system from failing if this drive doesn't mount
-      ];
-    };
+    # "${config.sp6catVm01.storage.wdUsbHddMountPath}" = {
+    #   device = "/dev/mapper/${config.sp6catVm01.storage.wdUsbHddCryptName}";
+    #   fsType = "ext4";
+    #   options = [
+    #     "noatime" # prevent atime updates on the filesystem
+    #     "users" # allows any user to mount and unmount
+    #     "nofail" # prevent system from failing if this drive doesn't mount
+    #   ];
+    # };
   };
 
 }

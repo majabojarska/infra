@@ -21,6 +21,12 @@
           default = 8006;
           description = "Fibo service port";
         };
+
+        nitter = lib.mkOption {
+          type = lib.types.port;
+          default = 8007;
+          description = "Nitter service port";
+        };
       };
 
       storage = {
@@ -43,7 +49,6 @@
     ../../modules/i18n.nix
     ../../modules/globals.nix
 
-    ./secrets.nix
     ./modules/boot.nix
     ./modules/hardware.nix
     ./modules/storage.nix

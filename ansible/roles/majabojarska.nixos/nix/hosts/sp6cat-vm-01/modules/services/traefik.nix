@@ -1,6 +1,13 @@
 { config, ... }:
 
 {
+  age.secrets = {
+    "traefik.env" = {
+      file = ../../secrets/ovh.age;
+      mode = "0400";
+    };
+  };
+
   services.traefik = {
     enable = true;
 
@@ -147,7 +154,9 @@
 
         fibo_redirect_swagger = {
           redirectRegex = {
-            regex = "^https://fibo\\.${builtins.replaceStrings ["."] ["\\."] config.globals.cloudDomain}/(swagger)?$";
+            regex = "^https://fibo\\.${
+              builtins.replaceStrings [ "." ] [ "\\." ] config.globals.cloudDomain
+            }/(swagger)?$";
             replacement = "https://fibo.${config.globals.cloudDomain}/swagger/index.html";
           };
         };

@@ -1,5 +1,20 @@
 { config, pkgs, ... }:
 {
+  age.secrets = {
+    "copyparty-pass-maja" = {
+      file = ../../secrets/copyparty-pass-maja.age;
+      mode = "0400";
+      owner = "copyparty";
+      group = "copyparty";
+    };
+    "copyparty-pass-baczek" = {
+      file = ../../secrets/copyparty-pass-baczek.age;
+      mode = "0400";
+      owner = "copyparty";
+      group = "copyparty";
+    };
+  };
+
   # https://github.com/9001/copyparty?tab=readme-ov-file#nixos-module
   services.copyparty = {
     enable = true;
