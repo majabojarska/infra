@@ -4,11 +4,6 @@
     cmd: "nix flake update --flake '{{ role_path }}/nix'"
   delegate_to: localhost
 
-- name: Remove configuration directory tree
-  ansible.builtin.file:
-    state: absent
-    path: "{{ flake_dir }}"
-
 - name: Make sure that the configuration directory exists
   ansible.builtin.file:
     path: "{{ flake_dir }}"
@@ -18,9 +13,11 @@
     mode: "0755"
 
 - name: Populate configuration tree
-  copy:
-    src: "nix/"
+  ansible.posix.synchronize:
+    src: "{{ role_path }}/nix/"
     dest: "{{ flake_dir }}/"
+    delete: true
+    recursive: true
 
 - name: NixOS build flake
   become: true
