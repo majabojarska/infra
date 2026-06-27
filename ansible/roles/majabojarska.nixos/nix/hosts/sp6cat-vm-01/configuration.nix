@@ -27,6 +27,12 @@
           default = 8007;
           description = "Nitter service port";
         };
+
+        redlib = lib.mkOption {
+          type = lib.types.port;
+          default = 8008;
+          description = "Redlib service port";
+        };
       };
 
       storage = {
