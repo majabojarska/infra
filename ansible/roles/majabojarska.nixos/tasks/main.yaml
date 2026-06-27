@@ -1,9 +1,4 @@
 ---
-- name: Nix flake update
-  ansible.builtin.shell:
-    cmd: "nix flake update --flake '{{ role_path }}/nix'"
-  delegate_to: localhost
-
 - name: Make sure that the configuration directory exists
   ansible.builtin.file:
     path: "{{ flake_dir }}"
