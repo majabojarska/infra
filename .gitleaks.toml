@@ -1,0 +1,31 @@
+# Gitleaks configuration for infrastructure repository
+# https://github.com/gitleaks/gitleaks
+
+title = "gitleaks config"
+
+# Global allowlist for known non-sensitive patterns
+[allowlist]
+description = "Global allowlist"
+regexes = [
+  # SOPS/age encrypted secrets (ENC[...] format)
+  '''ENC\[AES256_GCM,data:[A-Za-z0-9+/=]+,iv:[A-Za-z0-9+/=]+,tag:[A-Za-z0-9+/=]+,type:\w+\]''',
+  # age recipient public keys (safe to commit)
+  '''age1[a-z0-9]{58}''',
+  # AGE ENCRYPTED FILE markers
+  '''-----BEGIN AGE ENCRYPTED FILE-----''',
+  '''-----END AGE ENCRYPTED FILE-----''',
+  # SOPS metadata fields
+  '''encrypted_regex''',
+  '''lastmodified''',
+]
+
+paths = [
+  # SOPS-encrypted Kubernetes secrets
+  '''kubernetes/.*/(secrets|credentials|ovh-credentials)\.yaml$''',
+  # Gitleaks config itself
+  '''\.gitleaks\.toml$''',
+  # Test files with mock data
+  '''(.*?)(test|spec|mock)(.*)''',
+  # Git directory
+  '''^\.git/''',
+]
