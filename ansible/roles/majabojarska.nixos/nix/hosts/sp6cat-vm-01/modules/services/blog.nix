@@ -1,9 +1,9 @@
-{ ... }:
+{ config, ... }:
 
 {
-  services.nginx.virtualHosts."majabojarska.dev" = {
-    serverName = "majabojarska.dev";
-    root = "/var/www/majabojarska.dev";
+  services.nginx.virtualHosts."${config.globals.baseDomain}" = {
+    serverName = config.globals.baseDomain;
+    root = "/var/www/${config.globals.baseDomain}";
 
     locations."/" = {
       tryFiles = "$uri $uri/ /404.html =404";
@@ -18,7 +18,7 @@
     ];
 
     extraConfig = ''
-      access_log /var/log/nginx/majabojarska.dev.access.log ;
+      access_log /var/log/nginx/${config.globals.baseDomain}.access.log ;
       absolute_redirect off ;
     '';
   };

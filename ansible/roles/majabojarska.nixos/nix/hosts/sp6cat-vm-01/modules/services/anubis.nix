@@ -1,10 +1,10 @@
-{ adminEmail, ... }:
+{ config, ... }:
 
 {
   services.anubis = {
     defaultOptions = {
       settings = {
-        WEBMASTER_EMAIL = adminEmail;
+        WEBMASTER_EMAIL = config.globals.adminEmail;
         DIFFICULTY = 6;
       };
 
@@ -75,9 +75,9 @@
       BIND = ":8080";
       BIND_NETWORK = "tcp";
       TARGET = " ";
-      REDIRECT_DOMAINS = "majabojarska.dev";
-      PUBLIC_URL = "https://anubis.cloud.majabojarska.dev";
-      COOKIE_DOMAIN = "majabojarska.dev";
+      REDIRECT_DOMAINS = config.globals.baseDomain;
+      PUBLIC_URL = "https://anubis.${config.globals.cloudDomain}";
+      COOKIE_DOMAIN = config.globals.baseDomain;
       DIFFICULTY = 20;
       SERVE_ROBOTS_TXT = true;
     };

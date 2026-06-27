@@ -1,4 +1,4 @@
-{ config, adminEmail, ... }:
+{ config, ... }:
 
 {
   services.traefik = {
@@ -41,7 +41,7 @@
       certificatesResolvers.letsencrypt.acme = {
         # Comment for prod
         # caServer = "https://acme-staging-v02.api.letsencrypt.org/directory";
-        email = adminEmail;
+        email = config.globals.adminEmail;
         storage = "${config.services.traefik.dataDir}/acme.json";
         dnsChallenge = {
           provider = "ovh";
@@ -58,27 +58,27 @@
     dynamicConfigOptions.http = {
       routers = {
         anubis = {
-          rule = "Host(`anubis.cloud.majabojarska.dev`)";
+          rule = "Host(`anubis.${config.globals.cloudDomain}`)";
           service = "anubis";
           entrypoints = "websecure";
           tls = {
             certResolver = "letsencrypt";
             domains = [
               {
-                main = "anubis.cloud.majabojarska.dev";
+                main = "anubis.${config.globals.cloudDomain}";
               }
             ];
           };
         };
 
         blog = {
-          rule = "Host(`majabojarska.dev`)";
+          rule = "Host(`${config.globals.baseDomain}`)";
           service = "blog";
           tls = {
             certResolver = "letsencrypt";
             domains = [
               {
-                main = "majabojarska.dev";
+                main = config.globals.baseDomain;
               }
             ];
           };
@@ -86,13 +86,13 @@
         };
 
         copyparty = {
-          rule = "Host(`copyparty.cloud.majabojarska.dev`)";
+          rule = "Host(`copyparty.${config.globals.cloudDomain}`)";
           service = "copyparty";
           tls = {
             certResolver = "letsencrypt";
             domains = [
               {
-                main = "copyparty.cloud.majabojarska.dev";
+                main = "copyparty.${config.globals.cloudDomain}";
               }
             ];
           };
@@ -113,13 +113,13 @@
         };
 
         fibo = {
-          rule = "Host(`fibo.cloud.majabojarska.dev`)";
+          rule = "Host(`fibo.${config.globals.cloudDomain}`)";
           service = "fibo";
           tls = {
             certResolver = "letsencrypt";
             domains = [
               {
-                main = "fibo.cloud.majabojarska.dev";
+                main = "fibo.${config.globals.cloudDomain}";
               }
             ];
           };
@@ -147,8 +147,8 @@
 
         fibo_redirect_swagger = {
           redirectRegex = {
-            regex = "^https://fibo\.cloud\.majabojarska\.dev/(swagger)?$";
-            replacement = "https://fibo.cloud.majabojarska.dev/swagger/index.html";
+            regex = "^https://fibo\\.${builtins.replaceStrings ["."] ["\\."] config.globals.cloudDomain}/(swagger)?$";
+            replacement = "https://fibo.${config.globals.cloudDomain}/swagger/index.html";
           };
         };
       };
@@ -167,11 +167,11 @@
             {
               url =
                 "http://"
-                + (builtins.elemAt config.services.nginx.virtualHosts."majabojarska.dev".listen 0).addr
+                + (builtins.elemAt config.services.nginx.virtualHosts."${config.globals.baseDomain}".listen 0).addr
                 + ":"
                 +
                   builtins.toString
-                    (builtins.elemAt config.services.nginx.virtualHosts."majabojarska.dev".listen 0).port;
+                    (builtins.elemAt config.services.nginx.virtualHosts."${config.globals.baseDomain}".listen 0).port;
             }
           ];
         };

@@ -1,4 +1,4 @@
-{ ... }:
+{ config, ... }:
 {
   virtualisation = {
     oci-containers = {
@@ -13,8 +13,8 @@
             POSTGRESS_PASSWORD = "password";
             FIBO_DEBUG = "false";
             FIBO_API_ADDR = "0.0.0.0:8006";
-            FIBO_API_ROOT_URL = "https://fibo.cloud.majabojarska.dev";
-            FIBO_API_ALLOW_ORIGINS = "https://fibo.cloud.majabojarska.dev";
+            FIBO_API_ROOT_URL = "https://fibo.${config.globals.cloudDomain}";
+            FIBO_API_ALLOW_ORIGINS = "https://fibo.${config.globals.cloudDomain}";
             FIBO_METRICS_ENABLED = "true";
             FIBO_METRICS_ADDR = "0.0.0.0:8006";
             FIBO_METRICS_PATH = "/metrics";

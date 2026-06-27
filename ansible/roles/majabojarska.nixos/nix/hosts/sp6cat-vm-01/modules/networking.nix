@@ -49,7 +49,7 @@
 
   networking = {
     hostName = "sp6cat-vm-01";
-    domain = "cloud.majabojarska.dev";
+    domain = config.globals.cloudDomain;
     hostId = "529617af"; # First 8 chars from /etc/machine-id
 
     firewall = {

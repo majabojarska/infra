@@ -19,7 +19,7 @@
       repositories = [
         {
           label = "kubernetes-offsite-vps-01";
-          path = "ssh://borg@vps-01.cloud.majabojarska.dev/mnt/backup/kube-01/kubernetes";
+          path = "ssh://borg@vps-01.${config.globals.cloudDomain}/mnt/backup/kube-01/kubernetes";
         }
       ];
       exclude_if_present = [ ".nobackup" ];

@@ -5,7 +5,7 @@
 
   networking = {
     hostName = "kube-01";
-    domain = "home.majabojarska.dev";
+    domain = config.globals.homeDomain;
     hostId = "132aea15"; # First 8 chars from /etc/machine-id
 
     networkmanager.enable = true;

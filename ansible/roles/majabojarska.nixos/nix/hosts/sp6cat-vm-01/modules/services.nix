@@ -1,4 +1,4 @@
-{ ... }:
+{ config, ... }:
 
 {
   imports = [
@@ -12,7 +12,7 @@
     ./services/nginx.nix
     ./services/traefik.nix
     (import ./services/vikunja.nix {
-      hostname = "vikunja.cloud.majabojarska.dev";
+      hostname = "vikunja.${config.globals.cloudDomain}";
       port = 3456;
     })
   ];

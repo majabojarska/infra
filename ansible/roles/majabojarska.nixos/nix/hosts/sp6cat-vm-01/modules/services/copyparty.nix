@@ -11,8 +11,8 @@
     # see `copyparty --help` for available options
     settings = {
       name = "meoooow MEEOOOWWW";
-      name-url = "https://copyparty.cloud.majabojarska.dev";
-      site = "https://copyparty.cloud.majabojarska.dev";
+      name-url = "https://copyparty.${config.globals.cloudDomain}";
+      site = "https://copyparty.${config.globals.cloudDomain}";
       i = "127.0.0.1";
 
       # use lists to set multiple values
