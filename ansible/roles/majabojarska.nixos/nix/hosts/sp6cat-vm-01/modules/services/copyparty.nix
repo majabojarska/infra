@@ -21,7 +21,7 @@
       ];
 
       # num cores
-      j = 2;
+      j = 1;
 
       # use booleans to set binary flags
       no-reload = false;
