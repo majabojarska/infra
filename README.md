@@ -1,6 +1,6 @@
 # Infra
 
-[![Status](https://github.com/majabojarska/infra/actions/workflows/validation.yaml/badge.svg)](https://github.com/majabojarska/infra/actions/workflows/validation.yaml)
+[![Status](https://github.com/majabojarska/infra/actions/workflows/status.yaml/badge.svg)](https://github.com/majabojarska/infra/actions/workflows/status.yaml)
 
 Version control for my homelab's infrastructure and services.
 
