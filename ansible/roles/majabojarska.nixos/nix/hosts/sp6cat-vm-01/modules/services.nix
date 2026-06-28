@@ -10,6 +10,7 @@
     ./services/docker.nix
     ./services/fibo.nix
     ./services/nginx.nix
+    ./services/redlib.nix
     ./services/traefik.nix
     (import ./services/vikunja.nix {
       hostname = "vikunja.${config.globals.cloudDomain}";

@@ -7,7 +7,6 @@
 {
   services.redlib = {
     enable = true;
-    package = pkgs.redlib-veraticus;
     address = "127.0.0.1";
     port = config.sp6catVm01.ports.redlib;
     settings = {
