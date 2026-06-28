@@ -34,14 +34,30 @@
     SERVE_ROBOTS_TXT = true;
   };
 
-  system.preSwitchChecks.blogRespondsNoError = ''
-    echo "Checking https://${config.globals.baseDomain}..."
+  system.preSwitchChecks = {
+    blogLocalhostNoHttpError = ''
+      ${pkgs.curl}/bin/curl \
+        --fail-with-body \
+        --silent \
+        --show-error \
+          http://127.0.0.1:${toString config.sp6catVm01.ports.blog} \
+        >/dev/null
+    '';
 
-    ${pkgs.curl}/bin/curl \
-      --fail-with-body \
-      --silent \
-      --show-error \
-      https://${config.globals.baseDomain} \
-      >/dev/null
-  '';
+    blogDomainBlocksScrape = ''
+      response=$(${pkgs.curl}/bin/curl \
+        --silent \
+        --write-out "%{response_code}" \
+        --follow \
+          https://${config.globals.baseDomain})
+
+      if [[ "$response" != *Anubis* ]]; then
+          echo "Expected the response to contain 'Anubis', got $response"
+      fi
+
+      if [[ ! "$response" =~ 403$ ]]; then
+          echo "Expected 403 response code, got \$\{response\}"
+      fi
+    '';
+  };
 }
