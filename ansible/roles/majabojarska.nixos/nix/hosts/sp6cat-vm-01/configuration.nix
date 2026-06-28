@@ -4,7 +4,7 @@
   options = {
     sp6catVm01 = {
       ports = {
-        anubis = lib.mkOption {
+        anubis-blog = lib.mkOption {
           type = lib.types.port;
           default = 8080;
           description = "Anubis service port";
