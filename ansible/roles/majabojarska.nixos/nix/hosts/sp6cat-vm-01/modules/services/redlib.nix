@@ -5,17 +5,17 @@
 }:
 let
 src = pkgs.fetchFromGitHub {
-   owner = "redlib-org";
+   owner = "Silvenga";
    repo = "redlib";
-   rev = "a4d36e954cf1bd64f209cd8868c5a29edc81b374";
-   hash = "sha256-siyD6A12UALQIV7BMd7zu1TaojleTEYtpxPszuhx1/Y=";
+   rev = "v0.36.0";
+   hash = "sha256-BqK3ETdqc8w6onV75GYZqdDk7ZqDuDluazmUW94bW6E=";
  };
- redlib-latest = pkgs.redlib.overrideAttrs (oldAttrs: {
-   version = "0.36.0-unstable-2026-04-24-vendor";
+ redlib-silvenga = pkgs.redlib.overrideAttrs (oldAttrs: {
+   version = "0.36.0";
    inherit src;
    cargoDeps = pkgs.rustPlatform.fetchCargoVendor {
      inherit src;
-     name = "redlib-0.36.0-unstable-2026-04-24-vendor";
+     name = "redlib-0.36.0-silvenga";
      hash = "sha256-eO3c7rlFna3DuO31etJ6S4c7NmcvgvIWZ1KVkNIuUqQ=";
    };
    nativeBuildInputs =
@@ -38,7 +38,7 @@ in
 {
   services.redlib = {
     enable = true;
-    package = redlib-latest;
+    package = redlib-silvenga;
     address = "127.0.0.1";
     port = config.sp6catVm01.ports.redlib;
     settings = {
@@ -50,6 +50,4 @@ in
   };
 
   systemd.services.redlib.serviceConfig.Restart = "always";
-  # };
-
 }
