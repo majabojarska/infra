@@ -1,10 +1,11 @@
 {
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-26.05";
+    nixpkgs_unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     agenix.url = "github:ryantm/agenix";
     copyparty.url = "github:9001/copyparty";
   };
-  outputs = { self, agenix, nixpkgs, copyparty, }: {
+  outputs = { self, agenix, nixpkgs, copyparty, nixpkgs_unstable }: {
     nixosConfigurations = {
 
       kube-01 = nixpkgs.lib.nixosSystem {

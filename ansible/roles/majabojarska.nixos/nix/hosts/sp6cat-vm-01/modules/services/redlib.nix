@@ -2,7 +2,8 @@
   pkgs,
   config,
   ...
-}: let
+}:
+let
 src = pkgs.fetchFromGitHub {
    owner = "redlib-org";
    repo = "redlib";
@@ -33,7 +34,8 @@ src = pkgs.fetchFromGitHub {
        "--skip=oauth::tests::test_mobile_spoof_backend"
      ];
  });
-in {
+in
+{
   services.redlib = {
     enable = true;
     package = redlib-latest;
@@ -47,15 +49,7 @@ in {
     };
   };
 
-  # The redlib-collections secret is an env file (KEY=VALUE per line) holding
-  # REDLIB_COLLECTIONS and any other settings we don't want surfaced in this
-  # public repo — e.g. REDLIB_HOME_EXCLUDED_COLLECTIONS. agenix decrypts it
-  # to a root-owned 0400 path; systemd reads it before dropping to DynamicUser.
-  # systemd.services.redlib = {
-  #   serviceConfig.EnvironmentFile = config.age.secrets."redlib-collections".path;
-  #   restartTriggers = [config.age.secrets."redlib-collections".file];
+  systemd.services.redlib.serviceConfig.Restart = "always";
   # };
 
-  # Cloudflare Tunnel handles public exposure (redlib.husbuddies.gay) directly,
-  # so no local Caddy vhost is defined here.
 }
