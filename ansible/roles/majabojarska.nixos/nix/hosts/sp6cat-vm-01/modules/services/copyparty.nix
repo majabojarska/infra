@@ -112,4 +112,16 @@
       extraPackages = [ pkgs.exiftool ];
     };
   };
+
+  system.preSwitchChecks.copypartyRespondsNoError = ''
+    echo "Checking https://copyparty.${config.globals.cloudDomain}..."
+
+    ${pkgs.curl}/bin/curl \
+      --fail-with-body \
+      --silent \
+      --show-error \
+      https://copyparty.${config.globals.cloudDomain} \
+      >/dev/null
+  '';
+
 }
