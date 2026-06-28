@@ -71,16 +71,6 @@
       };
     };
 
-    instances.blog.settings = {
-      BIND = ":${toString config.sp6catVm01.ports.anubis}";
-      BIND_NETWORK = "tcp";
-      TARGET = " ";
-      REDIRECT_DOMAINS = config.globals.baseDomain;
-      PUBLIC_URL = "https://anubis.${config.globals.cloudDomain}";
-      COOKIE_DOMAIN = config.globals.baseDomain;
-      DIFFICULTY = 20;
-      SERVE_ROBOTS_TXT = true;
-    };
   };
 
 }
