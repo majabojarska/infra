@@ -1,4 +1,4 @@
-{ config, ... }:
+{ config, pkgs, ... }:
 
 {
   services.nginx.virtualHosts."${config.globals.baseDomain}" = {
@@ -34,4 +34,14 @@
     SERVE_ROBOTS_TXT = true;
   };
 
+  system.preSwitchChecks.blogRespondsNoError = ''
+    echo "Checking https://${config.globals.baseDomain}..."
+
+    ${pkgs.curl}/bin/curl \
+      --fail-with-body \
+      --silent \
+      --show-error \
+      https://${config.globals.baseDomain} \
+      >/dev/null
+  '';
 }
