@@ -113,6 +113,8 @@
     };
   };
 
+  systemd.services.copyparty.serviceConfig.Restart = "always";
+
   system.preSwitchChecks.copypartyRespondsNoError = ''
     echo "Checking https://copyparty.${config.globals.cloudDomain}..."
 
