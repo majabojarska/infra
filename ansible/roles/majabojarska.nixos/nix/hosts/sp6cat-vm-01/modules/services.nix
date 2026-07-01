@@ -8,6 +8,7 @@
     ./services/chrony.nix
     ./services/copyparty.nix
     ./services/docker.nix
+    ./services/uptime-kuma.nix
     ./services/fibo.nix
     ./services/nginx.nix
     ./services/redlib.nix

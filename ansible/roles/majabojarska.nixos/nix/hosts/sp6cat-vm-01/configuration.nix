@@ -33,6 +33,12 @@
           default = 8008;
           description = "Redlib service port";
         };
+
+        uptimeKuma = lib.mkOption {
+          type = lib.types.port;
+          default = 8009;
+          description = "Uptime Kuma service port";
+        };
       };
 
       storage = {

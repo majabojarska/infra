@@ -148,6 +148,19 @@
             ];
           };
         };
+
+        uptimeKuma = {
+          rule = "Host(`uptime.${config.globals.cloudDomain}`)";
+          service = "uptimeKuma";
+          tls = {
+            certResolver = "letsencrypt";
+            domains = [
+              {
+                main = "uptime.${config.globals.cloudDomain}";
+              }
+            ];
+          };
+        };
       };
 
       middlewares = {
@@ -233,6 +246,15 @@
             }
           ];
         };
+
+        uptimeKuma.loadBalancer = {
+          servers = [
+            {
+              url = "http://127.0.0.1:${toString config.sp6catVm01.ports.uptimeKuma}";
+            }
+          ];
+        };
+
 
       };
     };
