@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ pkgs, ... }:
 
 let
   sshKeys = import ../../../modules/ssh-keys.nix;
@@ -24,7 +24,6 @@ in
           "wheel"
           "docker"
         ];
-        packages = with pkgs; [ ];
         openssh.authorizedKeys.keys =sshKeys.maja;
       };
       www-data = {

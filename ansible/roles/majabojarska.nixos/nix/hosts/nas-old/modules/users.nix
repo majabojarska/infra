@@ -13,7 +13,6 @@ in
         "networkmanager"
         "wheel"
       ];
-      packages = with pkgs; [ ];
       openssh.authorizedKeys.keys =sshKeys.maja;
     };
   };
