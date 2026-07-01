@@ -72,8 +72,8 @@ in
       wantedBy = [ "timers.target" ];
 
       timerConfig = {
-        OnBootSec = "1min";
-        OnUnitActiveSec = "10sec";
+        OnBootSec = "5min";
+        OnUnitActiveSec = "15min";
         Unit = "redlib-healthcheck.service";
       };
     };
