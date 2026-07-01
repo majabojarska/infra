@@ -31,7 +31,7 @@ in
 
   users.users = {
     root = {
-      openssh.authorizedKeys.keys =sshKeys.maja;
+      openssh.authorizedKeys.keys = sshKeys.maja;
     };
 
     # Human-like users
@@ -44,7 +44,7 @@ in
         "media"
         "kubernetes"
       ];
-      openssh.authorizedKeys.keys =sshKeys.maja;
+      openssh.authorizedKeys.keys = sshKeys.maja;
     };
 
     # Service users

@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ ... }:
 
 let
   sshKeys = import ../../../modules/ssh-keys.nix;
