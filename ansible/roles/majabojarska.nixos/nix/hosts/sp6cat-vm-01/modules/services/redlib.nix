@@ -47,7 +47,36 @@ in
     };
   };
 
-  systemd.services.redlib.serviceConfig.Restart = "always";
-  # };
+  systemd = {
+    services = {
+      redlib-healthcheck = {
+        description = "Healthcheck for Redlib";
+
+        serviceConfig = {
+          Type = "oneshot";
+          ExecStart = ''
+            ${pkgs.bash}/bin/bash -c '
+              ${pkgs.curl}/bin/curl --fail --silent http://127.0.0.1:${toString config.services.redlib.port} \
+                || ${pkgs.systemd}/bin/systemctl restart redlib.service
+            '
+          '';
+        };
+
+      };
+      redlib.serviceConfig.Restart = "always";
+    };
+
+    timers.redlib-healthcheck = {
+      description = "Run myservice health check every minute";
+
+      wantedBy = [ "timers.target" ];
+
+      timerConfig = {
+        OnBootSec = "1min";
+        OnUnitActiveSec = "10sec";
+        Unit = "redlib-healthcheck.service";
+      };
+    };
+  };
 
 }
