@@ -1,5 +1,9 @@
 { pkgs, config, ... }:
 
+let
+  sshKeys = import ../../../modules/ssh-keys.nix;
+in
+
 {
   boot = {
     initrd = {
@@ -29,7 +33,7 @@
         ssh = {
           enable = true;
           port = 22;
-          authorizedKeys = config.users.users.maja.openssh.authorizedKeys.keys;
+          authorizedKeys = sshKeys.maja;
           # https://wiki.nixos.org/wiki/Remote_disk_unlocking
           # Host RSA key for initrd created manually
           # mkdir -p /etc/secrets/initrd

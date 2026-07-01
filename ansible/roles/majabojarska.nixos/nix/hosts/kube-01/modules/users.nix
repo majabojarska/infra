@@ -1,4 +1,8 @@
-{ pkgs, ... }:
+{ config, pkgs, ... }:
+
+let
+  sshKeys = import ../../../modules/ssh-keys.nix;
+in
 
 {
   users.groups = {
@@ -27,9 +31,7 @@
 
   users.users = {
     root = {
-      openssh.authorizedKeys.keys = [
-        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBW+jmBmPtDv+Bw21i9J4p/pZPdM7SggxBF9FGOWXSM8 majabojarska98@gmail.com" # x260
-      ];
+      openssh.authorizedKeys.keys =sshKeys.maja;
     };
 
     # Human-like users
@@ -42,11 +44,7 @@
         "media"
         "kubernetes"
       ];
-      packages = with pkgs; [ ];
-      openssh.authorizedKeys.keys = [
-        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBW+jmBmPtDv+Bw21i9J4p/pZPdM7SggxBF9FGOWXSM8 majabojarska98@gmail.com" # x260
-        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBch2rzzVEnWcUbHJctteozpAFyJYXnd8wMC7DWXS9rL" # FP5
-      ];
+      openssh.authorizedKeys.keys =sshKeys.maja;
     };
 
     # Service users
