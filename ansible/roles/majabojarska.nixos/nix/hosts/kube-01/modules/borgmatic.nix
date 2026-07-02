@@ -2,7 +2,7 @@
 
 {
   services.borgmatic = {
-    enable = false; # TODO: retarget to new host, reenable
+    enable = true;
     enableConfigCheck = true;
     configurations."kubernetes" = {
       # zfs = { }; # Enables ZFS in borgmatic # TODO:
@@ -19,7 +19,7 @@
       repositories = [
         {
           label = "kubernetes-offsite-vps-01";
-          path = "ssh://borg@vps-01.${config.globals.cloudDomain}/mnt/backup/kube-01/kubernetes";
+          path = "ssh://borg@${config.globals.sp6catVm01HswroDomain}/mnt/wd-usb-hdd/borg/kube-01";
         }
       ];
       exclude_if_present = [ ".nobackup" ];

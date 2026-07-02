@@ -11,6 +11,7 @@
   };
 
   environment.systemPackages = with pkgs; [
+    borgbackup
     borgmatic
     cilium-cli
     drm_info
