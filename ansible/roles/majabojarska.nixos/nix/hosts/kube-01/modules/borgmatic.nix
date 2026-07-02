@@ -2,7 +2,7 @@
 
 {
   services.borgmatic = {
-    enable = true;
+    enable = false;
     enableConfigCheck = true;
     configurations."kubernetes" = {
       # zfs = { }; # Enables ZFS in borgmatic # TODO:
