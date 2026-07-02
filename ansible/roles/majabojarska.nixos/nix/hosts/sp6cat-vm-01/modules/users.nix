@@ -24,7 +24,7 @@ in
           "wheel"
           "docker"
         ];
-        openssh.authorizedKeys.keys =sshKeys.maja;
+        openssh.authorizedKeys.keys = sshKeys.maja;
       };
       www-data = {
         isNormalUser = true;
@@ -32,7 +32,7 @@ in
         group = "www-data";
         home = "/var/www";
         homeMode = "750";
-        openssh.authorizedKeys.keys =sshKeys."www-data";
+        openssh.authorizedKeys.keys = sshKeys."www-data";
       };
     };
   };
