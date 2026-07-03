@@ -39,6 +39,24 @@
           default = 8009;
           description = "Uptime Kuma service port";
         };
+
+        prometheus = lib.mkOption {
+          type = lib.types.port;
+          default = 9090;
+          description = "Prometheus service port";
+        };
+
+        prometheusExporterNode = lib.mkOption {
+          type = lib.types.port;
+          default = 9100;
+          description = "Prometheus Node Exporter service port";
+        };
+
+        grafana = lib.mkOption {
+          type = lib.types.port;
+          default = 3000;
+          description = "Grafana service port";
+        };
       };
 
       storage = {

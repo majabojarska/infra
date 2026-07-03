@@ -12,6 +12,9 @@
     ./services/fibo.nix
     ./services/nginx.nix
     ./services/redlib.nix
+    ./services/prometheus.nix
+    ./services/prometheus-exporter.nix
+    ./services/grafana.nix
     ./services/traefik.nix
     (import ./services/vikunja.nix {
       hostname = "vikunja.${config.globals.cloudDomain}";

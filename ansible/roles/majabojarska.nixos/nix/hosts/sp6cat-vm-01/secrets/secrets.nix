@@ -12,4 +12,5 @@ in
   "wg-baczek-priv-key.age".publicKeys = [ sp6cat-vm-01 ] ++ developers;
   "wd-usb-hdd-key.age".publicKeys = [ sp6cat-vm-01 ] ++ developers;
   "anubis-allow-bearer-token.age".publicKeys = [ sp6cat-vm-01 ] ++ developers;
+  "grafana-secret-key.age".publicKeys = [ sp6cat-vm-01 ] ++ developers;
 }
