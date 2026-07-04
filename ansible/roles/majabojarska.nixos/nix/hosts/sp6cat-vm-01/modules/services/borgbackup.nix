@@ -17,7 +17,7 @@
           "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIN8itVsInt/KzsOTn1BqmjuDfgR5IIPuN4nT6g1JVrVt root@kube-01"
         ];
         path = "${config.sp6catVm01.storage.wdUsbHddMountPath}/borg/kube-01";
-        quota = "300G";
+        quota = "400G";
         allowSubRepos = true;
       };
     };
