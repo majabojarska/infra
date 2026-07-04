@@ -57,6 +57,12 @@
           default = 3000;
           description = "Grafana service port";
         };
+
+        ntfy = lib.mkOption {
+          type = lib.types.port;
+          default = 8090;
+          description = "ntfy service port";
+        };
       };
 
       storage = {

@@ -15,6 +15,7 @@
     ./services/prometheus.nix
     ./services/prometheus-exporter.nix
     ./services/grafana.nix
+    ./services/ntfy.nix
     ./services/traefik.nix
     (import ./services/vikunja.nix {
       hostname = "vikunja.${config.globals.cloudDomain}";
