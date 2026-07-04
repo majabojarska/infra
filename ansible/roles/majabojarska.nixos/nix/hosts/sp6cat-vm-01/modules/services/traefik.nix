@@ -5,6 +5,7 @@
     "traefik.env" = {
       file = ../../secrets/traefik.age;
       mode = "0400";
+      owner = "traefik";
     };
   };
 

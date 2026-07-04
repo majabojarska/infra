@@ -5,7 +5,7 @@ let
   sp6cat-vm-01 = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBNo31eqosBfzGo91+3ftgHMvOpKWDE3FPY5L/aw/9X1";
 in
 {
-  "ovh.age".publicKeys = [ sp6cat-vm-01 ] ++ developers;
+  "traefik.age".publicKeys = [ sp6cat-vm-01 ] ++ developers;
   "copyparty-pass-maja.age".publicKeys = [ sp6cat-vm-01 ] ++ developers;
   "copyparty-pass-baczek.age".publicKeys = [ sp6cat-vm-01 ] ++ developers;
   "searx-secret-key.age".publicKeys = [ sp6cat-vm-01 ] ++ developers;
@@ -14,4 +14,5 @@ in
   "anubis-allow-bearer-token.age".publicKeys = [ sp6cat-vm-01 ] ++ developers;
   "grafana-secret-key.age".publicKeys = [ sp6cat-vm-01 ] ++ developers;
   "telegram-bot-token.age".publicKeys = [ sp6cat-vm-01 ] ++ developers;
+  "ntfy-auth.age".publicKeys = [ sp6cat-vm-01 ] ++ developers;
 }
