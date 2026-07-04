@@ -21,7 +21,7 @@
       repositories = [
         {
           label = "kubernetes-offsite-vps-01";
-          path = "ssh://borg@${config.globals.sp6catVm01HswroDomain}/mnt/wd-usb-hdd/borg/kube-01";
+          path = "ssh://borg@${config.globals.sp6catVm01HswroDomain}/mnt/wd-usb-hdd/borg/kube-01/kubernetes";
         }
       ];
       exclude_if_present = [ ".nobackup" ];
