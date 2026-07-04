@@ -3,7 +3,7 @@
 {
   age.secrets = {
     "traefik.env" = {
-      file = ../../secrets/ovh.age;
+      file = ../../secrets/traefik.age;
       mode = "0400";
     };
   };
