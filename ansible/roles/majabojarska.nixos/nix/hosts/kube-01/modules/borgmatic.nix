@@ -2,7 +2,7 @@
 
 {
   services.borgmatic = {
-    enable = false;
+    enable = true;
     enableConfigCheck = true;
     configurations."kubernetes" = {
       # zfs = { }; # Enables ZFS in borgmatic # TODO:
@@ -15,6 +15,8 @@
       ];
       exclude_patterns = [
         "*/.zfs" # Contains ZFS snapdir, backing this up would be redundant.
+        "vps-01-backups"
+        "/storage/kubernetes/vps-01-backups"
       ];
       repositories = [
         {
