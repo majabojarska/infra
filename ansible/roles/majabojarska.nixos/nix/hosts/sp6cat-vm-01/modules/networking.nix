@@ -86,6 +86,7 @@
         # Bridge server iface 10.10.0.1
         address = [ "10.10.0.1/24" ];
         listenPort = 20001;
+        mtu = 1420;
 
         privateKeyFile = config.age.secrets."wg-baczek-priv-key".path;
 
