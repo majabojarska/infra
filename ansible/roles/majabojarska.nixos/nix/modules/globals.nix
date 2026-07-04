@@ -28,7 +28,7 @@
 
     sp6catVm01HswroDomain = lib.mkOption {
       type = lib.types.str;
-      default = "hswro.majabojarska.dev";
+      default = "sp6cat-vm-01.hswro.majabojarska.dev";
       description = "sp6cat-vm-01.hswro subdomain";
     };
   };
