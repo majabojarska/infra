@@ -3,4 +3,4 @@ kind: Kustomization
 namespace: monitoring
 resources:
   - namespace.yaml
-  - ./kube-prometheus-stack
+  # - ./kube-prometheus-stack
