@@ -1,4 +1,9 @@
-{ config, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 {
   services.borgmatic = {
@@ -48,5 +53,10 @@
       keep_monthly = 3;
       keep_yearly = 0;
     };
+  };
+
+  systemd.timers.borgmatic.timerConfig = {
+    OnCalendar = lib.mkForce "*-*-* 05:00:00";
+    Persistent = true;
   };
 }
