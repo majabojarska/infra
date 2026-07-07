@@ -90,7 +90,7 @@
               }
             ];
           };
-          middlewares = [ "anubis" ];
+          middlewares = [ "anubis-blog" ];
         };
 
         copyparty = {
@@ -166,9 +166,11 @@
       };
 
       middlewares = {
-        anubis = {
+        anubis-blog = {
           forwardAuth = {
             address = "http://127.0.0.1:${toString config.sp6catVm01.ports.anubis-blog}/.within.website/x/cmd/anubis/api/check";
+            trustForwardHeader = true;
+            maxResponseBodySize = 1024 * 1024 * 1;
           };
         };
 
