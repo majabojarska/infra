@@ -27,4 +27,35 @@
       analytics.reporting_enabled = false;
     };
   };
+
+  services.traefik.dynamicConfigOptions.http = {
+    routers = {
+      grafana = {
+        rule = "Host(`grafana.${config.globals.cloudDomain}`)";
+        service = "grafana";
+        tls = {
+          certResolver = "letsencrypt";
+          domains = [
+            {
+              main = "grafana.${config.globals.cloudDomain}";
+            }
+          ];
+        };
+        middlewares = [
+          "rate_limit"
+        ];
+      };
+    };
+
+    services = {
+      grafana.loadBalancer = {
+        servers = [
+          {
+            url = "http://127.0.0.1:${toString config.sp6catVm01.ports.grafana}";
+          }
+        ];
+      };
+    };
+  };
+
 }
