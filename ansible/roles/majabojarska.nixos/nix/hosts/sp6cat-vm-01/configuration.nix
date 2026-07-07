@@ -63,6 +63,12 @@
           default = 8090;
           description = "ntfy service port";
         };
+
+        searx = lib.mkOption {
+          type = lib.types.port;
+          default = 7777;
+          description = "Searx service port";
+        };
       };
 
       storage = {

@@ -8,7 +8,7 @@ in
   "traefik.age".publicKeys = [ sp6cat-vm-01 ] ++ developers;
   "copyparty-pass-maja.age".publicKeys = [ sp6cat-vm-01 ] ++ developers;
   "copyparty-pass-baczek.age".publicKeys = [ sp6cat-vm-01 ] ++ developers;
-  "searx-secret-key.age".publicKeys = [ sp6cat-vm-01 ] ++ developers;
+  "searx-env.age".publicKeys = [ sp6cat-vm-01 ] ++ developers;
   "wg-baczek-priv-key.age".publicKeys = [ sp6cat-vm-01 ] ++ developers;
   "wg-beehive-priv-key.age".publicKeys = [ sp6cat-vm-01 ] ++ developers;
   "wd-usb-hdd-key.age".publicKeys = [ sp6cat-vm-01 ] ++ developers;

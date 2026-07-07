@@ -7,6 +7,7 @@
     ./services/borgbackup.nix
     ./services/chrony.nix
     ./services/copyparty.nix
+    ./services/searx.nix
     ./services/docker.nix
     ./services/uptime-kuma.nix
     ./services/fibo.nix
