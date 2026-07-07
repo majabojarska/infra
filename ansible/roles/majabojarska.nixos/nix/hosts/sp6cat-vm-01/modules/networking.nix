@@ -48,6 +48,12 @@
   };
 
   age.secrets = {
+    "wg-beehive-priv-key" = {
+      file = ../secrets/wg-beehive-priv-key.age;
+      mode = "0400";
+      owner = "root";
+      group = "root";
+    };
     "wg-baczek-priv-key" = {
       file = ../secrets/wg-baczek-priv-key.age;
       mode = "0400";
@@ -68,6 +74,7 @@
         443 # HTTPS
       ];
       allowedUDPPorts = [
+        20000 # wg-beehive wireguard
         20001 # wg-baczek wireguard
         123 # NTP
         443 # HTTP3
@@ -82,8 +89,22 @@
     # interfaces.eth0.useDHCP = true;
 
     wg-quick.interfaces = {
+      wg-beehive= {
+        address = [ "10.1.0.1/24" ];
+        listenPort = 20000;
+        mtu = 1420;
+
+        privateKeyFile = config.age.secrets."wg-beehive-priv-key".path;
+
+        peers = [
+          {
+            # OPNsense
+            publicKey = "PrSlPauZMQ1nMxKHxFfKr8mnrzjBOjSoX9d6B8z01V4=";
+            allowedIPs = [ "10.1.0.2/32" ];
+          }
+        ];
+      };
       wg-baczek = {
-        # Bridge server iface 10.10.0.1
         address = [ "10.10.0.1/24" ];
         listenPort = 20001;
         mtu = 1420;
@@ -91,12 +112,6 @@
         privateKeyFile = config.age.secrets."wg-baczek-priv-key".path;
 
         peers = [
-          # {
-          #   publicKey = "7cIMQcZ6AackXV2RaLkC5cqmAVGd1PXnO4wGVcdcWkY=";
-          #   allowedIPs = [ "10.10.0.0/24" ];
-          #   endpoint = "baczek.me:20001";
-          #   persistentKeepalive = 25;
-          # }
           {
             publicKey = "kbznnxqKi36faGajgwpdBpWFYcj6yCyUmCQJXg1pFzc=";
             allowedIPs = [ "10.10.0.3/32" ];
