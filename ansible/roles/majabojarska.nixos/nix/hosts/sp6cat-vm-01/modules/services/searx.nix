@@ -29,7 +29,7 @@
     routers = {
       searx = {
         rule = "Host(`search.${config.globals.cloudDomain}`)";
-        service = "search";
+        service = "searx";
         tls = {
           certResolver = "letsencrypt";
           domains = [
