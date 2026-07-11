@@ -1,4 +1,4 @@
-{ config, ... }:
+{ config, pkgs, ... }:
 {
   age.secrets = {
     "grafana-secret-key" = {
@@ -31,9 +31,8 @@
 
       datasources.settings.datasources = [
         {
-          name = "Prometheus sp6cat-vm-01";
+          name = "prometheus-sp6cat-vm-01";
           type = "prometheus";
-          uid = "prometheus-sp6cat-vm-01";
           url = "http://localhost:${toString config.sp6catVm01.ports.prometheus}";
           isDefault = true;
         }
@@ -70,6 +69,17 @@
         ];
       };
     };
+  };
+
+  system.preSwitchChecks = {
+    grafanaLocalhostNoHttpError = ''
+      ${pkgs.curl}/bin/curl \
+        --fail-with-body \
+        --silent \
+        --show-error \
+          http://127.0.0.1:${toString config.sp6catVm01.ports.grafana} \
+        >/dev/null
+    '';
   };
 
 }
