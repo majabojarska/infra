@@ -35,5 +35,10 @@
       port = config.sp6catVm01.ports.prometheusExporterChrony;
     };
 
+    fail2ban = {
+      enable = true;
+      port = config.sp6catVm01.ports.prometheusExporterFail2ban;
+    };
+
   };
 }

@@ -48,6 +48,14 @@
           }
         ];
       }
+      {
+        job_name = "fail2ban";
+        static_configs = [
+          {
+            targets = [ "localhost:${toString config.services.prometheus.exporters.fail2ban.port}" ];
+          }
+        ];
+      }
     ];
   };
 

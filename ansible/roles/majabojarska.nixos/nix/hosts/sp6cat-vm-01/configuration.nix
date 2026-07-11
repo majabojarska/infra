@@ -70,6 +70,13 @@
           description = "Prometheus Chrony Exporter service port";
         };
 
+        prometheusExporterFail2ban = lib.mkOption {
+          type = lib.types.port;
+          default = 9104;
+          description = "Prometheus Fail2ban Exporter service port";
+        };
+
+
         grafana = lib.mkOption {
           type = lib.types.port;
           default = 3000;
