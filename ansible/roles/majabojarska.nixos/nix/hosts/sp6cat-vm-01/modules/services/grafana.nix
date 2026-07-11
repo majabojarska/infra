@@ -26,6 +26,20 @@
 
       analytics.reporting_enabled = false;
     };
+    provision = {
+      enable = true;
+
+      datasources.settings.datasources = [
+        {
+          name = "Prometheus sp6cat-vm-01";
+          type = "prometheus";
+          uid = "prometheus-sp6cat-vm-01";
+          url = "http://localhost:${toString config.sp6catVm01.ports.prometheus}";
+          isDefault = true;
+        }
+      ];
+    };
+
   };
 
   services.traefik.dynamicConfigOptions.http = {
