@@ -51,10 +51,17 @@
           default = 9100;
           description = "Prometheus Node Exporter service port";
         };
+
         prometheusExporterSmartctl = lib.mkOption {
           type = lib.types.port;
           default = 9101;
           description = "Prometheus Smartctl Exporter service port";
+        };
+
+        prometheusExporterZfs = lib.mkOption {
+          type = lib.types.port;
+          default = 9102;
+          description = "Prometheus ZFS Exporter service port";
         };
 
         grafana = lib.mkOption {
