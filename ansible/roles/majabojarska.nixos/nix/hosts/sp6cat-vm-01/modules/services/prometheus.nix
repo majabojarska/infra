@@ -18,15 +18,35 @@
     scrapeConfigs = [
       {
         job_name = "node";
-        static_configs = [{
-          targets = [ "localhost:${toString config.services.prometheus.exporters.node.port}" ];
-        }];
+        static_configs = [
+          {
+            targets = [ "localhost:${toString config.services.prometheus.exporters.node.port}" ];
+          }
+        ];
       }
       {
         job_name = "smartctl";
-        static_configs = [{
-          targets = [ "localhost:${toString config.services.prometheus.exporters.smartctl.port}" ];
-        }];
+        static_configs = [
+          {
+            targets = [ "localhost:${toString config.services.prometheus.exporters.smartctl.port}" ];
+          }
+        ];
+      }
+      {
+        job_name = "zfs";
+        static_configs = [
+          {
+            targets = [ "localhost:${toString config.services.prometheus.exporters.zfs.port}" ];
+          }
+        ];
+      }
+      {
+        job_name = "chrony";
+        static_configs = [
+          {
+            targets = [ "localhost:${toString config.services.prometheus.exporters.chrony.port}" ];
+          }
+        ];
       }
     ];
   };
