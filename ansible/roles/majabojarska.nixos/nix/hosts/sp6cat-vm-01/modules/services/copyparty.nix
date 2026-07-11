@@ -32,7 +32,7 @@
 
       # use lists to set multiple values
       p = [
-        8005
+        config.sp6catVm01.ports.copyparty
       ];
 
       # num cores
@@ -115,15 +115,26 @@
 
   systemd.services.copyparty.serviceConfig.Restart = "always";
 
-  system.preSwitchChecks.copypartyRespondsNoError = ''
-    echo "Checking https://copyparty.${config.globals.cloudDomain}..."
+  system.preSwitchChecks = {
+    copypartyLocalhostNoHttpError = ''
+      ${pkgs.curl}/bin/curl \
+        --fail-with-body \
+        --silent \
+        --show-error \
+          http://127.0.0.1:${toString config.sp6catVm01.ports.copyparty} \
+        >/dev/null
+    '';
 
-    ${pkgs.curl}/bin/curl \
-      --fail-with-body \
-      --silent \
-      --show-error \
-      https://copyparty.${config.globals.cloudDomain} \
-      >/dev/null
-  '';
+    copypartyRespondsNoError = ''
+      echo "Checking https://copyparty.${config.globals.cloudDomain}..."
+
+      ${pkgs.curl}/bin/curl \
+        --fail-with-body \
+        --silent \
+        --show-error \
+        https://copyparty.${config.globals.cloudDomain} \
+        >/dev/null
+    '';
+  };
 
 }

@@ -10,6 +10,12 @@
           description = "Anubis service port";
         };
 
+        copyparty = lib.mkOption {
+          type = lib.types.port;
+          default= 8005;
+          description = "Copyparty service port";
+        };
+
         blog = lib.mkOption {
           type = lib.types.port;
           default = 8004;
