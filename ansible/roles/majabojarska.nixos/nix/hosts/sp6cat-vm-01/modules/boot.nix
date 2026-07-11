@@ -48,6 +48,9 @@ in
       "console=ttyS0,115200n8"
     ];
     kernelModules = [ ];
+    kernel.sysctl = {
+      "net.ipv4.ip_forward" = 1;
+    };
     blacklistedKernelModules = [ "algif_aead" ];
 
     # Disable the upstream getty module's automatic configuration for serial-getty@
