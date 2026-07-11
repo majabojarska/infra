@@ -64,6 +64,12 @@
           description = "Prometheus ZFS Exporter service port";
         };
 
+        prometheusExporterChrony = lib.mkOption {
+          type = lib.types.port;
+          default = 9103;
+          description = "Prometheus Chrony Exporter service port";
+        };
+
         grafana = lib.mkOption {
           type = lib.types.port;
           default = 3000;

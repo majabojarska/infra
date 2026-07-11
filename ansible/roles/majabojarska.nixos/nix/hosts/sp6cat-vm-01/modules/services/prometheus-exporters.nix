@@ -30,5 +30,10 @@
       port = config.sp6catVm01.ports.prometheusExporterZfs;
     };
 
+    chrony = {
+      enable = true;
+      port = config.sp6catVm01.ports.prometheusExporterChrony;
+    };
+
   };
 }
