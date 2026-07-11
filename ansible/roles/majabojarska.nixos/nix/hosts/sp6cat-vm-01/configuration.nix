@@ -76,6 +76,11 @@
           description = "Prometheus Fail2ban Exporter service port";
         };
 
+        prometheusExporterWireguard = lib.mkOption {
+          type = lib.types.port;
+          default = 9105;
+          description = "Prometheus WireGuard Exporter service port";
+        };
 
         grafana = lib.mkOption {
           type = lib.types.port;

@@ -56,6 +56,14 @@
           }
         ];
       }
+      {
+        job_name = "wireguard";
+        static_configs = [
+          {
+            targets = [ "localhost:${toString config.services.prometheus.exporters.wireguard.port}" ];
+          }
+        ];
+      }
     ];
   };
 

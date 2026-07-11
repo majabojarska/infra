@@ -40,5 +40,10 @@
       port = config.sp6catVm01.ports.prometheusExporterFail2ban;
     };
 
+    wireguard={
+      enable = true;
+      port = config.sp6catVm01.ports.prometheusExporterWireguard;
+    };
+
   };
 }
