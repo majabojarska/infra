@@ -49,15 +49,6 @@ spec:
               mountPath: /.config
               readOnly: false
 
-      # redis-data:
-      #   enabled: true
-      #   type: emptyDir
-      #   targetSelector:
-      #     redis:
-      #       redis:
-      #         mountPath: /data
-      #         readOnly: false
-
     securityContext:
       container:
         runAsUser: 10003 # immich UID
