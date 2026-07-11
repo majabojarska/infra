@@ -77,6 +77,17 @@
           }
         ];
       }
+      {
+        job_name = "traefik";
+        static_configs = [
+          {
+            targets = [
+              config.services.traefik.staticConfigOptions.entryPoints.metrics.address
+            ];
+          }
+        ];
+      }
+
     ];
   };
 

@@ -15,6 +15,16 @@
     environmentFiles = [ config.age.secrets."traefik.env".path ];
 
     staticConfigOptions = {
+      metrics = {
+        prometheus = {
+          addEntryPointsLabels = true;
+          addServicesLabels = true;
+          addRoutersLabels = true;
+
+          entryPoint = "metrics";
+        };
+      };
+
       entryPoints = {
         web = {
           address = ":80";
@@ -35,6 +45,10 @@
               readTimeout = "0s";
             };
           };
+        };
+
+        metrics = {
+          address = "127.0.0.1:${toString config.sp6catVm01.ports.metricsTraefik}";
         };
 
         # ntp = { address = ":123/udp"; };

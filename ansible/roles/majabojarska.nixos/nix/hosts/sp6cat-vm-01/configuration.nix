@@ -94,6 +94,12 @@
           description = "Prometheus Ping Exporter service port";
         };
 
+        metricsTraefik = lib.mkOption {
+          type = lib.types.port;
+          default = 9107;
+          description = "Prometheus Traefik metrics port";
+        };
+
         grafana = lib.mkOption {
           type = lib.types.port;
           default = 3000;
