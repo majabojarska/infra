@@ -93,6 +93,14 @@
         sha256 = "sha256-8pNOiU5zm7dJu9yYuOku19jqcAH7NbrQ8q8x5xdXKjI=";
       };
     };
+    "grafana-dashboards/traefik.json" = {
+      user = "grafana";
+      group = "grafana";
+      source = pkgs.fetchurl {
+        url = "https://grafana.com/api/dashboards/4475/revisions/5/download";
+        sha256 = "sha256-r90j5mSdYT+6xud3jdUwrZ8HaathKB92E5S9nKUA5Yc=";
+      };
+    };
   };
 
   services.traefik.dynamicConfigOptions.http = {
