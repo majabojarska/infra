@@ -2,7 +2,7 @@
 {
   age.secrets = {
     "grafana-secret-key" = {
-      file = ../../secrets/grafana-secret-key.age;
+      file = ../../../secrets/grafana-secret-key.age;
       mode = "0400";
       group = "grafana";
       owner = "grafana";

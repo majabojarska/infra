@@ -15,7 +15,7 @@
     ./services/redlib.nix
     ./services/prometheus.nix
     ./services/prometheus-exporters.nix
-    ./services/grafana.nix
+    ./services/grafana/grafana.nix
     ./services/ntfy.nix
     ./services/traefik.nix
     (import ./services/vikunja.nix {
