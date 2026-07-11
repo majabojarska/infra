@@ -22,6 +22,12 @@
           targets = [ "localhost:${toString config.services.prometheus.exporters.node.port}" ];
         }];
       }
+      {
+        job_name = "smartctl";
+        static_configs = [{
+          targets = [ "localhost:${toString config.services.prometheus.exporters.smartctl.port}" ];
+        }];
+      }
     ];
   };
 

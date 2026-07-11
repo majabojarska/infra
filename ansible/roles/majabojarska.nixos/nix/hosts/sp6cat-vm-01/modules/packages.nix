@@ -7,6 +7,7 @@
     busybox
     copyparty
     wireguard-tools
+    smartmontools
     zfs
   ];
 }

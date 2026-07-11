@@ -14,7 +14,7 @@
     ./services/nginx.nix
     ./services/redlib.nix
     ./services/prometheus.nix
-    ./services/prometheus-exporter.nix
+    ./services/prometheus-exporters.nix
     ./services/grafana.nix
     ./services/ntfy.nix
     ./services/traefik.nix

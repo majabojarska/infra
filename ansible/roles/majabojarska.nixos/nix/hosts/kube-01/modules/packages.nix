@@ -24,6 +24,7 @@
     libva-utils
     mediainfo
     parallel
+    smartmontools
     zfs
   ];
 }
