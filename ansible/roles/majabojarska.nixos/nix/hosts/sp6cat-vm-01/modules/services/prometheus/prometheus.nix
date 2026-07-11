@@ -1,5 +1,9 @@
-{ config, ... }:
+{ pkgs, config, ... }:
 {
+  imports = [
+    ./exporters.nix
+  ];
+
   # https://wiki.nixos.org/wiki/Prometheus
   # https://nixos.org/manual/nixos/stable/#module-services-prometheus-exporters-configuration
   # https://github.com/NixOS/nixpkgs/blob/nixos-24.05/nixos/modules/services/monitoring/prometheus/default.nix
@@ -7,6 +11,7 @@
     enable = true;
     port = config.sp6catVm01.ports.prometheus;
     listenAddress = "127.0.0.1";
+    retentionTime = "15d";
 
     # This hack is needed to write Prometheus data outside of /var/lib
     # One would think think scenario would be supported, but alas.
@@ -80,4 +85,15 @@
   #   "D ${config.sp6catVm01.storage.wdUsbHddMountPath}/prometheus/data 0751 prometheus prometheus - -"
   #   "L+ /var/lib/${config.services.prometheus.stateDir}/data - - - - ${config.sp6catVm01.storage.wdUsbHddMountPath}/prometheus/data"
   # ];
+  system.preSwitchChecks = {
+    prometheusLocalhostNoHttpError = ''
+      ${pkgs.curl}/bin/curl \
+        --fail-with-body \
+        --silent \
+        --show-error \
+          http://${config.services.prometheus.listenAddress}:${toString config.services.prometheus.port} \
+        >/dev/null
+    '';
+  };
+
 }

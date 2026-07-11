@@ -13,8 +13,7 @@
     ./services/fibo.nix
     ./services/nginx.nix
     ./services/redlib.nix
-    ./services/prometheus.nix
-    ./services/prometheus-exporters.nix
+    ./services/prometheus/prometheus.nix
     ./services/grafana/grafana.nix
     ./services/ntfy.nix
     ./services/traefik.nix
