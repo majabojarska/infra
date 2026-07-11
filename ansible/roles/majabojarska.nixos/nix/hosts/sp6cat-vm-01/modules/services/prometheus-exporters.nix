@@ -40,9 +40,38 @@
       port = config.sp6catVm01.ports.prometheusExporterFail2ban;
     };
 
-    wireguard={
+    wireguard = {
       enable = true;
       port = config.sp6catVm01.ports.prometheusExporterWireguard;
+    };
+
+    ping = {
+      enable = true;
+      port = config.sp6catVm01.ports.prometheusExporterPing;
+      # https://mynixos.com/nixpkgs/option/services.prometheus.exporters.ping.settings
+      # https://github.com/czerwonk/ping_exporter
+      settings = {
+        targets = [
+          "1.1.1.1"
+        ];
+
+        dns = {
+          refresh = "2m";
+          nameserver = "1.1.1.1";
+        };
+
+        ping = {
+          interval = "60s";
+          timeout = "3s";
+          history-size = 42;
+          payload-size = 120;
+          fw-mark = 222;
+        };
+
+        options = {
+          disableIPv6 = false;
+        };
+      };
     };
 
   };

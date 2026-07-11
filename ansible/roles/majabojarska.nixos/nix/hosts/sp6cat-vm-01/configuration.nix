@@ -82,6 +82,12 @@
           description = "Prometheus WireGuard Exporter service port";
         };
 
+        prometheusExporterPing = lib.mkOption {
+          type = lib.types.port;
+          default = 9106;
+          description = "Prometheus Ping Exporter service port";
+        };
+
         grafana = lib.mkOption {
           type = lib.types.port;
           default = 3000;

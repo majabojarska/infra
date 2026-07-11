@@ -64,6 +64,14 @@
           }
         ];
       }
+      {
+        job_name = "ping";
+        static_configs = [
+          {
+            targets = [ "localhost:${toString config.services.prometheus.exporters.ping.port}" ];
+          }
+        ];
+      }
     ];
   };
 
