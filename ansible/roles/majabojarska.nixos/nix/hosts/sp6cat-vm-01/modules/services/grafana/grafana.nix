@@ -29,14 +29,23 @@
     provision = {
       enable = true;
 
-      datasources.settings.datasources = [
-        {
-          name = "prometheus-sp6cat-vm-01";
-          type = "prometheus";
-          url = "http://localhost:${toString config.sp6catVm01.ports.prometheus}";
-          isDefault = true;
-        }
-      ];
+      datasources.settings = {
+        datasources = [
+          {
+            name = "prometheus-sp6cat-vm-01";
+            type = "prometheus";
+            url = "http://localhost:${toString config.sp6catVm01.ports.prometheus}";
+            isDefault = true;
+          }
+        ];
+
+        # deleteDatasources = [
+        #   {
+        #     name = "Prometheus SP6CAT VM 01";
+        #     orgId = 1;
+        #   }
+        # ];
+      };
 
       dashboards.settings = {
         apiVersion = 1;
