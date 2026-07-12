@@ -52,8 +52,10 @@
       # https://github.com/czerwonk/ping_exporter
       settings = {
         targets = [
-          "1.1.1.1"
-          "192.168.1.1"
+          "1.1.1.1" # Cloudflare
+          "192.168.1.1" # Home
+          "10.10.0.3" # Baczek
+          "192.168.75.1" # HSWRO router (from LAN)
         ];
 
         dns = {
