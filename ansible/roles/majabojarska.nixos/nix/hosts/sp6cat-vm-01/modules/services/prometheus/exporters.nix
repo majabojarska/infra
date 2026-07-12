@@ -53,6 +53,7 @@
       settings = {
         targets = [
           "1.1.1.1"
+          "192.168.1.1"
         ];
 
         dns = {
@@ -61,7 +62,7 @@
         };
 
         ping = {
-          interval = "60s";
+          interval = "15s";
           timeout = "3s";
           history-size = 42;
           payload-size = 120;
