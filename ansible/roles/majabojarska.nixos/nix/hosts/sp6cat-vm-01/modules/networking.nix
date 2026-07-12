@@ -62,6 +62,25 @@
     };
   };
 
+  services.resolved = {
+    enable = true;
+    settings = {
+
+      Resolve = {
+        DNSOverTLS = "opportunistic";
+
+        DNS = [
+          "1.1.1.1"
+          "1.0.0.1"
+
+          "192.168.1.1"
+        ];
+        Domains = [ "~home.majabojarska.dev" ];
+      };
+    };
+  };
+  networking.nameservers = [ "127.0.0.53" ];
+
   networking = {
     hostName = "sp6cat-vm-01";
     domain = config.globals.cloudDomain;

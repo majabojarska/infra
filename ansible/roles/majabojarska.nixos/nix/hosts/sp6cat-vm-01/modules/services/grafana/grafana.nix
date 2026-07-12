@@ -1,6 +1,6 @@
 { config, pkgs, lib, ... }:
 let
-  healthchecks = import ../../../../modules/healthchecks.nix { inherit lib pkgs; };
+  healthchecks = import ../../../../../modules/healthchecks.nix { inherit lib pkgs; };
 in
 {
   age.secrets = {
