@@ -17,6 +17,7 @@
     lsof
     mtr
     ncdu
+    net-tools
     nmap
     parallel
     parted
