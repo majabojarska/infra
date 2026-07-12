@@ -76,6 +76,15 @@
             targets = [ "localhost:${toString config.services.prometheus.exporters.ping.port}" ];
           }
         ];
+        metric_relabel_configs = [
+          {
+            # https://github.com/czerwonk/ping_exporter#ping_loss_ratio-vs-ping_loss_percent
+            source_labels = [ "__name__" ];
+            regex = "ping_loss_ratio";
+            target_label = "__name__";
+            replacement = "ping_loss_percent";
+          }
+        ];
       }
       {
         job_name = "traefik";
