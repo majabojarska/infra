@@ -11,7 +11,7 @@ in
   services.prometheus.exporters = {
     node = {
       enable = true;
-      port = config.kube01.ports.prometheusExporterNode;
+      port = config.hosts.kube01.ports.prometheusExporterNode;
       listenAddress = "127.0.0.1";
 
       # For the list of available collectors, run, depending on your install:
@@ -27,7 +27,7 @@ in
 
     smartctl = {
       enable = true;
-      port = config.kube01.ports.prometheusExporterSmartctl;
+      port = config.hosts.kube01.ports.prometheusExporterSmartctl;
       listenAddress = "127.0.0.1";
       devices = [
         "/dev/disk/by-id/ata-WDC_WD10SMZW-11Y0TS0_WD-WX61AB7P31RY"
@@ -36,20 +36,20 @@ in
 
     zfs = {
       enable = true;
-      port = config.kube01.ports.prometheusExporterZfs;
+      port = config.hosts.kube01.ports.prometheusExporterZfs;
       listenAddress = "127.0.0.1";
     };
 
     fail2ban = {
       enable = true;
-      port = config.kube01.ports.prometheusExporterFail2ban;
+      port = config.hosts.kube01.ports.prometheusExporterFail2ban;
       listenAddress = "127.0.0.1";
       # listenAddress and port overridden through an ExecStart override below.
     };
 
     ping = {
       enable = true;
-      port = config.kube01.ports.prometheusExporterPing;
+      port = config.hosts.kube01.ports.prometheusExporterPing;
       listenAddress = "127.0.0.1";
       # https://mynixos.com/nixpkgs/option/services.prometheus.exporters.ping.settings
       # https://github.com/czerwonk/ping_exporter
