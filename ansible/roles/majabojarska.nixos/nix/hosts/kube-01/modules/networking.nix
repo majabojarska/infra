@@ -11,6 +11,7 @@
     networkmanager.enable = true;
     interfaces.ens18.useDHCP = true;
 
+    usePredictableInterfaceNames = true;
     firewall = {
       trustedInterfaces = [
         "ens18"

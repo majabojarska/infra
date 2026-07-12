@@ -35,7 +35,7 @@ in
         static_configs = [
           {
             targets = [
-              "${config.globals.sp6catVm01HswroDomain}:${toString config.services.prometheus.exporters.node.port}"
+              "127.0.0.1:${toString config.services.prometheus.exporters.node.port}"
               "kube-01.${config.globals.homeDomain}:${toString config.hosts.kube01.ports.prometheusExporterNode}"
             ];
           }
@@ -46,7 +46,7 @@ in
         static_configs = [
           {
             targets = [
-              "${config.globals.sp6catVm01HswroDomain}:${toString config.services.prometheus.exporters.smartctl.port}"
+              "127.0.0.1:${toString config.services.prometheus.exporters.smartctl.port}"
               "kube-01.${config.globals.homeDomain}:${toString config.hosts.kube01.ports.prometheusExporterSmartctl}"
             ];
           }
@@ -57,7 +57,7 @@ in
         static_configs = [
           {
             targets = [
-              "${config.globals.sp6catVm01HswroDomain}:${toString config.services.prometheus.exporters.zfs.port}"
+              "127.0.0.1:${toString config.services.prometheus.exporters.zfs.port}"
               "kube-01.${config.globals.homeDomain}:${toString config.hosts.kube01.ports.prometheusExporterZfs}"
             ];
           }
@@ -67,9 +67,7 @@ in
         job_name = "chrony";
         static_configs = [
           {
-            targets = [
-              "${config.globals.sp6catVm01HswroDomain}:${toString config.services.prometheus.exporters.chrony.port}"
-            ];
+            targets = [ "127.0.0.1:${toString config.services.prometheus.exporters.chrony.port}" ];
           }
         ];
       }
@@ -78,7 +76,7 @@ in
         static_configs = [
           {
             targets = [
-              "${config.globals.sp6catVm01HswroDomain}:${toString config.services.prometheus.exporters.fail2ban.port}"
+              "127.0.0.1:${toString config.services.prometheus.exporters.fail2ban.port}"
               "kube-01.${config.globals.homeDomain}:${toString config.hosts.kube01.ports.prometheusExporterFail2ban}"
             ];
           }
@@ -88,9 +86,7 @@ in
         job_name = "wireguard";
         static_configs = [
           {
-            targets = [
-              "${config.globals.sp6catVm01HswroDomain}:${toString config.services.prometheus.exporters.wireguard.port}"
-            ];
+            targets = [ "127.0.0.1:${toString config.services.prometheus.exporters.wireguard.port}" ];
           }
         ];
       }
@@ -99,7 +95,7 @@ in
         static_configs = [
           {
             targets = [
-              "${config.globals.sp6catVm01HswroDomain}:${toString config.services.prometheus.exporters.ping.port}"
+              "127.0.0.1:${toString config.services.prometheus.exporters.ping.port}"
               "kube-01.${config.globals.homeDomain}:${toString config.hosts.kube01.ports.prometheusExporterPing}"
             ];
           }

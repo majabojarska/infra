@@ -12,7 +12,7 @@ in
     node = {
       enable = true;
       port = config.hosts.kube01.ports.prometheusExporterNode;
-      listenAddress = "127.0.0.1";
+      listenAddress = "0.0.0.0";
 
       # For the list of available collectors, run, depending on your install:
       # - Flake-based: nix run nixpkgs#prometheus-node-exporter -- --help
@@ -28,7 +28,7 @@ in
     smartctl = {
       enable = true;
       port = config.hosts.kube01.ports.prometheusExporterSmartctl;
-      listenAddress = "127.0.0.1";
+      listenAddress = "0.0.0.0";
       devices = [
         "/dev/disk/by-id/ata-WDC_WD10SMZW-11Y0TS0_WD-WX61AB7P31RY"
       ];
@@ -37,20 +37,20 @@ in
     zfs = {
       enable = true;
       port = config.hosts.kube01.ports.prometheusExporterZfs;
-      listenAddress = "127.0.0.1";
+      listenAddress = "0.0.0.0";
     };
 
     fail2ban = {
       enable = true;
       port = config.hosts.kube01.ports.prometheusExporterFail2ban;
-      listenAddress = "127.0.0.1";
+      listenAddress = "0.0.0.0";
       # listenAddress and port overridden through an ExecStart override below.
     };
 
     ping = {
       enable = true;
       port = config.hosts.kube01.ports.prometheusExporterPing;
-      listenAddress = "127.0.0.1";
+      listenAddress = "0.0.0.0";
       # https://mynixos.com/nixpkgs/option/services.prometheus.exporters.ping.settings
       # https://github.com/czerwonk/ping_exporter
       settings = {
@@ -92,7 +92,7 @@ in
     lib.concatStringsSep " " [
       (lib.getExe pkgs.prometheus-fail2ban-exporter)
       "--collector.f2b.exit-on-socket-connection-error"
-      "--web.listen-address=127.0.0.1:${toString config.services.prometheus.exporters.fail2ban.port}"
+      "--web.listen-address=0.0.0.0:${toString config.services.prometheus.exporters.fail2ban.port}"
       "--collector.f2b.socket=/run/fail2ban/fail2ban.sock"
     ]
   );
