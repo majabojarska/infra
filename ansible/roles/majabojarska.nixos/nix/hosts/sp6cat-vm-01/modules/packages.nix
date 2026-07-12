@@ -8,6 +8,7 @@
     copyparty
     wireguard-tools
     smartmontools
+    sqlite
     zfs
   ];
 }
