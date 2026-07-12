@@ -1,4 +1,7 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
+let
+  healthchecks = import ../../../../modules/healthchecks.nix { inherit lib pkgs; };
+in
 {
   age.secrets = {
     "copyparty-pass-maja" = {
@@ -116,28 +119,16 @@
   systemd.services.copyparty.serviceConfig.Restart = "always";
 
   system.preSwitchChecks = {
-    copypartyLocalhostNoHttpError = ''
-      ${pkgs.curl}/bin/curl \
-        --fail-with-body \
-        --silent \
-        --retry 4 \
-        --retry-max-time 15 \
-        --show-error \
-          http://127.0.0.1:${toString config.sp6catVm01.ports.copyparty} \
-        >/dev/null
-    '';
+    copypartyLocalhostNoHttpError = healthchecks.curlHealthCheck {
+      url = "http://127.0.0.1:${toString config.sp6catVm01.ports.copyparty}";
+    };
 
     copypartyRespondsNoError = ''
       echo "Checking https://copyparty.${config.globals.cloudDomain}..."
 
-      ${pkgs.curl}/bin/curl \
-        --fail-with-body \
-        --silent \
-        --retry 4 \
-        --retry-max-time 15 \
-        --show-error \
-        https://copyparty.${config.globals.cloudDomain} \
-        >/dev/null
+      ${healthchecks.curlHealthCheck {
+        url = "https://copyparty.${config.globals.cloudDomain}";
+      }}
     '';
   };
 

@@ -4,6 +4,9 @@
   config,
   ...
 }:
+let
+  healthchecks = import ../../modules/healthchecks.nix { inherit lib pkgs; };
+in
 {
   services.prometheus.exporters = {
     node = {
@@ -95,59 +98,24 @@
   );
 
   system.preSwitchChecks = {
-    exporterNodeLocalhostNoHttpError = ''
-      ${pkgs.curl}/bin/curl \
-        --fail-with-body \
-        --silent \
-        --retry 4 \
-        --retry-max-time 15 \
-        --show-error \
-          http://${config.services.prometheus.exporters.node.listenAddress}:${toString config.services.prometheus.exporters.node.port}/metrics \
-        >/dev/null
-    '';
+    exporterNodeLocalhostNoHttpError = healthchecks.curlHealthCheck {
+      url = "http://${config.services.prometheus.exporters.node.listenAddress}:${toString config.services.prometheus.exporters.node.port}/metrics";
+    };
 
-    exporterSmartctlLocalhostNoHttpError = ''
-      ${pkgs.curl}/bin/curl \
-        --fail-with-body \
-        --silent \
-        --retry 4 \
-        --retry-max-time 15 \
-        --show-error \
-          http://${config.services.prometheus.exporters.smartctl.listenAddress}:${toString config.services.prometheus.exporters.smartctl.port}/metrics \
-        >/dev/null
-    '';
+    exporterSmartctlLocalhostNoHttpError = healthchecks.curlHealthCheck {
+      url = "http://${config.services.prometheus.exporters.smartctl.listenAddress}:${toString config.services.prometheus.exporters.smartctl.port}/metrics";
+    };
 
-    exporterZfsLocalhostNoHttpError = ''
-      ${pkgs.curl}/bin/curl \
-        --fail-with-body \
-        --silent \
-        --retry 4 \
-        --retry-max-time 15 \
-        --show-error \
-          http://${config.services.prometheus.exporters.zfs.listenAddress}:${toString config.services.prometheus.exporters.zfs.port}/metrics \
-        >/dev/null
-    '';
+    exporterZfsLocalhostNoHttpError = healthchecks.curlHealthCheck {
+      url = "http://${config.services.prometheus.exporters.zfs.listenAddress}:${toString config.services.prometheus.exporters.zfs.port}/metrics";
+    };
 
-    # exporterFail2banLocalhostNoHttpError = ''
-    #   ${pkgs.curl}/bin/curl \
-    #     --fail-with-body \
-    #     --silent \
-    #     --retry 4 \
-    #     --retry-max-time 15 \
-    #     --show-error \
-    #     http://${config.services.prometheus.exporters.fail2ban.listenAddress}:${toString config.services.prometheus.exporters.fail2ban.port} \
-    #     >/dev/null
-    # '';
+    # exporterFail2banLocalhostNoHttpError = healthchecks.curlHealthCheck {
+    #   url = "http://${config.services.prometheus.exporters.fail2ban.listenAddress}:${toString config.services.prometheus.exporters.fail2ban.port}/metrics";
+    # };
 
-    exporterPingLocalhostNoHttpError = ''
-      ${pkgs.curl}/bin/curl \
-        --fail-with-body \
-        --silent \
-        --retry 4 \
-        --retry-max-time 15 \
-        --show-error \
-        http://${config.services.prometheus.exporters.ping.listenAddress}:${toString config.services.prometheus.exporters.ping.port}/metrics \
-        >/dev/null
-    '';
+    exporterPingLocalhostNoHttpError = healthchecks.curlHealthCheck {
+      url = "http://${config.services.prometheus.exporters.ping.listenAddress}:${toString config.services.prometheus.exporters.ping.port}/metrics";
+    };
   };
 }

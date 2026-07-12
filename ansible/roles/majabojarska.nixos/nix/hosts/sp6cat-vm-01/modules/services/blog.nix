@@ -1,5 +1,7 @@
-{ config, pkgs, ... }:
-
+{ config, pkgs, lib, ... }:
+let
+  healthchecks = import ../../../../modules/healthchecks.nix { inherit lib pkgs; };
+in
 {
   services.nginx.virtualHosts."${config.globals.baseDomain}" = {
     serverName = config.globals.baseDomain;
@@ -35,16 +37,9 @@
   };
 
   system.preSwitchChecks = {
-    blogLocalhostNoHttpError = ''
-      ${pkgs.curl}/bin/curl \
-        --fail-with-body \
-        --silent \
-        --retry 4 \
-        --retry-max-time 15 \
-        --show-error \
-          http://127.0.0.1:${toString config.sp6catVm01.ports.blog} \
-        >/dev/null
-    '';
+    blogLocalhostNoHttpError = healthchecks.curlHealthCheck {
+      url = "http://127.0.0.1:${toString config.sp6catVm01.ports.blog}";
+    };
 
     blogDomainBlocksScrape = ''
       response=$(${pkgs.curl}/bin/curl \

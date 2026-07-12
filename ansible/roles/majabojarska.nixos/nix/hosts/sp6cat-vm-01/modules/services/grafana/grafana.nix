@@ -1,4 +1,7 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
+let
+  healthchecks = import ../../../../modules/healthchecks.nix { inherit lib pkgs; };
+in
 {
   age.secrets = {
     "grafana-secret-key" = {
@@ -160,17 +163,11 @@
   };
 
   system.preSwitchChecks = {
-    grafanaLocalhostNoHttpError = ''
+    grafanaLocalhostNoHttpError =
       # Grafana is sometimes slow to start, so we retry a few times before failing the switch
-      ${pkgs.curl}/bin/curl \
-        --fail-with-body \
-        --silent \
-        --retry 4 \
-        --retry-max-time 15 \
-        --show-error \
-          http://127.0.0.1:${toString config.sp6catVm01.ports.grafana} \
-        >/dev/null
-    '';
+      healthchecks.curlHealthCheck {
+        url = "http://127.0.0.1:${toString config.sp6catVm01.ports.grafana}";
+      };
   };
 
 }

@@ -1,4 +1,7 @@
-{ pkgs, config, ... }:
+{ pkgs, config, lib, ... }:
+let
+  healthchecks = import ../../../../modules/healthchecks.nix { inherit lib pkgs; };
+in
 {
   imports = [
     ./exporters.nix
@@ -106,16 +109,9 @@
   #   "L+ /var/lib/${config.services.prometheus.stateDir}/data - - - - ${config.sp6catVm01.storage.wdUsbHddMountPath}/prometheus/data"
   # ];
   system.preSwitchChecks = {
-    prometheusLocalhostNoHttpError = ''
-      ${pkgs.curl}/bin/curl \
-        --fail-with-body \
-        --silent \
-        --retry 4 \
-        --retry-max-time 15 \
-        --show-error \
-          http://${config.services.prometheus.listenAddress}:${toString config.services.prometheus.port} \
-        >/dev/null
-    '';
+    prometheusLocalhostNoHttpError = healthchecks.curlHealthCheck {
+      url = "http://${config.services.prometheus.listenAddress}:${toString config.services.prometheus.port}";
+    };
   };
 
 }
