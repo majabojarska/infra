@@ -4,6 +4,19 @@ metadata:
   name: audiomuse-ai
 spec:
   releaseName: audiomuse-ai
+  valuesFrom:
+    - kind: Secret
+      name: audiomuse-ai
+      valuesKey: POSTGRES_USER
+      targetPath: postgres.user
+    - kind: Secret
+      name: audiomuse-ai
+      valuesKey: POSTGRES_PASSWORD
+      targetPath: postgres.password
+    - kind: Secret
+      name: audiomuse-ai
+      valuesKey: POSTGRES_DB
+      targetPath: postgres.db
   chart:
     spec:
       chart: audiomuse-ai
@@ -74,9 +87,6 @@ spec:
         host: "" # e.g. "audiomuse-postgresql-rw" (CNPG rw service)
         port: 5432
       image: "postgres:18-alpine"
-      user: "audiomuse"
-      password: "audiomusepassword" # IMPORTANT: Change this for production or use --set
-      db: "audiomusedb"
       existingSecret: ""
       existingSecretKeys:
         user: "POSTGRES_USER"

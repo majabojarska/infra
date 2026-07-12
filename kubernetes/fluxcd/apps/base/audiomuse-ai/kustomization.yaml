@@ -3,6 +3,7 @@ kind: Kustomization
 namespace: audiomuse-ai
 resources:
   - ./namespace.yaml
+  - ./secret.yaml
   - ./cnpg-cluster.yaml
   - ./repository.yaml
-  # - ./release.yaml
+  - ./release.yaml
