@@ -17,7 +17,7 @@
 - name: NixOS build flake
   become: true
   ansible.builtin.shell:
-    cmd: "nixos-rebuild build --flake {{ flake_dir }}#{{ inventory_hostname }}"
+    cmd: "nixos-rebuild --show-trace build --flake {{ flake_dir }}#{{ inventory_hostname }}"
 
 - name: NixOS test flake
   become: true
