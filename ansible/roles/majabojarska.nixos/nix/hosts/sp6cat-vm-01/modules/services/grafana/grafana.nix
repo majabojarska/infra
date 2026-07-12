@@ -23,7 +23,7 @@ in
     settings = {
       server = {
         http_addr = "127.0.0.1";
-        http_port = config.sp6catVm01.ports.grafana;
+        http_port = config.hosts.sp6catVm01.ports.grafana;
         enforce_domain = true;
         enable_gzip = false; # Traefik will compress
         domain = "grafana.cloud.majabojarska.dev";
@@ -46,7 +46,7 @@ in
           {
             name = "prometheus-sp6cat-vm-01";
             type = "prometheus";
-            url = "http://localhost:${toString config.sp6catVm01.ports.prometheus}";
+            url = "http://localhost:${toString config.hosts.sp6catVm01.ports.prometheus}";
             isDefault = true;
           }
         ];
@@ -155,7 +155,7 @@ in
       grafana.loadBalancer = {
         servers = [
           {
-            url = "http://127.0.0.1:${toString config.sp6catVm01.ports.grafana}";
+            url = "http://127.0.0.1:${toString config.hosts.sp6catVm01.ports.grafana}";
           }
         ];
       };
@@ -166,7 +166,7 @@ in
     grafanaLocalhostNoHttpError =
       # Grafana is sometimes slow to start, so we retry a few times before failing the switch
       healthchecks.curlHealthCheck {
-        url = "http://127.0.0.1:${toString config.sp6catVm01.ports.grafana}";
+        url = "http://127.0.0.1:${toString config.hosts.sp6catVm01.ports.grafana}";
       };
   };
 

@@ -38,7 +38,7 @@ in
     enable = true;
     package = redlib-latest;
     address = "127.0.0.1";
-    port = config.sp6catVm01.ports.redlib;
+    port = config.hosts.sp6catVm01.ports.redlib;
     settings = {
       REDLIB_DEFAULT_THEME = "catppuccinMocha";
       REDLIB_DEFAULT_LAYOUT = "clean";

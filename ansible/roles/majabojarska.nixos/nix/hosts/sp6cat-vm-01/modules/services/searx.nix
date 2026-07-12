@@ -11,7 +11,7 @@
     enable = true;
     settings = {
       server = {
-        port = config.sp6catVm01.ports.searx;
+        port = config.hosts.sp6catVm01.ports.searx;
         bind_address = "127.0.0.1";
         secret_key = "@SEARX_SECRET_KEY@";
       };
@@ -48,7 +48,7 @@
       searx.loadBalancer = {
         servers = [
           {
-            url = "http://127.0.0.1:${toString config.sp6catVm01.ports.searx}";
+            url = "http://127.0.0.1:${toString config.hosts.sp6catVm01.ports.searx}";
           }
         ];
       };

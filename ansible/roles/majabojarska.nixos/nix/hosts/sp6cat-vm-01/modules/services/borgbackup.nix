@@ -7,7 +7,7 @@
         authorizedKeys = [
           "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILulC22JoRPoRtU5Q36cMzwo8W3DA2l58MUu9VcQEghw wint3rmute@thinkcentre"
         ];
-        path = "${config.sp6catVm01.storage.wdUsbHddMountPath}/borg/baczek";
+        path = "${config.hosts.sp6catVm01.storage.wdUsbHddMountPath}/borg/baczek";
         quota = "200G";
         allowSubRepos = true;
       };
@@ -16,7 +16,7 @@
         authorizedKeys = [
           "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIN8itVsInt/KzsOTn1BqmjuDfgR5IIPuN4nT6g1JVrVt root@kube-01"
         ];
-        path = "${config.sp6catVm01.storage.wdUsbHddMountPath}/borg/kube-01";
+        path = "${config.hosts.sp6catVm01.storage.wdUsbHddMountPath}/borg/kube-01";
         quota = "400G";
         allowSubRepos = true;
       };

@@ -35,7 +35,7 @@ in
 
       # use lists to set multiple values
       p = [
-        config.sp6catVm01.ports.copyparty
+        config.hosts.sp6catVm01.ports.copyparty
       ];
 
       # num cores
@@ -77,7 +77,7 @@ in
 
     volumes = {
       "/public" = {
-        path = "${config.sp6catVm01.storage.wdUsbHddMountPath}/copyparty/public";
+        path = "${config.hosts.sp6catVm01.storage.wdUsbHddMountPath}/copyparty/public";
         # see `copyparty --help-accounts` for available options
         access = {
           r = "*";
@@ -92,7 +92,7 @@ in
       };
       "/private" = {
         # share the contents of "/srv/copyparty"
-        path = "${config.sp6catVm01.storage.wdUsbHddMountPath}/copyparty/private";
+        path = "${config.hosts.sp6catVm01.storage.wdUsbHddMountPath}/copyparty/private";
         # see `copyparty --help-accounts` for available options
         access = {
           rw = [ "@users" ];
@@ -120,7 +120,7 @@ in
 
   system.preSwitchChecks = {
     copypartyLocalhostNoHttpError = healthchecks.curlHealthCheck {
-      url = "http://127.0.0.1:${toString config.sp6catVm01.ports.copyparty}";
+      url = "http://127.0.0.1:${toString config.hosts.sp6catVm01.ports.copyparty}";
     };
 
     copypartyRespondsNoError = ''

@@ -48,7 +48,7 @@
         };
 
         metrics = {
-          address = "127.0.0.1:${toString config.sp6catVm01.ports.metricsTraefik}";
+          address = "127.0.0.1:${toString config.hosts.sp6catVm01.ports.metricsTraefik}";
         };
 
         # ntp = { address = ":123/udp"; };
@@ -182,7 +182,7 @@
       middlewares = {
         anubis-blog = {
           forwardAuth = {
-            address = "http://127.0.0.1:${toString config.sp6catVm01.ports.anubis-blog}/.within.website/x/cmd/anubis/api/check";
+            address = "http://127.0.0.1:${toString config.hosts.sp6catVm01.ports.anubis-blog}/.within.website/x/cmd/anubis/api/check";
             trustForwardHeader = true;
             maxResponseBodySize = 1024 * 1024 * 1;
           };
@@ -210,7 +210,7 @@
         anubis.loadBalancer = {
           servers = [
             {
-              url = "http://127.0.0.1:${toString config.sp6catVm01.ports.anubis-blog}";
+              url = "http://127.0.0.1:${toString config.hosts.sp6catVm01.ports.anubis-blog}";
             }
           ];
         };
@@ -252,7 +252,7 @@
         fibo.loadBalancer = {
           servers = [
             {
-              url = "http://127.0.0.1:${toString config.sp6catVm01.ports.fibo}";
+              url = "http://127.0.0.1:${toString config.hosts.sp6catVm01.ports.fibo}";
             }
           ];
         };
@@ -260,7 +260,7 @@
         redlib.loadBalancer = {
           servers = [
             {
-              url = "http://127.0.0.1:${toString config.sp6catVm01.ports.redlib}";
+              url = "http://127.0.0.1:${toString config.hosts.sp6catVm01.ports.redlib}";
             }
           ];
         };
@@ -268,7 +268,7 @@
         uptimeKuma.loadBalancer = {
           servers = [
             {
-              url = "http://127.0.0.1:${toString config.sp6catVm01.ports.uptimeKuma}";
+              url = "http://127.0.0.1:${toString config.hosts.sp6catVm01.ports.uptimeKuma}";
             }
           ];
         };

@@ -13,23 +13,23 @@
     enable = true;
     settings = {
       # Network
-      listen-http = "127.0.0.1:${toString config.sp6catVm01.ports.ntfy}";
+      listen-http = "127.0.0.1:${toString config.hosts.sp6catVm01.ports.ntfy}";
       base-url = "https://ntfy.${config.globals.cloudDomain}";
       upstream-base-url = "https://ntfy.sh";
       behind-proxy = true;
 
       # Auth
-      # auth-file = "${config.sp6catVm01.storage.wdUsbHddMountPath}/ntfy/auth.db";
+      # auth-file = "${config.hosts.sp6catVm01.storage.wdUsbHddMountPath}/ntfy/auth.db";
       auth-default-access = "deny-all";
       enable-login = true;
       require-login = true;
 
       # Messages
-      # attachment-cache-dir = "${config.sp6catVm01.storage.wdUsbHddMountPath}/ntfy/attachments";
+      # attachment-cache-dir = "${config.hosts.sp6catVm01.storage.wdUsbHddMountPath}/ntfy/attachments";
       attachment-file-size-limit = "20M";
       attachment-total-size-limit = "1G";
       attachment-expiry-duration = "12h";
-      # cache-file = "${config.sp6catVm01.storage.wdUsbHddMountPath}/ntfy/cache.db";
+      # cache-file = "${config.hosts.sp6catVm01.storage.wdUsbHddMountPath}/ntfy/cache.db";
     };
     # Auth users and tokens are loaded through the env file
     environmentFile = config.age.secrets."ntfy-auth".path;
@@ -58,7 +58,7 @@
       ntfy.loadBalancer = {
         servers = [
           {
-            url = "http://127.0.0.1:${toString config.sp6catVm01.ports.ntfy}";
+            url = "http://127.0.0.1:${toString config.hosts.sp6catVm01.ports.ntfy}";
           }
         ];
       };

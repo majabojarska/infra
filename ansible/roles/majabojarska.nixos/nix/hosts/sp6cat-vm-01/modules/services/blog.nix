@@ -15,7 +15,7 @@ in
     listen = [
       {
         addr = "127.0.0.1";
-        port = config.sp6catVm01.ports.blog;
+        port = config.hosts.sp6catVm01.ports.blog;
       }
     ];
 
@@ -26,7 +26,7 @@ in
   };
 
   services.anubis.instances.blog.settings = {
-    BIND = ":${toString config.sp6catVm01.ports.anubis-blog}";
+    BIND = ":${toString config.hosts.sp6catVm01.ports.anubis-blog}";
     BIND_NETWORK = "tcp";
     TARGET = " ";
     REDIRECT_DOMAINS = config.globals.baseDomain;
@@ -38,7 +38,7 @@ in
 
   system.preSwitchChecks = {
     blogLocalhostNoHttpError = healthchecks.curlHealthCheck {
-      url = "http://127.0.0.1:${toString config.sp6catVm01.ports.blog}";
+      url = "http://127.0.0.1:${toString config.hosts.sp6catVm01.ports.blog}";
     };
 
     blogDomainBlocksScrape = ''

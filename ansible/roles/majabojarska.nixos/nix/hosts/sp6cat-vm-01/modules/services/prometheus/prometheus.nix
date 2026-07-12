@@ -1,4 +1,9 @@
-{ pkgs, config, lib, ... }:
+{
+  pkgs,
+  config,
+  lib,
+  ...
+}:
 let
   healthchecks = import ../../../../../modules/healthchecks.nix { inherit lib pkgs; };
 in
@@ -12,7 +17,7 @@ in
   # https://github.com/NixOS/nixpkgs/blob/nixos-24.05/nixos/modules/services/monitoring/prometheus/default.nix
   services.prometheus = {
     enable = true;
-    port = config.sp6catVm01.ports.prometheus;
+    port = config.hosts.sp6catVm01.ports.prometheus;
     listenAddress = "127.0.0.1";
     retentionTime = "15d";
 
@@ -28,7 +33,11 @@ in
         job_name = "node";
         static_configs = [
           {
-            targets = [ "localhost:${toString config.services.prometheus.exporters.node.port}" ];
+            targets = [
+              "localhost:${toString config.services.prometheus.exporters.node.port}"
+              "kube-01.${config.globals.homeDomain}:${toString config.hosts.kube01.ports.prometheusExporterNode}"
+
+            ];
           }
         ];
       }
@@ -36,7 +45,10 @@ in
         job_name = "smartctl";
         static_configs = [
           {
-            targets = [ "localhost:${toString config.services.prometheus.exporters.smartctl.port}" ];
+            targets = [
+              "localhost:${toString config.services.prometheus.exporters.smartctl.port}"
+              # "kube-01.${config.globals.homeDomain}:${toString config.kube01.services.prometheus.exporters.smartctl.port}"
+            ];
           }
         ];
       }
@@ -44,7 +56,10 @@ in
         job_name = "zfs";
         static_configs = [
           {
-            targets = [ "localhost:${toString config.services.prometheus.exporters.zfs.port}" ];
+            targets = [
+              "localhost:${toString config.services.prometheus.exporters.zfs.port}"
+              # "kube-01.${config.globals.homeDomain}:${toString config.kube01.services.prometheus.exporters.zfs.port}"
+            ];
           }
         ];
       }
@@ -60,7 +75,10 @@ in
         job_name = "fail2ban";
         static_configs = [
           {
-            targets = [ "localhost:${toString config.services.prometheus.exporters.fail2ban.port}" ];
+            targets = [
+              "localhost:${toString config.services.prometheus.exporters.fail2ban.port}"
+              # "kube-01.${config.globals.homeDomain}:${toString config.kube01.services.prometheus.exporters.fail2ban.port}"
+            ];
           }
         ];
       }
@@ -76,7 +94,10 @@ in
         job_name = "ping";
         static_configs = [
           {
-            targets = [ "localhost:${toString config.services.prometheus.exporters.ping.port}" ];
+            targets = [
+              "localhost:${toString config.services.prometheus.exporters.ping.port}"
+              # "kube-01.${config.globals.homeDomain}:${toString config.kube01.services.prometheus.exporters.ping.port}"
+            ];
           }
         ];
         metric_relabel_configs = [
@@ -105,8 +126,8 @@ in
 
   # This is also part of the hack
   # systemd.tmpfiles.rules = [
-  #   "D ${config.sp6catVm01.storage.wdUsbHddMountPath}/prometheus/data 0751 prometheus prometheus - -"
-  #   "L+ /var/lib/${config.services.prometheus.stateDir}/data - - - - ${config.sp6catVm01.storage.wdUsbHddMountPath}/prometheus/data"
+  #   "D ${config.hosts.sp6catVm01.storage.wdUsbHddMountPath}/prometheus/data 0751 prometheus prometheus - -"
+  #   "L+ /var/lib/${config.services.prometheus.stateDir}/data - - - - ${config.hosts.sp6catVm01.storage.wdUsbHddMountPath}/prometheus/data"
   # ];
   system.preSwitchChecks = {
     prometheusLocalhostNoHttpError = healthchecks.curlHealthCheck {
