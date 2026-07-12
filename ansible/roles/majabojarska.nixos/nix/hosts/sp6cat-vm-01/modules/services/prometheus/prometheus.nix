@@ -110,6 +110,8 @@
       ${pkgs.curl}/bin/curl \
         --fail-with-body \
         --silent \
+        --retry 4 \
+        --retry-max-time 15 \
         --show-error \
           http://${config.services.prometheus.listenAddress}:${toString config.services.prometheus.port} \
         >/dev/null

@@ -39,6 +39,8 @@
       ${pkgs.curl}/bin/curl \
         --fail-with-body \
         --silent \
+        --retry 4 \
+        --retry-max-time 15 \
         --show-error \
           http://127.0.0.1:${toString config.sp6catVm01.ports.blog} \
         >/dev/null
