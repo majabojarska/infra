@@ -8,7 +8,7 @@
     copyparty
     wireguard-tools
     smartmontools
-    sqlite
+    sqlite-utils
     zfs
   ];
 }
