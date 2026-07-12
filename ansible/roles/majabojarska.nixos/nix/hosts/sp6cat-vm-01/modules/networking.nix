@@ -84,13 +84,14 @@
         "wg-baczek"
       ];
     };
-    usePredictableInterfaceNames = false;
+    usePredictableInterfaceNames = true;
     useDHCP = true;
-    # interfaces.eth0.useDHCP = true;
 
     wg-quick.interfaces = {
-      wg-beehive= {
-        address = [ "10.1.0.1/24" ];
+      wg-beehive = {
+        address = [
+          "10.1.0.1/24"
+        ];
         listenPort = 20000;
         mtu = 1420;
 
@@ -100,9 +101,13 @@
           {
             # OPNsense
             publicKey = "PrSlPauZMQ1nMxKHxFfKr8mnrzjBOjSoX9d6B8z01V4=";
-            allowedIPs = [ "10.1.0.2/32" ];
+            allowedIPs = [
+              "10.1.0.2/32"
+              "192.168.1.0/24"
+            ];
           }
         ];
+
       };
       wg-baczek = {
         address = [ "10.10.0.1/24" ];
