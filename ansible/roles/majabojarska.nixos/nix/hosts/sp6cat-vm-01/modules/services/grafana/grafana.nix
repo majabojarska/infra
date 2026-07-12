@@ -97,8 +97,8 @@
       user = "grafana";
       group = "grafana";
       source = pkgs.fetchurl {
-        url = "https://grafana.com/api/dashboards/4475/revisions/5/download";
-        sha256 = "sha256-r90j5mSdYT+6xud3jdUwrZ8HaathKB92E5S9nKUA5Yc=";
+        url = "https://grafana.com/api/dashboards/17346/revisions/9/download";
+        sha256 = "sha256-OtMp0nNxIPMvZ6qwg/JFtVTqXE7IN4/u5xlu9ruffak=";
       };
     };
     "grafana-dashboards/ping.json" = {
