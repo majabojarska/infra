@@ -7,18 +7,38 @@
     kube01 = {
 
       ports = {
+
         prometheusExporterNode = lib.mkOption {
           type = lib.types.port;
           default = 9100;
           description = "Prometheus Node Exporter service port";
         };
+
         prometheusExporterSmartctl = lib.mkOption {
           type = lib.types.port;
           default = 9101;
           description = "Prometheus Smartctl Exporter service port";
         };
-      };
 
+        prometheusExporterZfs = lib.mkOption {
+          type = lib.types.port;
+          default = 9102;
+          description = "Prometheus ZFS Exporter service port";
+        };
+
+        prometheusExporterFail2ban = lib.mkOption {
+          type = lib.types.port;
+          default = 9104;
+          description = "Prometheus Fail2ban Exporter service port";
+        };
+
+        prometheusExporterPing = lib.mkOption {
+          type = lib.types.port;
+          default = 9106;
+          description = "Prometheus Ping Exporter service port";
+        };
+
+      };
     };
   };
 

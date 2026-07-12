@@ -121,7 +121,7 @@
     lib.concatStringsSep " " [
       (lib.getExe pkgs.prometheus-fail2ban-exporter)
       "--collector.f2b.exit-on-socket-connection-error"
-      ''--web.listen-address="127.0.0.1:${toString config.sp6catVm01.ports.prometheusExporterFail2ban}"''
+      "--web.listen-address=127.0.0.1:${toString config.services.prometheus.exporters.fail2ban.port}"
       "--collector.f2b.socket=/run/fail2ban/fail2ban.sock"
     ]
   );
@@ -134,7 +134,7 @@
         --retry 4 \
         --retry-max-time 15 \
         --show-error \
-          http://${config.services.prometheus.exporters.node.listenAddress}/metrics \
+          http://${config.services.prometheus.exporters.node.listenAddress}:${toString config.services.prometheus.exporters.node.port}/metrics \
         >/dev/null
     '';
 
@@ -145,7 +145,7 @@
         --retry 4 \
         --retry-max-time 15 \
         --show-error \
-          http://${config.services.prometheus.exporters.smartctl.listenAddress}/metrics \
+          http://${config.services.prometheus.exporters.smartctl.listenAddress}:${toString config.services.prometheus.exporters.smartctl.port}/metrics \
         >/dev/null
     '';
 
@@ -156,29 +156,7 @@
         --retry 4 \
         --retry-max-time 15 \
         --show-error \
-          http://${config.services.prometheus.exporters.zfs.listenAddress}/metrics \
-        >/dev/null
-    '';
-
-    exporterChronyLocalhostNoHttpError = ''
-      ${pkgs.curl}/bin/curl \
-        --fail-with-body \
-        --silent \
-        --retry 4 \
-        --retry-max-time 15 \
-        --show-error \
-          http://${config.services.prometheus.exporters.chrony.listenAddress}/metrics \
-        >/dev/null
-    '';
-
-    exporterWireguardLocalhostNoHttpError = ''
-      ${pkgs.curl}/bin/curl \
-        --fail-with-body \
-        --silent \
-        --retry 4 \
-        --retry-max-time 15 \
-        --show-error \
-          http://${config.services.prometheus.exporters.wireguard.listenAddress}/metrics \
+          http://${config.services.prometheus.exporters.zfs.listenAddress}:${toString config.services.prometheus.exporters.zfs.port}/metrics \
         >/dev/null
     '';
 
@@ -189,7 +167,7 @@
         --retry 4 \
         --retry-max-time 15 \
         --show-error \
-        http://${config.services.prometheus.exporters.fail2ban.listenAddress} \
+        http://${config.services.prometheus.exporters.fail2ban.listenAddress}:${toString config.services.prometheus.exporters.fail2ban.port} \
         >/dev/null
     '';
 
@@ -200,7 +178,29 @@
         --retry 4 \
         --retry-max-time 15 \
         --show-error \
-        http://${config.services.prometheus.exporters.ping.listenAddress}/metrics \
+        http://${config.services.prometheus.exporters.ping.listenAddress}:${toString config.services.prometheus.exporters.ping.port}/metrics \
+        >/dev/null
+    '';
+
+    exporterChronyLocalhostNoHttpError = ''
+      ${pkgs.curl}/bin/curl \
+        --fail-with-body \
+        --silent \
+        --retry 4 \
+        --retry-max-time 15 \
+        --show-error \
+          http://${config.services.prometheus.exporters.chrony.listenAddress}:${toString config.services.prometheus.exporters.chrony.port}/metrics \
+        >/dev/null
+    '';
+
+    exporterWireguardLocalhostNoHttpError = ''
+      ${pkgs.curl}/bin/curl \
+        --fail-with-body \
+        --silent \
+        --retry 4 \
+        --retry-max-time 15 \
+        --show-error \
+          http://${config.services.prometheus.exporters.wireguard.listenAddress}:${toString config.services.prometheus.exporters.wireguard.port}/metrics \
         >/dev/null
     '';
 
