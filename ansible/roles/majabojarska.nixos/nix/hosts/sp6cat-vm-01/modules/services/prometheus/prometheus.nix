@@ -21,6 +21,7 @@ in
     listenAddress = "127.0.0.1";
     retentionTime = "15d";
 
+    checkConfig = "syntax-only";
     # This hack is needed to write Prometheus data outside of /var/lib
     # One would think think scenario would be supported, but alas.
     # https://discourse.nixos.org/t/custom-prometheus-data-directory/50741/6
