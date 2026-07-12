@@ -14,6 +14,7 @@ in
   "wd-usb-hdd-key.age".publicKeys = [ sp6cat-vm-01 ] ++ developers;
   "anubis-allow-bearer-token.age".publicKeys = [ sp6cat-vm-01 ] ++ developers;
   "grafana-secret-key.age".publicKeys = [ sp6cat-vm-01 ] ++ developers;
+  "grafana-admin-password.age".publicKeys = [ sp6cat-vm-01 ] ++ developers;
   "telegram-bot-token.age".publicKeys = [ sp6cat-vm-01 ] ++ developers;
   "ntfy-auth.age".publicKeys = [ sp6cat-vm-01 ] ++ developers;
 }

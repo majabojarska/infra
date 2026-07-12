@@ -7,6 +7,12 @@
       group = "grafana";
       owner = "grafana";
     };
+    "grafana-admin-password" = {
+      file = ../../../secrets/grafana-admin-password.age;
+      mode = "0400";
+      group = "grafana";
+      owner = "grafana";
+    };
   };
 
   services.grafana = {
@@ -22,6 +28,9 @@
 
       security = {
         secret_key = "$__file{${config.age.secrets."grafana-secret-key".path}}";
+
+        admin_user = "admin";
+        admin_password = "$__file{${config.age.secrets."grafana-admin-password".path}}";
       };
 
       analytics.reporting_enabled = false;
