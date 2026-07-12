@@ -101,6 +101,14 @@
         sha256 = "sha256-r90j5mSdYT+6xud3jdUwrZ8HaathKB92E5S9nKUA5Yc=";
       };
     };
+    "grafana-dashboards/ping.json" = {
+      user = "grafana";
+      group = "grafana";
+      source = pkgs.fetchurl {
+        url = "https://grafana.com/api/dashboards/18194/revisions/1/download";
+        sha256 = "sha256-iRFzdPDqq2ytC5Sri7g1V0++AGOg5uCw+t/BwfVkSGY=";
+      };
+    };
   };
 
   services.traefik.dynamicConfigOptions.http = {
