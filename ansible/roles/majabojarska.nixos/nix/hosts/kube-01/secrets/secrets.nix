@@ -7,4 +7,6 @@ in
 {
   "tailscale-auth-key.age".publicKeys = [ kube-01 ] ++ developers;
   "borgmatic-kubernetes-enc-pass.age".publicKeys = [ kube-01 ] ++ developers;
+  "telegram-bot-token.age".publicKeys = [ kube-01 ] ++ developers;
+  "telegram-chat-id.age".publicKeys = [ kube-01 ] ++ developers;
 }
