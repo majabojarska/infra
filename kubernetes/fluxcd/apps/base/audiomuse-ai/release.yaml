@@ -9,17 +9,14 @@ spec:
       name: audiomuse-ai
       valuesKey: POSTGRES_USER
       targetPath: postgres.user
-      optional: true
     - kind: Secret
       name: audiomuse-ai
       valuesKey: POSTGRES_PASSWORD
       targetPath: postgres.password
-      optional: true
     - kind: Secret
       name: audiomuse-ai
       valuesKey: POSTGRES_DB
       targetPath: postgres.db
-      optional: true
   chart:
     spec:
       chart: audiomuse-ai
@@ -90,7 +87,7 @@ spec:
         host: "audiomuse-ai-rw" # CNPG rw service
         port: 5432
       image: "postgres:18-alpine"
-      existingSecret: ""
+      existingSecret: "audiomuse-ai"
       existingSecretKeys:
         user: "POSTGRES_USER"
         password: "POSTGRES_PASSWORD"
