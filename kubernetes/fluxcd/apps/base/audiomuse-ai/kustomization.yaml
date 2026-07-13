@@ -8,3 +8,5 @@ resources:
   - ./cnpg-cluster.yaml
   - ./repository.yaml
   - ./release.yaml
+  - ./certificate.yaml
+  - ./ingressroute.yaml
