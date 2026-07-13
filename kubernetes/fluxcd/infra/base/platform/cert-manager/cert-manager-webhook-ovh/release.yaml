@@ -10,7 +10,7 @@ spec:
       sourceRef:
         kind: HelmRepository
         name: cert-manager-webhook-ovh
-      version: 0.9.13
+      version: 0.9.14
   values: {}
   interval: 1m0s
   install:
