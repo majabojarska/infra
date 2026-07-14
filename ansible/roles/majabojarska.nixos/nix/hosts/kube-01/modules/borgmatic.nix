@@ -6,10 +6,34 @@
 }:
 
 {
+  age = {
+    secrets = {
+      "borgmatic-kubernetes-enc-pass" = {
+        file = ../secrets/borgmatic-kubernetes-enc-pass.age;
+        mode = "0400";
+      };
+      "ntfy-token" = {
+        file = ../secrets/ntfy-token.age;
+        mode = "0400";
+      };
+    };
+  };
+
   services.borgmatic = {
     enable = true;
     enableConfigCheck = true;
     configurations."kubernetes" = {
+      checks = [
+        {
+          name = "repository";
+          frequency = "1 week";
+        }
+        {
+          name = "archives";
+          frequency = "1 week";
+        }
+      ];
+
       # zfs = { }; # Enables ZFS in borgmatic # TODO:
       source_directories = [
         # K3s state
@@ -43,16 +67,54 @@
         # Killall k3s https://docs.k3s.io/upgrades/killall#killall-script
         "${pkgs.k3s}/bin/k3s-killall.sh"
       ];
-      after_actions = [
-        # Restart k3s
-        "systemctl restart k3s.service"
+
+      commands = [
+        {
+          after = "action";
+          when = [ "create" ];
+          run = [
+            # Restart k3s
+            "systemctl restart k3s.service"
+          ];
+        }
       ];
+
+      ntfy = {
+        topic = "infra";
+        server = "https://ntfy.${config.globals.cloudDomain}";
+        access_token = "{credential file ${config.age.secrets."ntfy-token".path}}";
+
+        start = {
+          title = "Borgmatic backup started";
+          message = "Borgmatic backup {repository} ({configuration_filename}) started on $(hostname) at $(date).";
+          priority = "min";
+          tags = "backups";
+        };
+        finish = {
+          title = "Borgmatic backup finished";
+          message = "Borgmatic backup {repository} ({configuration_filename}) finished on $(hostname) at $(date).";
+          priority = "min";
+          tags = "backups";
+        };
+        fail = {
+          title = "Borgmatic backup failed";
+          message = "Borgmatic backup {repository} ({configuration_filename}) failed on $(hostname) at $(date).";
+          priority = "max";
+          tags = "backups";
+        };
+        states = [
+          "fail"
+          "start"
+          "finish"
+        ];
+      };
 
       keep_daily = 7;
       keep_weekly = 4;
       keep_monthly = 3;
       keep_yearly = 0;
     };
+
   };
 
   systemd.timers.borgmatic.timerConfig = {
