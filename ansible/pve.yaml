@@ -5,3 +5,4 @@
   roles:
     - role: majabojarska.apt_upgrade
     - role: majabojarska.pve_rm_notice
+    - role: majabojarska.prometheus_node_exporter
