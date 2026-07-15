@@ -4,6 +4,7 @@
   imports = [
     ../../modules/i18n.nix
     ../../modules/globals.nix
+    ../../modules/logrotate.nix
 
     ./modules/boot.nix
     ./modules/hardware.nix
