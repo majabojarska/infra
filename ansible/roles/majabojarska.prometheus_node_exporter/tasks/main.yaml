@@ -5,8 +5,45 @@
     state: present
     update_cache: yes
 
+- name: Create custom prometheus node exporter config
+  ansible.builtin.copy:
+    dest: /etc/default/prometheus-node-exporter-custom
+    mode: "0644"
+    content: |
+      ARGS="--web.listen-address=0.0.0.0:9100"
+  register: prometheus_node_exporter_custom_config
+
+- name: Ensure systemd override directory exists
+  ansible.builtin.file:
+    path: /etc/systemd/system/prometheus-node-exporter.service.d
+    state: directory
+    mode: "0755"
+
+- name: Configure prometheus node exporter service to use custom config
+  ansible.builtin.copy:
+    dest: /etc/systemd/system/prometheus-node-exporter.service.d/override.conf
+    mode: "0644"
+    content: |
+      [Service]
+      EnvironmentFile=
+      EnvironmentFile=/etc/default/prometheus-node-exporter
+      EnvironmentFile=-/etc/default/prometheus-node-exporter-custom
+  register: prometheus_node_exporter_systemd_override
+
+- name: Restart prometheus node exporter after config change
+  ansible.builtin.systemd:
+    name: prometheus-node-exporter
+    state: restarted
+    daemon_reload: yes
+  when:
+    - prometheus_node_exporter_custom_config.changed or prometheus_node_exporter_systemd_override.changed
+
 - name: Ensure prometheus node exporter is enabled and running
-  ansible.builtin.service:
+  ansible.builtin.systemd:
     name: prometheus-node-exporter
     enabled: yes
     state: started
+
+- name: Check prometheus node exporter service health
+  ansible.builtin.command: systemctl is-active --quiet prometheus-node-exporter
+  changed_when: false
