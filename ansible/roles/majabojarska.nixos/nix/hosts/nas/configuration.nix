@@ -3,6 +3,7 @@
     ../../modules/globals.nix
     ../../modules/i18n.nix
     ../../modules/system-packages-common.nix
+    ../../modules/shell-zsh-fzf.nix
   ];
 
   users.users = {

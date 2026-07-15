@@ -5,6 +5,7 @@
     ../../modules/i18n.nix
     ../../modules/globals.nix
     ../../modules/logrotate.nix
+    ../../modules/shell-zsh-fzf.nix
 
     ./modules/boot.nix
     ./modules/hardware.nix
