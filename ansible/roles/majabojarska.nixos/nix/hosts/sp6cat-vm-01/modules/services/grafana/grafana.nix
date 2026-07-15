@@ -1,4 +1,9 @@
-{ config, pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 let
   healthchecks = import ../../../../../modules/healthchecks.nix { inherit lib pkgs; };
 in
@@ -132,6 +137,14 @@ in
       source = pkgs.fetchurl {
         url = "https://grafana.com/api/dashboards/18194/revisions/1/download";
         sha256 = "sha256-iRFzdPDqq2ytC5Sri7g1V0++AGOg5uCw+t/BwfVkSGY=";
+      };
+    };
+    "grafana-dashboards/pve.json" = {
+      user = "grafana";
+      group = "grafana";
+      source = pkgs.fetchurl {
+        url = "https://grafana.com/api/dashboards/10347/revisions/5/download";
+        sha256 = "sha256-rHtSUxuvD9ZWO4QZdC2AtzhDmtXbaBmqLLt7EcaFjv8=";
       };
     };
   };
