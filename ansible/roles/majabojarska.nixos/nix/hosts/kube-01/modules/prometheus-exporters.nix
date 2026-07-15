@@ -110,10 +110,6 @@ in
       url = "http://${config.services.prometheus.exporters.zfs.listenAddress}:${toString config.services.prometheus.exporters.zfs.port}/metrics";
     };
 
-    # exporterFail2banLocalhostNoHttpError = healthchecks.curlHealthCheck {
-    #   url = "http://${config.services.prometheus.exporters.fail2ban.listenAddress}:${toString config.services.prometheus.exporters.fail2ban.port}/metrics";
-    # };
-
     exporterPingLocalhostNoHttpError = healthchecks.curlHealthCheck {
       url = "http://${config.services.prometheus.exporters.ping.listenAddress}:${toString config.services.prometheus.exporters.ping.port}/metrics";
     };
