@@ -33,6 +33,9 @@ in
       description = "Send notifications on startup and shutdown";
       wantedBy = [ "multi-user.target" ];
       before = [ "shutdown.target" ];
+      unitConfig = {
+        ConditionPathExists = "!/run/notify-startup-sent";
+      };
 
       serviceConfig = {
         Type = "oneshot";
@@ -44,6 +47,7 @@ in
             "${cfg.topic}" \
             "${config.networking.hostName} has started up"
         '';
+        ExecStartPost = "${pkgs.coreutils}/bin/touch /run/notify-startup-sent";
         ExecStop = pkgs.writeShellScript "notify-shutdown" ''
           NTFY_TOKEN="$(cat ${cfg.tokenFile})"
           ${pkgs.ntfy-sh}/bin/ntfy publish \
