@@ -6,6 +6,7 @@
 }:
 let
   healthchecks = import ../../../../../modules/healthchecks.nix { inherit lib pkgs; };
+  mkPveScrapeJob = import ./mk-pve-scrape-job.nix { inherit config; };
 in
 {
   imports = [
@@ -122,64 +123,16 @@ in
           }
         ];
       }
-      {
-        job_name = "pve-01.home.majabojarska.dev";
-        metrics_path = "/pve";
-        params = {
-          module = [ "pve-01-home" ];
-          target = [ "pve-01.home.majabojarska.dev" ];
-        };
-        static_configs = [
-          {
-            targets = [
-              "127.0.0.1:${toString config.services.prometheus.exporters.pve.port}"
-            ];
-          }
-        ];
-        metric_relabel_configs = [
-          {
-            source_labels = [ "__address__" ];
-            target_label = "__param_target";
-          }
-          {
-            source_labels = [ "__param_target" ];
-            target_label = "instance";
-          }
-          {
-            target_label = "__address__";
-            replacement = "127.0.0.1:${toString config.services.prometheus.exporters.pve.port}";
-          }
-        ];
-      }
-      {
-        job_name = "sp6cat-01.hswro.majabojarska.dev";
-        metrics_path = "/pve";
-        params = {
-          module = [ "sp6cat-01-hswro" ];
-          target = [ "sp6cat-01.hswro.majabojarska.dev" ];
-        };
-        static_configs = [
-          {
-            targets = [
-              "127.0.0.1:${toString config.services.prometheus.exporters.pve.port}"
-            ];
-          }
-        ];
-        metric_relabel_configs = [
-          {
-            source_labels = [ "__address__" ];
-            target_label = "__param_target";
-          }
-          {
-            source_labels = [ "__param_target" ];
-            target_label = "instance";
-          }
-          {
-            target_label = "__address__";
-            replacement = "127.0.0.1:${toString config.services.prometheus.exporters.pve.port}";
-          }
-        ];
-      }
+      (mkPveScrapeJob {
+        jobName = "pve-01.home.majabojarska.dev";
+        cfgName = "pve-01-home";
+        target = [ "pve-01.home.majabojarska.dev" ];
+      })
+      (mkPveScrapeJob {
+        jobName = "sp6cat-01.hswro.majabojarska.dev";
+        cfgName = "sp6cat-01-hswro";
+        target = [ "sp6cat-01.hswro.majabojarska.dev" ];
+      })
       {
         job_name = "traefik";
         static_configs = [
