@@ -35,7 +35,7 @@ pre-commit:
       glob: "**/*.nix"
       run: |
         if command -v nix >/dev/null 2>&1; then
-          nix flake check --no-build ./ansible/roles/majabojarska.nixos/nix || echo "⚠️  Nix flake check failed"
+          nix flake check --no-build ./ansible/roles/majabojarska.nixos/nix
         else
           echo "⚠️  nix not installed, skipping"
         fi
