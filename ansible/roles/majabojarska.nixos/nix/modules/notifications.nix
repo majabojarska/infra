@@ -29,10 +29,9 @@ in
 
     environment.systemPackages = [ pkgs.ntfy-sh ];
 
-    systemd.services.notify-startup-shutdown = {
-      description = "Send notifications on startup and shutdown";
+    systemd.services.notify-startup = {
+      description = "Send startup notification";
       wantedBy = [ "multi-user.target" ];
-      before = [ "shutdown.target" ];
       unitConfig = {
         ConditionPathExists = "!/run/notify-startup-sent";
       };
@@ -48,7 +47,18 @@ in
             "${config.networking.hostName} has started up"
         '';
         ExecStartPost = "${pkgs.coreutils}/bin/touch /run/notify-startup-sent";
-        ExecStop = pkgs.writeShellScript "notify-shutdown" ''
+      };
+    };
+
+    systemd.services.notify-shutdown = {
+      description = "Send shutdown notification";
+      wantedBy = [ "shutdown.target" ];
+      before = [ "shutdown.target" ];
+      unitConfig.DefaultDependencies = "no";
+
+      serviceConfig = {
+        Type = "oneshot";
+        ExecStart = pkgs.writeShellScript "notify-shutdown" ''
           NTFY_TOKEN="$(cat ${cfg.tokenFile})"
           ${pkgs.ntfy-sh}/bin/ntfy publish \
             --token "$NTFY_TOKEN" \
