@@ -17,4 +17,5 @@ in
   "grafana-admin-password.age".publicKeys = [ sp6cat-vm-01 ] ++ developers;
   "ntfy-auth.age".publicKeys = [ sp6cat-vm-01 ] ++ developers;
   "ntfy-token.age".publicKeys = [ sp6cat-vm-01 ] ++ developers;
+  "prometheus-pve-exporter-yml.age".publicKeys = [ sp6cat-vm-01 ] ++ developers;
 }

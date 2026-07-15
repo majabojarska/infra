@@ -8,6 +8,15 @@ let
   healthchecks = import ../../../../../modules/healthchecks.nix { inherit lib pkgs; };
 in
 {
+  age.secrets = {
+    "prometheus-pve-exporter-yml" = {
+      file = ../../../secrets/prometheus-pve-exporter-yml.age;
+      mode = "0400";
+      owner = "root";
+      group = "root";
+    };
+  };
+
   services.prometheus.exporters = {
 
     node = {
@@ -90,6 +99,14 @@ in
           disableIPv6 = false;
         };
       };
+
+    };
+
+    pve = {
+      enable = true;
+      port = config.hosts.sp6catVm01.ports.prometheusExporterPve;
+      listenAddress = "127.0.0.1";
+      configFile = config.age.secrets."prometheus-pve-exporter-yml".path;
     };
   };
 

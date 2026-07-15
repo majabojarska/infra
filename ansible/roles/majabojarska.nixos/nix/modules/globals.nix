@@ -146,6 +146,12 @@
           description = "Prometheus Ping Exporter service port";
         };
 
+        prometheusExporterPve = lib.mkOption {
+          type = lib.types.port;
+          default = 9221;
+          description = "Prometheus PVE Exporter service port";
+        };
+
         metricsTraefik = lib.mkOption {
           type = lib.types.port;
           default = 9107;
