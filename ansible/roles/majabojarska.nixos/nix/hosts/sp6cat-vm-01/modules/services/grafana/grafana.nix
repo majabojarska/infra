@@ -29,6 +29,10 @@ in
         domain = "grafana.cloud.majabojarska.dev";
       };
 
+      log = {
+        level = "debug";
+      };
+
       security = {
         secret_key = "$__file{${config.age.secrets."grafana-secret-key".path}}";
 
