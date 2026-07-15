@@ -4,5 +4,12 @@
     - pve
   roles:
     - role: majabojarska.apt_upgrade
+    - role: majabojarska.apt_packages
+      vars:
+        apt_packages:
+          - net-tools
+          - iftop
+          - iotop
+          - ncdu
     - role: majabojarska.pve_rm_notice
     - role: majabojarska.prometheus_node_exporter
