@@ -59,14 +59,6 @@
       }";
       relocated_repo_access_is_ok = true;
       compression = "auto,zstd,10";
-      before_backup = [
-        # Couple volume backup with ETCD state
-        "${pkgs.k3s}/bin/k3s etcd-snapshot save --name borgmatic --etcd-snapshot-compress --etcd-snapshot-dir=/storage/kubernetes/snapshots"
-        # Drain node and stop K3s
-        "systemctl stop k3s.service"
-        # Killall k3s https://docs.k3s.io/upgrades/killall#killall-script
-        "${pkgs.k3s}/bin/k3s-killall.sh"
-      ];
 
       commands = [
         {
@@ -77,10 +69,22 @@
             "systemctl restart k3s.service"
           ];
         }
+        {
+          before = "action";
+          when = [ "create" ];
+          run = [
+            # Couple volume backup with ETCD state
+            "${pkgs.k3s}/bin/k3s etcd-snapshot save --name borgmatic --etcd-snapshot-compress --etcd-snapshot-dir=/storage/kubernetes/snapshots"
+            # Drain node and stop K3s
+            "systemctl stop k3s.service"
+            # Killall k3s https://docs.k3s.io/upgrades/killall#killall-script
+            "${pkgs.k3s}/bin/k3s-killall.sh"
+          ];
+        }
       ];
 
       ntfy = {
-        topic = "infra";
+        topic = "backups";
         server = "https://ntfy.${config.globals.cloudDomain}";
         access_token = "{credential file ${config.age.secrets."ntfy-token".path}}";
 
