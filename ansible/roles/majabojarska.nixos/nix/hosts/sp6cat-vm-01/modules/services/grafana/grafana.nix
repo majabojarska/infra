@@ -164,6 +164,8 @@ in
       # Grafana is sometimes slow to start, so we retry a few times before failing the switch
       healthchecks.curlHealthCheck {
         url = "http://127.0.0.1:${toString config.hosts.sp6catVm01.ports.grafana}";
+        retryMaxTime = 30;
+        retry = 10;
       };
   };
 
