@@ -73,11 +73,10 @@
       "no-resolv" = true;
       "bind-interfaces" = true;
       "listen-address" = "127.0.0.1";
+
       server = [
         "/home.majabojarska.dev/192.168.1.1"
-
-        "/sp6cat-01.hswro.majabojarska.dev/192.168.81.50"
-        "/sp6cat-vm-01.hswro.majabojarska.dev/192.168.81.51"
+        "/hswro.majabojarska.dev/192.168.1.1"
 
         "1.1.1.1"
         "1.0.0.1"
