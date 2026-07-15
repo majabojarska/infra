@@ -2,8 +2,6 @@
 - name: Setup server
   hosts:
     - kube-01
-  roles:
-    - role: majabojarska.nixos
 
   tasks:
     - name: Get kubeconfig

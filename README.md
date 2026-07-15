@@ -25,10 +25,61 @@ Manages the infrastructure, although the configuration might be outdated at the 
 - DNS records (OVH),
 - virtual instance(s) (Linode),
 
-## Development
+### Nix devenv
 
-To run checks locally on every commit:
+Use the repo dev environment for NixOS and deploy tooling (including `deploy-rs`):
 
 ```sh
-pre-commit install
+direnv allow
+```
+
+Or without direnv:
+
+```sh
+nix develop
+```
+
+Useful commands available in the shell:
+
+```sh
+flake-check   # nix flake check for ./nix
+flake-update  # nix flake update for ./nix
+deploy-build  # deploy-rs dry activation
+deploy-apply  # deploy-rs activation
+```
+
+### Deploy a specific NixOS host
+
+This repo's host flake is at `./nix`.
+Deploy one host by targeting its `nixosConfigurations.<host>` entry:
+
+```sh
+sudo nixos-rebuild switch \
+  --flake ./nix#<host>
+```
+
+Example:
+
+```sh
+sudo nixos-rebuild switch \
+  --flake ./nix#kube-01
+```
+
+For remote deployment from your workstation:
+
+```sh
+nixos-rebuild switch \
+  --flake ./nix#<host> \
+  --target-host <user>@<host-or-ip> \
+  --sudo
+```
+
+For remote deployment from your workstation, with remote build:
+
+```sh
+nixos-rebuild build \
+  --flake ./nix#sp6cat-vm-01 \
+  --build-host <user>@<host-or-ip> \
+  --target-host <user>@<host-or-ip> \
+  --sudo
 ```

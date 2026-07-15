@@ -1,6 +1,0 @@
----
-- name: Setup NAS
-  hosts:
-    - nas
-  roles:
-    - role: majabojarska.nixos

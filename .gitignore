@@ -2,5 +2,7 @@
 .venv
 .fact_cache
 .vault*
+.direnv
+.devenv
 
 kubeconfig.yaml
