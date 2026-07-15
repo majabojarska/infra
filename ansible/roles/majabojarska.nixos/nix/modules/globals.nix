@@ -98,6 +98,12 @@
           description = "Prometheus service port";
         };
 
+        prometheusMetrics = lib.mkOption {
+          type = lib.types.port;
+          default = 9090;
+          description = "Prometheus metrics scrape port";
+        };
+
         prometheusExporterNode = lib.mkOption {
           type = lib.types.port;
           default = 9100;

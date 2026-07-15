@@ -31,6 +31,16 @@ in
 
     scrapeConfigs = [
       {
+        job_name = "prometheus";
+        static_configs = [
+          {
+            targets = [
+              "127.0.0.1:${toString config.hosts.sp6catVm01.ports.prometheusMetrics}"
+            ];
+          }
+        ];
+      }
+      {
         job_name = "node";
         static_configs = [
           {
