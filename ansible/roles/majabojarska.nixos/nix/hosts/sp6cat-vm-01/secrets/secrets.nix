@@ -15,7 +15,7 @@ in
   "anubis-allow-bearer-token.age".publicKeys = [ sp6cat-vm-01 ] ++ developers;
   "grafana-secret-key.age".publicKeys = [ sp6cat-vm-01 ] ++ developers;
   "grafana-admin-password.age".publicKeys = [ sp6cat-vm-01 ] ++ developers;
-  "ntfy-auth.age".publicKeys = [ sp6cat-vm-01 ] ++ developers;
+  "ntfy-env.age".publicKeys = [ sp6cat-vm-01 ] ++ developers;
   "ntfy-token.age".publicKeys = [ sp6cat-vm-01 ] ++ developers;
   "prometheus-pve-exporter-yml.age".publicKeys = [ sp6cat-vm-01 ] ++ developers;
 }

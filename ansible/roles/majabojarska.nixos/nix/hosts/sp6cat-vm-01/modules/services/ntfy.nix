@@ -1,8 +1,8 @@
 { config, ... }:
 {
   age.secrets = {
-    "ntfy-auth" = {
-      file = ../../secrets/ntfy-auth.age;
+    "ntfy-env" = {
+      file = ../../secrets/ntfy-env.age;
       mode = "0400";
       owner = "ntfy-sh";
       group = "ntfy-sh";
@@ -32,7 +32,7 @@
       # cache-file = "${config.hosts.sp6catVm01.storage.wdUsbHddMountPath}/ntfy/cache.db";
     };
     # Auth users and tokens are loaded through the env file
-    environmentFile = config.age.secrets."ntfy-auth".path;
+    environmentFile = config.age.secrets."ntfy-env".path;
   };
 
   services.traefik.dynamicConfigOptions.http = {
