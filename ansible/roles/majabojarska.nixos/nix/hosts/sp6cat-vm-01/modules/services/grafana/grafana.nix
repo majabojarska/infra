@@ -145,9 +145,6 @@ in
             }
           ];
         };
-        middlewares = [
-          "rate_limit"
-        ];
       };
     };
 
