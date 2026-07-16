@@ -6,3 +6,5 @@
 .devenv
 
 kubeconfig.yaml
+
+.null-ls*
