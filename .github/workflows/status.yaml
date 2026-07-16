@@ -21,7 +21,7 @@ jobs:
           nix_path: nixpkgs=channel:nixos-25.11
 
       - name: Nix Flake check
-        run: nix flake check ./ansible/roles/majabojarska.nixos/nix
+        run: nix flake check ./nix
 
   gitleaks:
     name: Secret Scanning

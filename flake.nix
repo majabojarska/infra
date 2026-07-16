@@ -52,10 +52,10 @@
             '';
 
             scripts = {
-              flake-check.exec = "nix flake check ./ansible/roles/majabojarska.nixos/nix";
-              flake-update.exec = "nix flake update --flake ./ansible/roles/majabojarska.nixos/nix";
-              deploy-build.exec = "deploy --flake ./ansible/roles/majabojarska.nixos/nix --dry-activate";
-              deploy-apply.exec = "deploy --flake ./ansible/roles/majabojarska.nixos/nix";
+              flake-check.exec = "nix flake check ./nix";
+              flake-update.exec = "nix flake update --flake ./nix";
+              deploy-build.exec = "deploy --flake ./nix --dry-activate";
+              deploy-apply.exec = "deploy --flake ./nix";
             };
           };
 

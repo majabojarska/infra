@@ -24,7 +24,7 @@ jobs:
           nix_path: nixpkgs=channel:nixos-25.11
 
       - name: Update nix flakes
-        run: nix flake update --flake ./ansible/roles/majabojarska.nixos/nix
+        run: nix flake update --flake ./nix
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v8
