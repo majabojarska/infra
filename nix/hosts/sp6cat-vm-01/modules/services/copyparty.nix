@@ -1,4 +1,9 @@
-{ config, pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 let
   healthchecks = import ./../../../../modules/healthchecks.nix { inherit lib pkgs; };
 in
@@ -52,6 +57,7 @@ in
       nid = true;
       usernames = true;
       no-dupe = true;
+      shr = "/share";
     };
 
     # create users
