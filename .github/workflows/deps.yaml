@@ -21,7 +21,7 @@ jobs:
         uses: cachix/install-nix-action@v31
         with:
           github_access_token: ${{ secrets.GITHUB_TOKEN }}
-          nix_path: nixpkgs=channel:nixos-25.11
+          nix_path: nixpkgs=channel:nixos-26.05
 
       - name: Update nix flakes
         run: nix flake update --flake ./nix
