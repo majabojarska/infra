@@ -82,6 +82,18 @@ in
 
   };
 
+  services.anubis.instances.grafana.settings = {
+    BIND = ":${toString config.hosts.sp6catVm01.ports.anubis-grafana}";
+    BIND_NETWORK = "tcp";
+    TARGET = " ";
+    REDIRECT_DOMAINS = "grafana.${config.globals.cloudDomain}";
+    PUBLIC_URL = "https://anubis.${config.globals.cloudDomain}/grafana";
+    COOKIE_DOMAIN = config.globals.cloudDomain;
+    COOKIE_PREFIX = "anubis-grafana";
+    DIFFICULTY = 20;
+    SERVE_ROBOTS_TXT = true;
+  };
+
   environment.etc = {
     "grafana-dashboards/node.json" = {
       user = "grafana";
@@ -154,6 +166,7 @@ in
       grafana = {
         rule = "Host(`grafana.${config.globals.cloudDomain}`)";
         service = "grafana";
+        middlewares = [ "anubis-grafana" ];
         tls = {
           certResolver = "letsencrypt";
           domains = [
