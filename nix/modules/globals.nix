@@ -86,6 +86,12 @@
           description = "Redlib service port";
         };
 
+        anubis-redlib = lib.mkOption {
+          type = lib.types.port;
+          default = 8010;
+          description = "Anubis Redlib service port";
+        };
+
         uptimeKuma = lib.mkOption {
           type = lib.types.port;
           default = 8009;

@@ -93,6 +93,53 @@
           };
         };
 
+        anubis-redlib = {
+          rule = "Host(`anubis.${config.globals.cloudDomain}`) && PathPrefix(`/redlib`)";
+          service = "anubis-redlib";
+          middlewares = [ "strip-anubis-redlib-prefix" ];
+          priority = 110;
+          entrypoints = "websecure";
+          tls = {
+            certResolver = "letsencrypt";
+            domains = [
+              {
+                main = "anubis.${config.globals.cloudDomain}";
+              }
+            ];
+          };
+        };
+
+        anubis-redlib-callback = {
+          rule = "Host(`anubis.${config.globals.cloudDomain}`) && PathPrefix(`/.within.website/`) && QueryRegexp(`redir`, `redlib\\.${builtins.replaceStrings [ "." ] [ "\\." ] config.globals.cloudDomain}`)";
+          service = "anubis-redlib";
+          priority = 120;
+          entrypoints = "websecure";
+          tls = {
+            certResolver = "letsencrypt";
+            domains = [
+              {
+                main = "anubis.${config.globals.cloudDomain}";
+              }
+            ];
+          };
+        };
+
+        anubis-blog = {
+          rule = "Host(`anubis.${config.globals.cloudDomain}`) && PathPrefix(`/blog`)";
+          service = "anubis";
+          middlewares = [ "strip-anubis-blog-prefix" ];
+          priority = 100;
+          entrypoints = "websecure";
+          tls = {
+            certResolver = "letsencrypt";
+            domains = [
+              {
+                main = "anubis.${config.globals.cloudDomain}";
+              }
+            ];
+          };
+        };
+
         blog = {
           rule = "Host(`${config.globals.baseDomain}`)";
           service = "blog";
@@ -162,6 +209,7 @@
               }
             ];
           };
+          middlewares = [ "anubis-redlib" ];
         };
 
         uptimeKuma = {
@@ -188,6 +236,22 @@
           };
         };
 
+        anubis-redlib = {
+          forwardAuth = {
+            address = "http://127.0.0.1:${toString config.hosts.sp6catVm01.ports.anubis-redlib}/.within.website/x/cmd/anubis/api/check";
+            trustForwardHeader = true;
+            maxResponseBodySize = 1024 * 1024 * 1;
+          };
+        };
+
+        strip-anubis-blog-prefix = {
+          stripPrefix.prefixes = [ "/blog" ];
+        };
+
+        strip-anubis-redlib-prefix = {
+          stripPrefix.prefixes = [ "/redlib" ];
+        };
+
         rate_limit = {
           rateLimit = {
             average = 10;
@@ -211,6 +275,14 @@
           servers = [
             {
               url = "http://127.0.0.1:${toString config.hosts.sp6catVm01.ports.anubis-blog}";
+            }
+          ];
+        };
+
+        anubis-redlib.loadBalancer = {
+          servers = [
+            {
+              url = "http://127.0.0.1:${toString config.hosts.sp6catVm01.ports.anubis-redlib}";
             }
           ];
         };

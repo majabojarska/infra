@@ -1,9 +1,11 @@
 {
   pkgs,
   config,
+  lib,
   ...
 }:
 let
+  healthchecks = import ../../../../modules/healthchecks.nix { inherit lib pkgs; };
   src = pkgs.fetchFromGitHub {
     owner = "redlib-org";
     repo = "redlib";
@@ -47,6 +49,18 @@ in
     };
   };
 
+  services.anubis.instances.redlib.settings = {
+    BIND = ":${toString config.hosts.sp6catVm01.ports.anubis-redlib}";
+    BIND_NETWORK = "tcp";
+    TARGET = " ";
+    REDIRECT_DOMAINS = "redlib.${config.globals.cloudDomain}";
+    PUBLIC_URL = "https://anubis.${config.globals.cloudDomain}/redlib";
+    COOKIE_DOMAIN = config.globals.cloudDomain;
+    COOKIE_PREFIX = "anubis-redlib";
+    DIFFICULTY = 20;
+    SERVE_ROBOTS_TXT = true;
+  };
+
   systemd = {
     services = {
       redlib-healthcheck = {
@@ -77,6 +91,28 @@ in
         Unit = "redlib-healthcheck.service";
       };
     };
+  };
+
+  system.preSwitchChecks = {
+    redlibLocalhostNoHttpError = healthchecks.curlHealthCheck {
+      url = "http://127.0.0.1:${toString config.hosts.sp6catVm01.ports.redlib}";
+    };
+
+    redlibDomainBlocksScrape = ''
+      response=$(${pkgs.curl}/bin/curl \
+        --silent \
+        --write-out "%{response_code}" \
+        --follow \
+          https://redlib.${config.globals.cloudDomain})
+
+      if [[ "$response" != *Anubis* ]]; then
+          echo "Expected the response to contain 'Anubis', got $response"
+      fi
+
+      if [[ ! "$response" =~ 403$ ]]; then
+          echo "Expected 403 response code, got \$\{response\}"
+      fi
+    '';
   };
 
 }

@@ -30,8 +30,9 @@ in
     BIND_NETWORK = "tcp";
     TARGET = " ";
     REDIRECT_DOMAINS = config.globals.baseDomain;
-    PUBLIC_URL = "https://anubis.${config.globals.cloudDomain}";
+    PUBLIC_URL = "https://anubis.${config.globals.cloudDomain}/blog";
     COOKIE_DOMAIN = config.globals.baseDomain;
+    COOKIE_PREFIX = "anubis-blog";
     DIFFICULTY = 20;
     SERVE_ROBOTS_TXT = true;
   };
