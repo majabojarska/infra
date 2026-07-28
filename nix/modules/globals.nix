@@ -92,6 +92,18 @@
           description = "Anubis Redlib service port";
         };
 
+        anubis-copyparty = lib.mkOption {
+          type = lib.types.port;
+          default = 8011;
+          description = "Anubis Copyparty service port";
+        };
+
+        anubis-uptime = lib.mkOption {
+          type = lib.types.port;
+          default = 8012;
+          description = "Anubis Uptime Kuma service port";
+        };
+
         uptimeKuma = lib.mkOption {
           type = lib.types.port;
           default = 8009;

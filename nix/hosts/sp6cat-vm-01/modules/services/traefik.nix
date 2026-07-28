@@ -124,6 +124,68 @@
           };
         };
 
+        anubis-copyparty = {
+          rule = "Host(`anubis.${config.globals.cloudDomain}`) && PathPrefix(`/copyparty`)";
+          service = "anubis-copyparty";
+          middlewares = [ "strip-anubis-copyparty-prefix" ];
+          priority = 130;
+          entrypoints = "websecure";
+          tls = {
+            certResolver = "letsencrypt";
+            domains = [
+              {
+                main = "anubis.${config.globals.cloudDomain}";
+              }
+            ];
+          };
+        };
+
+        anubis-copyparty-callback = {
+          rule = "Host(`anubis.${config.globals.cloudDomain}`) && PathPrefix(`/.within.website/`) && QueryRegexp(`redir`, `copyparty\\.${builtins.replaceStrings [ "." ] [ "\\." ] config.globals.cloudDomain}`)";
+          service = "anubis-copyparty";
+          priority = 140;
+          entrypoints = "websecure";
+          tls = {
+            certResolver = "letsencrypt";
+            domains = [
+              {
+                main = "anubis.${config.globals.cloudDomain}";
+              }
+            ];
+          };
+        };
+
+        anubis-uptime = {
+          rule = "Host(`anubis.${config.globals.cloudDomain}`) && PathPrefix(`/uptime`)";
+          service = "anubis-uptime";
+          middlewares = [ "strip-anubis-uptime-prefix" ];
+          priority = 150;
+          entrypoints = "websecure";
+          tls = {
+            certResolver = "letsencrypt";
+            domains = [
+              {
+                main = "anubis.${config.globals.cloudDomain}";
+              }
+            ];
+          };
+        };
+
+        anubis-uptime-callback = {
+          rule = "Host(`anubis.${config.globals.cloudDomain}`) && PathPrefix(`/.within.website/`) && QueryRegexp(`redir`, `uptime\\.${builtins.replaceStrings [ "." ] [ "\\." ] config.globals.cloudDomain}`)";
+          service = "anubis-uptime";
+          priority = 160;
+          entrypoints = "websecure";
+          tls = {
+            certResolver = "letsencrypt";
+            domains = [
+              {
+                main = "anubis.${config.globals.cloudDomain}";
+              }
+            ];
+          };
+        };
+
         anubis-blog = {
           rule = "Host(`anubis.${config.globals.cloudDomain}`) && PathPrefix(`/blog`)";
           service = "anubis";
@@ -165,7 +227,7 @@
               }
             ];
           };
-          middlewares = [ ];
+          middlewares = [ "anubis-copyparty" ];
         };
 
         vikunja = {
@@ -223,6 +285,7 @@
               }
             ];
           };
+          middlewares = [ "anubis-uptime" ];
         };
 
       };
@@ -244,12 +307,36 @@
           };
         };
 
+        anubis-copyparty = {
+          forwardAuth = {
+            address = "http://127.0.0.1:${toString config.hosts.sp6catVm01.ports.anubis-copyparty}/.within.website/x/cmd/anubis/api/check";
+            trustForwardHeader = true;
+            maxResponseBodySize = 1024 * 1024 * 1;
+          };
+        };
+
+        anubis-uptime = {
+          forwardAuth = {
+            address = "http://127.0.0.1:${toString config.hosts.sp6catVm01.ports.anubis-uptime}/.within.website/x/cmd/anubis/api/check";
+            trustForwardHeader = true;
+            maxResponseBodySize = 1024 * 1024 * 1;
+          };
+        };
+
         strip-anubis-blog-prefix = {
           stripPrefix.prefixes = [ "/blog" ];
         };
 
         strip-anubis-redlib-prefix = {
           stripPrefix.prefixes = [ "/redlib" ];
+        };
+
+        strip-anubis-copyparty-prefix = {
+          stripPrefix.prefixes = [ "/copyparty" ];
+        };
+
+        strip-anubis-uptime-prefix = {
+          stripPrefix.prefixes = [ "/uptime" ];
         };
 
         rate_limit = {
@@ -283,6 +370,22 @@
           servers = [
             {
               url = "http://127.0.0.1:${toString config.hosts.sp6catVm01.ports.anubis-redlib}";
+            }
+          ];
+        };
+
+        anubis-copyparty.loadBalancer = {
+          servers = [
+            {
+              url = "http://127.0.0.1:${toString config.hosts.sp6catVm01.ports.anubis-copyparty}";
+            }
+          ];
+        };
+
+        anubis-uptime.loadBalancer = {
+          servers = [
+            {
+              url = "http://127.0.0.1:${toString config.hosts.sp6catVm01.ports.anubis-uptime}";
             }
           ];
         };

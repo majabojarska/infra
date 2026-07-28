@@ -122,6 +122,18 @@ in
     };
   };
 
+  services.anubis.instances.copyparty.settings = {
+    BIND = ":${toString config.hosts.sp6catVm01.ports.anubis-copyparty}";
+    BIND_NETWORK = "tcp";
+    TARGET = " ";
+    REDIRECT_DOMAINS = "copyparty.${config.globals.cloudDomain}";
+    PUBLIC_URL = "https://anubis.${config.globals.cloudDomain}/copyparty";
+    COOKIE_DOMAIN = config.globals.cloudDomain;
+    COOKIE_PREFIX = "anubis-copyparty";
+    DIFFICULTY = 20;
+    SERVE_ROBOTS_TXT = true;
+  };
+
   systemd.services.copyparty.serviceConfig.Restart = "always";
 
   system.preSwitchChecks = {
