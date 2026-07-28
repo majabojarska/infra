@@ -4,7 +4,9 @@
   pkgs,
   ...
 }:
-
+let
+  ntfy-tag = "backups";
+in
 {
   age = {
     secrets = {
@@ -90,21 +92,21 @@
 
         start = {
           title = "Borgmatic backup started";
-          message = "Borgmatic backup {repository} ({configuration_filename}) started on $(hostname) at $(date).";
+          message = "Borgmatic backup 'kubernetes' started.";
           priority = "min";
-          tags = "backups";
+          tags = ntfy-tag;
         };
         finish = {
           title = "Borgmatic backup finished";
-          message = "Borgmatic backup {repository} ({configuration_filename}) finished on $(hostname) at $(date).";
+          message = "Borgmatic backup 'kubernetes' finished.";
           priority = "min";
-          tags = "backups";
+          tags = ntfy-tag;
         };
         fail = {
           title = "Borgmatic backup failed";
-          message = "Borgmatic backup {repository} ({configuration_filename}) failed on $(hostname) at $(date).";
+          message = "Borgmatic backup 'kubernetes' failed.";
           priority = "max";
-          tags = "backups";
+          tags = ntfy-tag;
         };
         states = [
           "fail"
