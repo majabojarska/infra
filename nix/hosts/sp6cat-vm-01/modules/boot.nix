@@ -50,6 +50,7 @@ in
     kernelModules = [ ];
     kernel.sysctl = {
       "net.ipv4.ip_forward" = 1;
+      "kernel.task_delayacct" = 1;
     };
     blacklistedKernelModules = [ "algif_aead" ];
 

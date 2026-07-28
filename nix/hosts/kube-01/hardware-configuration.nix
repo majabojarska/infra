@@ -12,21 +12,27 @@
 {
   imports = [ (modulesPath + "/profiles/qemu-guest.nix") ];
 
-  boot.initrd.availableKernelModules = [
-    "xhci_pci"
-    "ahci"
-    "ata_piix"
-    "uhci_hcd"
-    "usbhid"
-    "usb_storage"
-    "virtio_pci"
-    "virtio_scsi"
-    "sd_mod"
-    "sr_mod"
-  ];
-  boot.initrd.kernelModules = [ ];
-  boot.kernelModules = [ ];
-  boot.extraModulePackages = [ ];
+  boot = {
+    initrd.availableKernelModules = [
+      "xhci_pci"
+      "ahci"
+      "ata_piix"
+      "uhci_hcd"
+      "usbhid"
+      "usb_storage"
+      "virtio_pci"
+      "virtio_scsi"
+      "sd_mod"
+      "sr_mod"
+    ];
+    initrd.kernelModules = [ ];
+    kernelModules = [ ];
+    extraModulePackages = [ ];
+    kernel.sysctl = {
+      "net.ipv4.ip_forward" = 1;
+      "kernel.task_delayacct" = 1;
+    };
+  };
 
   fileSystems."/" = {
     device = "/dev/disk/by-uuid/c70a005b-49e1-44dd-86cd-6524dc383fa2";
