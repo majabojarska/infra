@@ -110,6 +110,12 @@
           description = "Anubis Grafana service port";
         };
 
+        anubis-vikunja = lib.mkOption {
+          type = lib.types.port;
+          default = 8014;
+          description = "Anubis Vikunja service port";
+        };
+
         uptimeKuma = lib.mkOption {
           type = lib.types.port;
           default = 8009;

@@ -1,5 +1,5 @@
 { hostname, port, ... }:
-{ ... }:
+{ config, ... }:
 
 {
   services.vikunja = {
@@ -25,5 +25,17 @@
         maxitemsperpage = 100;
       };
     };
+  };
+
+  services.anubis.instances.vikunja.settings = {
+    BIND = ":${toString config.hosts.sp6catVm01.ports.anubis-vikunja}";
+    BIND_NETWORK = "tcp";
+    TARGET = " ";
+    REDIRECT_DOMAINS = config.services.vikunja.frontendHostname;
+    PUBLIC_URL = "https://anubis.${config.globals.cloudDomain}/vikunja";
+    COOKIE_DOMAIN = config.globals.cloudDomain;
+    COOKIE_PREFIX = "anubis-vikunja";
+    DIFFICULTY = 20;
+    SERVE_ROBOTS_TXT = true;
   };
 }

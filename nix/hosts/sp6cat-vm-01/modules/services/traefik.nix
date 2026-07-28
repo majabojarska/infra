@@ -217,6 +217,37 @@
           };
         };
 
+        anubis-vikunja = {
+          rule = "Host(`anubis.${config.globals.cloudDomain}`) && PathPrefix(`/vikunja`)";
+          service = "anubis-vikunja";
+          middlewares = [ "strip-anubis-vikunja-prefix" ];
+          priority = 190;
+          entrypoints = "websecure";
+          tls = {
+            certResolver = "letsencrypt";
+            domains = [
+              {
+                main = "anubis.${config.globals.cloudDomain}";
+              }
+            ];
+          };
+        };
+
+        anubis-vikunja-callback = {
+          rule = "Host(`anubis.${config.globals.cloudDomain}`) && PathPrefix(`/.within.website/`) && QueryRegexp(`redir`, `vikunja\\.${builtins.replaceStrings [ "." ] [ "\\." ] config.globals.cloudDomain}`)";
+          service = "anubis-vikunja";
+          priority = 200;
+          entrypoints = "websecure";
+          tls = {
+            certResolver = "letsencrypt";
+            domains = [
+              {
+                main = "anubis.${config.globals.cloudDomain}";
+              }
+            ];
+          };
+        };
+
         anubis-blog = {
           rule = "Host(`anubis.${config.globals.cloudDomain}`) && PathPrefix(`/blog`)";
           service = "anubis";
@@ -264,6 +295,7 @@
         vikunja = {
           rule = "Host(`${config.services.vikunja.frontendHostname}`)";
           service = "vikunja";
+          middlewares = [ "anubis-vikunja" ];
           tls = {
             certResolver = "letsencrypt";
             domains = [
@@ -362,6 +394,14 @@
           };
         };
 
+        anubis-vikunja = {
+          forwardAuth = {
+            address = "http://127.0.0.1:${toString config.hosts.sp6catVm01.ports.anubis-vikunja}/.within.website/x/cmd/anubis/api/check";
+            trustForwardHeader = true;
+            maxResponseBodySize = 1024 * 1024 * 1;
+          };
+        };
+
         strip-anubis-blog-prefix = {
           stripPrefix.prefixes = [ "/blog" ];
         };
@@ -380,6 +420,10 @@
 
         strip-anubis-grafana-prefix = {
           stripPrefix.prefixes = [ "/grafana" ];
+        };
+
+        strip-anubis-vikunja-prefix = {
+          stripPrefix.prefixes = [ "/vikunja" ];
         };
 
         rate_limit = {
@@ -437,6 +481,14 @@
           servers = [
             {
               url = "http://127.0.0.1:${toString config.hosts.sp6catVm01.ports.anubis-grafana}";
+            }
+          ];
+        };
+
+        anubis-vikunja.loadBalancer = {
+          servers = [
+            {
+              url = "http://127.0.0.1:${toString config.hosts.sp6catVm01.ports.anubis-vikunja}";
             }
           ];
         };
