@@ -22,6 +22,10 @@ in
     listenAddress = "127.0.0.1";
     retentionTime = "7d";
 
+    # extraFlags = [
+    #   "--log.level=debug"
+    # ];
+
     checkConfig = "syntax-only";
     # This hack is needed to write Prometheus data outside of /var/lib
     # One would think think scenario would be supported, but alas.
