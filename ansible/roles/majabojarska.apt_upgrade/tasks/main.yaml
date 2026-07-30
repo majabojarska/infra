@@ -1,6 +1,7 @@
 ---
-- name: "APT update and upgrade"
+- name: "APT update, upgrade, autoremove, and clean"
   ansible.builtin.apt:
     update_cache: yes
     upgrade: full
     autoremove: true
+    clean: true
