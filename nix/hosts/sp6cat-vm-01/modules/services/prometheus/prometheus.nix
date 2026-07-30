@@ -20,7 +20,7 @@ in
     enable = true;
     port = config.hosts.sp6catVm01.ports.prometheus;
     listenAddress = "127.0.0.1";
-    retentionTime = "15d";
+    retentionTime = "7d";
 
     checkConfig = "syntax-only";
     # This hack is needed to write Prometheus data outside of /var/lib
@@ -28,7 +28,7 @@ in
     # https://discourse.nixos.org/t/custom-prometheus-data-directory/50741/6
     stateDir = "prometheus";
 
-    globalConfig.scrape_interval = "10s";
+    globalConfig.scrape_interval = "15s";
 
     scrapeConfigs = [
       {
