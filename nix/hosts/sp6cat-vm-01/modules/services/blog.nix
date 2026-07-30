@@ -112,7 +112,7 @@ in
       fi
 
       if [[ ! "$response" =~ 403$ ]]; then
-          echo "Expected 403 response code, got \$\{response\}"
+          echo "Expected 403 response code, got $response"
       fi
     '';
   };
