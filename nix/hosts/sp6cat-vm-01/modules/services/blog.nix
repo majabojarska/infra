@@ -37,6 +37,64 @@ in
     SERVE_ROBOTS_TXT = true;
   };
 
+  services.traefik.dynamicConfigOptions.http = {
+    routers = {
+      # Shared anubis.<cloudDomain> routing order:
+      # 1) callback demux (highest), 2) service path routers, 3) generic host fallback.
+      anubis-blog = {
+        rule = "Host(`anubis.${config.globals.cloudDomain}`) && PathPrefix(`/blog`)";
+        service = "anubis";
+        middlewares = [ "strip-anubis-blog-prefix" ];
+        priority = 200;
+        entrypoints = "websecure";
+        tls = {
+          certResolver = "letsencrypt";
+          domains = [
+            {
+              main = "anubis.${config.globals.cloudDomain}";
+            }
+          ];
+        };
+      };
+
+      blog = {
+        rule = "Host(`${config.globals.baseDomain}`)";
+        service = "blog";
+        tls = {
+          certResolver = "letsencrypt";
+          domains = [
+            {
+              main = config.globals.baseDomain;
+            }
+          ];
+        };
+        middlewares = [ "anubis-blog" ];
+      };
+    };
+
+    middlewares = {
+      anubis-blog.forwardAuth = {
+        address = "http://127.0.0.1:${toString config.hosts.sp6catVm01.ports.anubis-blog}/.within.website/x/cmd/anubis/api/check";
+        trustForwardHeader = true;
+        maxResponseBodySize = 1024 * 1024 * 1;
+      };
+
+      strip-anubis-blog-prefix.stripPrefix.prefixes = [ "/blog" ];
+    };
+
+    services.blog.loadBalancer = {
+      servers = [
+        {
+          url =
+            "http://"
+            + (builtins.elemAt config.services.nginx.virtualHosts."${config.globals.baseDomain}".listen 0).addr
+            + ":"
+            + toString (builtins.elemAt config.services.nginx.virtualHosts."${config.globals.baseDomain}".listen 0).port;
+        }
+      ];
+    };
+  };
+
   system.preSwitchChecks = {
     blogLocalhostNoHttpError = healthchecks.curlHealthCheck {
       url = "http://127.0.0.1:${toString config.hosts.sp6catVm01.ports.blog}";

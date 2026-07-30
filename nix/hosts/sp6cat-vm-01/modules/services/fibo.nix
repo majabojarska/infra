@@ -25,4 +25,44 @@
       };
     };
   };
+
+  services.traefik.dynamicConfigOptions.http = {
+    routers.fibo = {
+      rule = "Host(`fibo.${config.globals.cloudDomain}`)";
+      service = "fibo";
+      tls = {
+        certResolver = "letsencrypt";
+        domains = [
+          {
+            main = "fibo.${config.globals.cloudDomain}";
+          }
+        ];
+      };
+      middlewares = [
+        "rate_limit"
+        "fibo_redirect_swagger"
+      ];
+    };
+
+    middlewares = {
+      rate_limit.rateLimit = {
+        average = 10;
+        period = "1s";
+        burst = 20;
+      };
+
+      fibo_redirect_swagger.redirectRegex = {
+        regex = "^https://fibo\\.${builtins.replaceStrings [ "." ] [ "\\." ] config.globals.cloudDomain}/(swagger)?$";
+        replacement = "https://fibo.${config.globals.cloudDomain}/swagger/index.html";
+      };
+    };
+
+    services.fibo.loadBalancer = {
+      servers = [
+        {
+          url = "http://127.0.0.1:${toString config.hosts.sp6catVm01.ports.fibo}";
+        }
+      ];
+    };
+  };
 }

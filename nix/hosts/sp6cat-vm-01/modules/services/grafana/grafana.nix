@@ -163,6 +163,39 @@ in
 
   services.traefik.dynamicConfigOptions.http = {
     routers = {
+      anubis-grafana = {
+        rule = "Host(`anubis.${config.globals.cloudDomain}`) && PathPrefix(`/grafana`)";
+        service = "anubis-grafana";
+        middlewares = [ "strip-anubis-grafana-prefix" ];
+        priority = 200;
+        entrypoints = "websecure";
+        tls = {
+          certResolver = "letsencrypt";
+          domains = [
+            {
+              main = "anubis.${config.globals.cloudDomain}";
+            }
+          ];
+        };
+      };
+
+      anubis-grafana-callback = {
+        rule = "Host(`anubis.${config.globals.cloudDomain}`) && PathPrefix(`/.within.website/`) && QueryRegexp(`redir`, `grafana\\.${
+          builtins.replaceStrings [ "." ] [ "\\." ] config.globals.cloudDomain
+        }`)";
+        service = "anubis-grafana";
+        priority = 300;
+        entrypoints = "websecure";
+        tls = {
+          certResolver = "letsencrypt";
+          domains = [
+            {
+              main = "anubis.${config.globals.cloudDomain}";
+            }
+          ];
+        };
+      };
+
       grafana = {
         rule = "Host(`grafana.${config.globals.cloudDomain}`)";
         service = "grafana";
@@ -178,7 +211,25 @@ in
       };
     };
 
+    middlewares = {
+      anubis-grafana.forwardAuth = {
+        address = "http://127.0.0.1:${toString config.hosts.sp6catVm01.ports.anubis-grafana}/.within.website/x/cmd/anubis/api/check";
+        trustForwardHeader = true;
+        maxResponseBodySize = 1024 * 1024 * 1;
+      };
+
+      strip-anubis-grafana-prefix.stripPrefix.prefixes = [ "/grafana" ];
+    };
+
     services = {
+      anubis-grafana.loadBalancer = {
+        servers = [
+          {
+            url = "http://127.0.0.1:${toString config.hosts.sp6catVm01.ports.anubis-grafana}";
+          }
+        ];
+      };
+
       grafana.loadBalancer = {
         servers = [
           {

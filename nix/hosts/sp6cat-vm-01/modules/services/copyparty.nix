@@ -134,6 +134,89 @@ in
     SERVE_ROBOTS_TXT = true;
   };
 
+  services.traefik.dynamicConfigOptions.http = {
+    routers = {
+      anubis-copyparty = {
+        rule = "Host(`anubis.${config.globals.cloudDomain}`) && PathPrefix(`/copyparty`)";
+        service = "anubis-copyparty";
+        middlewares = [ "strip-anubis-copyparty-prefix" ];
+        priority = 200;
+        entrypoints = "websecure";
+        tls = {
+          certResolver = "letsencrypt";
+          domains = [
+            {
+              main = "anubis.${config.globals.cloudDomain}";
+            }
+          ];
+        };
+      };
+
+      anubis-copyparty-callback = {
+        rule = "Host(`anubis.${config.globals.cloudDomain}`) && PathPrefix(`/.within.website/`) && QueryRegexp(`redir`, `copyparty\\.${
+          builtins.replaceStrings [ "." ] [ "\\." ] config.globals.cloudDomain
+        }`)";
+        service = "anubis-copyparty";
+        priority = 300;
+        entrypoints = "websecure";
+        tls = {
+          certResolver = "letsencrypt";
+          domains = [
+            {
+              main = "anubis.${config.globals.cloudDomain}";
+            }
+          ];
+        };
+      };
+
+      copyparty = {
+        rule = "Host(`copyparty.${config.globals.cloudDomain}`)";
+        service = "copyparty";
+        tls = {
+          certResolver = "letsencrypt";
+          domains = [
+            {
+              main = "copyparty.${config.globals.cloudDomain}";
+            }
+          ];
+        };
+        middlewares = [ "anubis-copyparty" ];
+      };
+    };
+
+    middlewares = {
+      anubis-copyparty.forwardAuth = {
+        address = "http://127.0.0.1:${toString config.hosts.sp6catVm01.ports.anubis-copyparty}/.within.website/x/cmd/anubis/api/check";
+        trustForwardHeader = true;
+        maxResponseBodySize = 1024 * 1024 * 1;
+      };
+
+      strip-anubis-copyparty-prefix.stripPrefix.prefixes = [ "/copyparty" ];
+    };
+
+    services = {
+      anubis-copyparty.loadBalancer = {
+        servers = [
+          {
+            url = "http://127.0.0.1:${toString config.hosts.sp6catVm01.ports.anubis-copyparty}";
+          }
+        ];
+      };
+
+      copyparty.loadBalancer = {
+        servers = [
+          {
+            url =
+              "http://"
+              + config.services.copyparty.settings.i
+              + ":"
+              + toString (builtins.elemAt config.services.copyparty.settings.p 0);
+          }
+        ];
+      };
+    };
+  };
+
   systemd.services.copyparty.serviceConfig.Restart = "always";
 
   system.preSwitchChecks = {

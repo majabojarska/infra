@@ -38,4 +38,83 @@
     DIFFICULTY = 20;
     SERVE_ROBOTS_TXT = true;
   };
+
+  services.traefik.dynamicConfigOptions.http = {
+    routers = {
+      anubis-vikunja = {
+        rule = "Host(`anubis.${config.globals.cloudDomain}`) && PathPrefix(`/vikunja`)";
+        service = "anubis-vikunja";
+        middlewares = [ "strip-anubis-vikunja-prefix" ];
+        priority = 200;
+        entrypoints = "websecure";
+        tls = {
+          certResolver = "letsencrypt";
+          domains = [
+            {
+              main = "anubis.${config.globals.cloudDomain}";
+            }
+          ];
+        };
+      };
+
+      anubis-vikunja-callback = {
+        rule = "Host(`anubis.${config.globals.cloudDomain}`) && PathPrefix(`/.within.website/`) && QueryRegexp(`redir`, `vikunja\\.${
+          builtins.replaceStrings [ "." ] [ "\\." ] config.globals.cloudDomain
+        }`)";
+        service = "anubis-vikunja";
+        priority = 300;
+        entrypoints = "websecure";
+        tls = {
+          certResolver = "letsencrypt";
+          domains = [
+            {
+              main = "anubis.${config.globals.cloudDomain}";
+            }
+          ];
+        };
+      };
+
+      vikunja = {
+        rule = "Host(`${config.services.vikunja.frontendHostname}`)";
+        service = "vikunja";
+        middlewares = [ "anubis-vikunja" ];
+        tls = {
+          certResolver = "letsencrypt";
+          domains = [
+            {
+              main = config.services.vikunja.frontendHostname;
+            }
+          ];
+        };
+      };
+    };
+
+    middlewares = {
+      anubis-vikunja.forwardAuth = {
+        address = "http://127.0.0.1:${toString config.hosts.sp6catVm01.ports.anubis-vikunja}/.within.website/x/cmd/anubis/api/check";
+        trustForwardHeader = true;
+        maxResponseBodySize = 1024 * 1024 * 1;
+      };
+
+      strip-anubis-vikunja-prefix.stripPrefix.prefixes = [ "/vikunja" ];
+    };
+
+    services = {
+      anubis-vikunja.loadBalancer = {
+        servers = [
+          {
+            url = "http://127.0.0.1:${toString config.hosts.sp6catVm01.ports.anubis-vikunja}";
+          }
+        ];
+      };
+
+      vikunja.loadBalancer = {
+        servers = [
+          {
+            url = "http://127.0.0.1:${toString config.services.vikunja.port}";
+          }
+        ];
+      };
+    };
+  };
 }

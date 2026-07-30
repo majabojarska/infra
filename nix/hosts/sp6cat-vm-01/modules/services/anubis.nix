@@ -73,4 +73,29 @@
 
   };
 
+  services.traefik.dynamicConfigOptions.http = {
+    routers.anubis = {
+      rule = "Host(`anubis.${config.globals.cloudDomain}`)";
+      service = "anubis";
+      priority = 100;
+      entrypoints = "websecure";
+      tls = {
+        certResolver = "letsencrypt";
+        domains = [
+          {
+            main = "anubis.${config.globals.cloudDomain}";
+          }
+        ];
+      };
+    };
+
+    services.anubis.loadBalancer = {
+      servers = [
+        {
+          url = "http://127.0.0.1:${toString config.hosts.sp6catVm01.ports.anubis-blog}";
+        }
+      ];
+    };
+  };
+
 }

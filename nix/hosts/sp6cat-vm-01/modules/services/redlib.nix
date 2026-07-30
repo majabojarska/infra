@@ -61,6 +61,85 @@ in
     SERVE_ROBOTS_TXT = true;
   };
 
+  services.traefik.dynamicConfigOptions.http = {
+    routers = {
+      anubis-redlib = {
+        rule = "Host(`anubis.${config.globals.cloudDomain}`) && PathPrefix(`/redlib`)";
+        service = "anubis-redlib";
+        middlewares = [ "strip-anubis-redlib-prefix" ];
+        priority = 200;
+        entrypoints = "websecure";
+        tls = {
+          certResolver = "letsencrypt";
+          domains = [
+            {
+              main = "anubis.${config.globals.cloudDomain}";
+            }
+          ];
+        };
+      };
+
+      anubis-redlib-callback = {
+        rule = "Host(`anubis.${config.globals.cloudDomain}`) && PathPrefix(`/.within.website/`) && QueryRegexp(`redir`, `redlib\\.${
+          builtins.replaceStrings [ "." ] [ "\\." ] config.globals.cloudDomain
+        }`)";
+        service = "anubis-redlib";
+        priority = 300;
+        entrypoints = "websecure";
+        tls = {
+          certResolver = "letsencrypt";
+          domains = [
+            {
+              main = "anubis.${config.globals.cloudDomain}";
+            }
+          ];
+        };
+      };
+
+      redlib = {
+        rule = "Host(`redlib.${config.globals.cloudDomain}`)";
+        service = "redlib";
+        tls = {
+          certResolver = "letsencrypt";
+          domains = [
+            {
+              main = "redlib.${config.globals.cloudDomain}";
+            }
+          ];
+        };
+        middlewares = [ "anubis-redlib" ];
+      };
+    };
+
+    middlewares = {
+      anubis-redlib.forwardAuth = {
+        address = "http://127.0.0.1:${toString config.hosts.sp6catVm01.ports.anubis-redlib}/.within.website/x/cmd/anubis/api/check";
+        trustForwardHeader = true;
+        maxResponseBodySize = 1024 * 1024 * 1;
+      };
+
+      strip-anubis-redlib-prefix.stripPrefix.prefixes = [ "/redlib" ];
+    };
+
+    services = {
+      anubis-redlib.loadBalancer = {
+        servers = [
+          {
+            url = "http://127.0.0.1:${toString config.hosts.sp6catVm01.ports.anubis-redlib}";
+          }
+        ];
+      };
+
+      redlib.loadBalancer = {
+        servers = [
+          {
+            url = "http://127.0.0.1:${toString config.hosts.sp6catVm01.ports.redlib}";
+          }
+        ];
+      };
+    };
+  };
+
   systemd = {
     services = {
       redlib-healthcheck = {
