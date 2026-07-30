@@ -79,9 +79,12 @@
 
     dynamicConfigOptions.http = {
       routers = {
+        # Shared anubis.<cloudDomain> routing order:
+        # 1) callback demux (highest), 2) service path routers, 3) generic host fallback.
         anubis = {
           rule = "Host(`anubis.${config.globals.cloudDomain}`)";
           service = "anubis";
+          priority = 100;
           entrypoints = "websecure";
           tls = {
             certResolver = "letsencrypt";
@@ -97,7 +100,7 @@
           rule = "Host(`anubis.${config.globals.cloudDomain}`) && PathPrefix(`/redlib`)";
           service = "anubis-redlib";
           middlewares = [ "strip-anubis-redlib-prefix" ];
-          priority = 110;
+          priority = 200;
           entrypoints = "websecure";
           tls = {
             certResolver = "letsencrypt";
@@ -110,9 +113,11 @@
         };
 
         anubis-redlib-callback = {
-          rule = "Host(`anubis.${config.globals.cloudDomain}`) && PathPrefix(`/.within.website/`) && QueryRegexp(`redir`, `redlib\\.${builtins.replaceStrings [ "." ] [ "\\." ] config.globals.cloudDomain}`)";
+          rule = "Host(`anubis.${config.globals.cloudDomain}`) && PathPrefix(`/.within.website/`) && QueryRegexp(`redir`, `redlib\\.${
+            builtins.replaceStrings [ "." ] [ "\\." ] config.globals.cloudDomain
+          }`)";
           service = "anubis-redlib";
-          priority = 120;
+          priority = 300;
           entrypoints = "websecure";
           tls = {
             certResolver = "letsencrypt";
@@ -128,7 +133,7 @@
           rule = "Host(`anubis.${config.globals.cloudDomain}`) && PathPrefix(`/copyparty`)";
           service = "anubis-copyparty";
           middlewares = [ "strip-anubis-copyparty-prefix" ];
-          priority = 130;
+          priority = 200;
           entrypoints = "websecure";
           tls = {
             certResolver = "letsencrypt";
@@ -141,9 +146,11 @@
         };
 
         anubis-copyparty-callback = {
-          rule = "Host(`anubis.${config.globals.cloudDomain}`) && PathPrefix(`/.within.website/`) && QueryRegexp(`redir`, `copyparty\\.${builtins.replaceStrings [ "." ] [ "\\." ] config.globals.cloudDomain}`)";
+          rule = "Host(`anubis.${config.globals.cloudDomain}`) && PathPrefix(`/.within.website/`) && QueryRegexp(`redir`, `copyparty\\.${
+            builtins.replaceStrings [ "." ] [ "\\." ] config.globals.cloudDomain
+          }`)";
           service = "anubis-copyparty";
-          priority = 140;
+          priority = 300;
           entrypoints = "websecure";
           tls = {
             certResolver = "letsencrypt";
@@ -159,7 +166,7 @@
           rule = "Host(`anubis.${config.globals.cloudDomain}`) && PathPrefix(`/uptime`)";
           service = "anubis-uptime";
           middlewares = [ "strip-anubis-uptime-prefix" ];
-          priority = 150;
+          priority = 200;
           entrypoints = "websecure";
           tls = {
             certResolver = "letsencrypt";
@@ -172,9 +179,11 @@
         };
 
         anubis-uptime-callback = {
-          rule = "Host(`anubis.${config.globals.cloudDomain}`) && PathPrefix(`/.within.website/`) && QueryRegexp(`redir`, `uptime\\.${builtins.replaceStrings [ "." ] [ "\\." ] config.globals.cloudDomain}`)";
+          rule = "Host(`anubis.${config.globals.cloudDomain}`) && PathPrefix(`/.within.website/`) && QueryRegexp(`redir`, `uptime\\.${
+            builtins.replaceStrings [ "." ] [ "\\." ] config.globals.cloudDomain
+          }`)";
           service = "anubis-uptime";
-          priority = 160;
+          priority = 300;
           entrypoints = "websecure";
           tls = {
             certResolver = "letsencrypt";
@@ -190,7 +199,7 @@
           rule = "Host(`anubis.${config.globals.cloudDomain}`) && PathPrefix(`/grafana`)";
           service = "anubis-grafana";
           middlewares = [ "strip-anubis-grafana-prefix" ];
-          priority = 170;
+          priority = 200;
           entrypoints = "websecure";
           tls = {
             certResolver = "letsencrypt";
@@ -203,9 +212,11 @@
         };
 
         anubis-grafana-callback = {
-          rule = "Host(`anubis.${config.globals.cloudDomain}`) && PathPrefix(`/.within.website/`) && QueryRegexp(`redir`, `grafana\\.${builtins.replaceStrings [ "." ] [ "\\." ] config.globals.cloudDomain}`)";
+          rule = "Host(`anubis.${config.globals.cloudDomain}`) && PathPrefix(`/.within.website/`) && QueryRegexp(`redir`, `grafana\\.${
+            builtins.replaceStrings [ "." ] [ "\\." ] config.globals.cloudDomain
+          }`)";
           service = "anubis-grafana";
-          priority = 180;
+          priority = 300;
           entrypoints = "websecure";
           tls = {
             certResolver = "letsencrypt";
@@ -221,7 +232,7 @@
           rule = "Host(`anubis.${config.globals.cloudDomain}`) && PathPrefix(`/vikunja`)";
           service = "anubis-vikunja";
           middlewares = [ "strip-anubis-vikunja-prefix" ];
-          priority = 190;
+          priority = 200;
           entrypoints = "websecure";
           tls = {
             certResolver = "letsencrypt";
@@ -234,9 +245,11 @@
         };
 
         anubis-vikunja-callback = {
-          rule = "Host(`anubis.${config.globals.cloudDomain}`) && PathPrefix(`/.within.website/`) && QueryRegexp(`redir`, `vikunja\\.${builtins.replaceStrings [ "." ] [ "\\." ] config.globals.cloudDomain}`)";
+          rule = "Host(`anubis.${config.globals.cloudDomain}`) && PathPrefix(`/.within.website/`) && QueryRegexp(`redir`, `vikunja\\.${
+            builtins.replaceStrings [ "." ] [ "\\." ] config.globals.cloudDomain
+          }`)";
           service = "anubis-vikunja";
-          priority = 200;
+          priority = 300;
           entrypoints = "websecure";
           tls = {
             certResolver = "letsencrypt";
@@ -252,7 +265,7 @@
           rule = "Host(`anubis.${config.globals.cloudDomain}`) && PathPrefix(`/blog`)";
           service = "anubis";
           middlewares = [ "strip-anubis-blog-prefix" ];
-          priority = 100;
+          priority = 200;
           entrypoints = "websecure";
           tls = {
             certResolver = "letsencrypt";

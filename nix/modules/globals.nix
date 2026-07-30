@@ -74,12 +74,6 @@
           description = "Fibo service port";
         };
 
-        nitter = lib.mkOption {
-          type = lib.types.port;
-          default = 8007;
-          description = "Nitter service port";
-        };
-
         redlib = lib.mkOption {
           type = lib.types.port;
           default = 8008;
