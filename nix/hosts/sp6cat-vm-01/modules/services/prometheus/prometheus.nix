@@ -49,6 +49,7 @@ in
               "127.0.0.1:${toString config.services.prometheus.exporters.node.port}"
               "kube-01.${config.globals.homeDomain}:${toString config.hosts.kube01.ports.prometheusExporterNode}"
               "pve-01.home.majabojarska.dev:9100"
+              "opnsense.home.majabojarska.dev:9100"
               "sp6cat-01.hswro.majabojarska.dev:9100"
             ];
           }
