@@ -3,3 +3,4 @@
   ansible.builtin.apt:
     update_cache: yes
     upgrade: full
+    autoremove: true
