@@ -6,6 +6,7 @@ spec:
   podSelector:
     matchLabels:
       app.kubernetes.io/instance: immich
+      app.kubernetes.io/name: immich
   policyTypes:
     - Ingress
   ingress:

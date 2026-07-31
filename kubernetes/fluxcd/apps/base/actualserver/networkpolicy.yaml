@@ -6,6 +6,7 @@ spec:
   podSelector:
     matchLabels:
       app.kubernetes.io/instance: actualserver
+      app.kubernetes.io/name: actualserver
   policyTypes:
     - Ingress
   ingress:

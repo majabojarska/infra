@@ -6,6 +6,7 @@ spec:
   podSelector:
     matchLabels:
       app.kubernetes.io/instance: qbittorrent
+      app.kubernetes.io/name: qbittorrent
   policyTypes:
     - Ingress
   ingress:

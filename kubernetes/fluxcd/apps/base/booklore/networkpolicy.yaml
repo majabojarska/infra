@@ -6,6 +6,7 @@ spec:
   podSelector:
     matchLabels:
       app.kubernetes.io/instance: booklore
+      app.kubernetes.io/name: booklore
   policyTypes:
     - Ingress
   ingress:

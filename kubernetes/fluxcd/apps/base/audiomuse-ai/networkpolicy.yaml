@@ -6,6 +6,7 @@ spec:
   podSelector:
     matchLabels:
       app.kubernetes.io/instance: audiomuse-ai
+      app.kubernetes.io/name: audiomuse-ai
   policyTypes:
     - Ingress
   ingress:

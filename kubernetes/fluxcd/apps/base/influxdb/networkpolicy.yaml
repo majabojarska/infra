@@ -6,6 +6,7 @@ spec:
   podSelector:
     matchLabels:
       app.kubernetes.io/instance: influxdb
+      app.kubernetes.io/name: influxdb
   policyTypes:
     - Ingress
   ingress:

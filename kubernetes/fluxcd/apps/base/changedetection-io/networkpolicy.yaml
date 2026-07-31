@@ -6,6 +6,7 @@ spec:
   podSelector:
     matchLabels:
       app.kubernetes.io/instance: changedetection-io
+      app.kubernetes.io/name: changedetection-io
   policyTypes:
     - Ingress
   ingress:

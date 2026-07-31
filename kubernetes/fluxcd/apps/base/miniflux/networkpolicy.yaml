@@ -6,6 +6,7 @@ spec:
   podSelector:
     matchLabels:
       app.kubernetes.io/instance: miniflux
+      app.kubernetes.io/name: miniflux
   policyTypes:
     - Ingress
   ingress:
