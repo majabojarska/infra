@@ -24,15 +24,14 @@ spec:
     grafana:
       enabled: false
 
-    prometheusSpec:
-      storageSpec:
-        volumeClaimTemplate:
-          spec:
-            storageClassName: "local-path-zfs"
-            accessModes: ["ReadWriteOnce"]
-            resources:
-              requests:
-                storage: 20Gi
+    prometheus:
+      enabled: true
+      prometheusSpec:
+        remoteWrite:
+          # - url: "http://sp6cat-vm-01.hswro.majabojarska.dev:someport/api/v1/write"
+        storageSpec: {}
+        retention: 1h
+        retentionSize: "1GB"
 
     alertmanager:
       enabled: false
