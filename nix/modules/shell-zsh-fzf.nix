@@ -27,6 +27,24 @@
   users.defaultUserShell = pkgs.zsh;
   users.users.root.shell = pkgs.zsh;
 
+  system.activationScripts.zshDefaultUserRc.text = ''
+    while IFS=: read -r user _ uid gid _ home shell; do
+      case "$shell" in
+        */zsh) ;;
+        *) continue ;;
+      esac
+
+      if [ -d "$home" ] && [ -w "$home" ] && [ ! -e "$home/.zshrc" ]; then
+        cat > "$home/.zshrc" <<'EOF'
+# Managed by NixOS activation to skip zsh-newuser-install.
+# Shared shell defaults are configured centrally via programs.zsh.
+EOF
+        chown "$uid:$gid" "$home/.zshrc"
+        chmod 0644 "$home/.zshrc"
+      fi
+    done < /etc/passwd
+  '';
+
   programs.fzf = {
     keybindings = true;
     fuzzyCompletion = true;
