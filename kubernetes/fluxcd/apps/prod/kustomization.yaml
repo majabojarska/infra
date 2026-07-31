@@ -3,13 +3,9 @@ kind: Kustomization
 resources:
   - ../base/paperless-ngx
   - ../base/immich
-  # - ../base/actualserver
   - ../base/audiomuse-ai
   - ../base/jellyfin
-  # - ../base/frigate
   - ../base/qbittorrent
-
-  # - ../base/n8n
 
   # - ../base/searxng
 
