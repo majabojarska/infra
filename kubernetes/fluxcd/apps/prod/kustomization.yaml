@@ -10,4 +10,4 @@ resources:
   - ../base/renovate
   - ../base/miniflux
   - ../base/influxdb
-  # - ../base/booklore
+  - ../base/booklore
