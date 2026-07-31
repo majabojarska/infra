@@ -27,17 +27,3 @@ spec:
         cluster:
           instances: 1
           singleNode: true
-          initdb:
-            secret:
-              name: miniflux-cnpg-auth
-
-    workload:
-      main:
-        podSpec:
-          containers:
-            main:
-              env:
-                DATABASE_URL:
-                  secretKeyRef:
-                    name: miniflux-cnpg-auth
-                    key: std
