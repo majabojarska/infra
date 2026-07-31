@@ -6,13 +6,8 @@ resources:
   - ../base/audiomuse-ai
   - ../base/jellyfin
   - ../base/qbittorrent
-
-  # - ../base/searxng
-
   - ../base/changedetection-io
-
   - ../base/renovate
   - ../base/miniflux
-
   - ../base/influxdb
   # - ../base/booklore
