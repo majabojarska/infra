@@ -5,6 +5,7 @@ resources:
   - alertmanager-ingressroute.yaml
   - grafana-certificate.yaml
   - grafana-ingressroute.yaml
+  - networkpolicy.yaml
   - prometheus-certificate.yaml
   - prometheus-ingressroute.yaml
   - release.yaml
