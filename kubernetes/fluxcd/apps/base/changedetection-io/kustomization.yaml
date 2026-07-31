@@ -6,4 +6,5 @@ resources:
   - repository.yaml
   - release.yaml
   - ingressroute.yaml
+  - networkpolicy.yaml
   - certificate.yaml
