@@ -110,6 +110,12 @@
           description = "Anubis Vikunja service port";
         };
 
+        anubis-searx = lib.mkOption {
+          type = lib.types.port;
+          default = 8015;
+          description = "Anubis Searx service port";
+        };
+
         uptimeKuma = lib.mkOption {
           type = lib.types.port;
           default = 8009;
