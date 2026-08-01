@@ -1,5 +1,5 @@
 {
-  pkgs,
+  # pkgs,
   pkgs_unstable,
   config,
   ...
