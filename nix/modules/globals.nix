@@ -239,6 +239,12 @@
           default = 9106;
           description = "Prometheus Ping Exporter service port";
         };
+
+        immich = lib.mkOption {
+          type = lib.types.port;
+          default = 8000;
+          description = "Immich service port";
+        };
       };
     };
   };

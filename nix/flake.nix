@@ -10,6 +10,9 @@
 
       kube-01 = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
+        specialArgs = {
+          pkgs_unstable = nixpkgs_unstable.legacyPackages.x86_64-linux;
+        };
         modules = [
           ./hosts/kube-01/hardware-configuration.nix
           ./hosts/kube-01/configuration.nix

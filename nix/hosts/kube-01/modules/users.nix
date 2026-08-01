@@ -44,6 +44,7 @@ in
         "media"
         "kubernetes"
         "docker"
+        "immich"
       ];
       openssh.authorizedKeys.keys = sshKeys.maja;
     };
