@@ -1,12 +1,12 @@
 { config, ... }:
 {
   imports = [
-    ../../../modules/notifications.nix
+    ../../../../modules/notifications.nix
   ];
 
   age.secrets = {
     "ntfy-token" = {
-      file = ../secrets/ntfy-token.age;
+      file = ../../secrets/ntfy-token.age;
       mode = "0400";
     };
   };

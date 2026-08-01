@@ -11,11 +11,11 @@ in
   age = {
     secrets = {
       "borgmatic-kubernetes-enc-pass" = {
-        file = ../secrets/borgmatic-kubernetes-enc-pass.age;
+        file = ../../secrets/borgmatic-kubernetes-enc-pass.age;
         mode = "0400";
       };
       "ntfy-token" = {
-        file = ../secrets/ntfy-token.age;
+        file = ../../secrets/ntfy-token.age;
         mode = "0400";
       };
     };
