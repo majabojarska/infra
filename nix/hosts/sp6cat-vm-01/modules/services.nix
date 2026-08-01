@@ -12,6 +12,7 @@
     ./services/docker.nix
     ./services/uptime-kuma.nix
     ./services/fibo.nix
+    ./services/renovate.nix
     ./services/nginx.nix
     ./services/notifications.nix
     ./services/prometheus/prometheus.nix
