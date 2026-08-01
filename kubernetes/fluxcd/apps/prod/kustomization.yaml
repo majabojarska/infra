@@ -7,7 +7,7 @@ resources:
   - ../base/jellyfin
   - ../base/qbittorrent
   # - ../base/changedetection-io
-  - ../base/renovate
+  # - ../base/renovate
   # - ../base/miniflux
   # - ../base/influxdb
   # - ../base/booklore
