@@ -245,6 +245,12 @@
           default = 8000;
           description = "Immich service port";
         };
+
+        paperless = lib.mkOption {
+          type = lib.types.port;
+          default = 8001;
+          description = "Paperless service port";
+        };
       };
     };
   };

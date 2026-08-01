@@ -6,5 +6,6 @@
     ./services/notifications.nix
     ./services/prometheus-exporters.nix
     # ./services/immich.nix
+    # ./services/paperless.nix
   ];
 }
