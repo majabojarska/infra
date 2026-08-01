@@ -16,6 +16,5 @@
     ./modules/services.nix
     ./modules/packages.nix
     ./modules/users.nix
-    ./secrets.nix
   ];
 }

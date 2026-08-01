@@ -43,6 +43,7 @@ in
         "wheel"
         "media"
         "kubernetes"
+        "docker"
       ];
       openssh.authorizedKeys.keys = sshKeys.maja;
     };
