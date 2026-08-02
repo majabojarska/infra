@@ -258,6 +258,11 @@
           description = "Paperless service port";
         };
 
+        qbittorrent = lib.mkOption {
+          type = lib.types.port;
+          default = 8002;
+          description = "qBittorrent service port";
+        };
       };
     };
   };
