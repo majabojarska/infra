@@ -12,6 +12,7 @@
     ./services/docker.nix
     ./services/uptime-kuma.nix
     ./services/fibo.nix
+    ./services/ollama.nix
     ./services/renovate.nix
     ./services/nginx.nix
     ./services/notifications.nix

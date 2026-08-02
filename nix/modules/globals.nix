@@ -205,6 +205,12 @@
           default = 7777;
           description = "Searx service port";
         };
+
+        ollama = lib.mkOption {
+          type = lib.types.port;
+          default = 11434;
+          description = "Ollama service port";
+        };
       };
     };
 
@@ -251,6 +257,7 @@
           default = 8001;
           description = "Paperless service port";
         };
+
       };
     };
   };
