@@ -9,7 +9,8 @@
     # To migrate, once all else is prepared.
     # ./services/immich.nix
     # ./services/paperless.nix
-    ./services/qbittorrent.nix
+    # ./services/qbittorrent.nix
+    # ./services/jellyfin.nix
 
     # To impl.
     # ./services/jellyfin.nix

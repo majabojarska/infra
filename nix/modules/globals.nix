@@ -263,6 +263,12 @@
           default = 8002;
           description = "qBittorrent service port";
         };
+
+        jellyfin = lib.mkOption {
+          type = lib.types.port;
+          default = 8086;
+          description = "Jellyfin service port";
+        };
       };
     };
   };

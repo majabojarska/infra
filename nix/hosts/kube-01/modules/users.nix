@@ -18,9 +18,6 @@ in
     openwebrx = {
       gid = 10004;
     };
-    jellyfin = {
-      gid = 10005;
-    };
     arr = {
       gid = 10006;
     };
@@ -64,19 +61,6 @@ in
       description = "Immich";
       extraGroups = [
         "kubernetes"
-        "video" # /dev/dri/cardX
-        "render" # /dri/renderX
-      ];
-    };
-    jellyfin = {
-      isSystemUser = true;
-      # isNormalUser = true;
-      group = "jellyfin";
-      uid = 10005;
-      description = "Jellyfin";
-      extraGroups = [
-        "kubernetes"
-        "media"
         "video" # /dev/dri/cardX
         "render" # /dri/renderX
       ];
