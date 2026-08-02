@@ -9,6 +9,10 @@ let
   pathData = "${pathPaperless}/data";
   pathConsumption = "${pathPaperless}/consumption";
   pathMedia = "${pathPaperless}/media";
+
+  # Adjust the endpoint once proper DNS records are set up.
+  # The FQDN needs to resolve to a WG-routable IP address, otherwise Traefik will block the connection.
+  ollamaEndpoint = "https://ollama.${config.globals.hswroDomain}";
 in
 {
   age.secrets = {
@@ -77,6 +81,15 @@ in
         # https://github.com/paperless-ngx/paperless-ngx/discussions/4830
         invalidate_digital_signatures = true;
       };
+
+      PAPERLESS_AI_ENABLED = true;
+      PAPERLESS_AI_LLM_EMBEDDING_BACKEND = "ollama";
+      PAPERLESS_AI_LLM_EMBEDDING_MODEL = "embeddinggemma";
+      PAPERLESS_AI_LLM_EMBEDDING_ENDPOINT = "${ollamaEndpoint}";
+      PAPERLESS_AI_LLM_BACKEND = "ollama";
+      PAPERLESS_AI_LLM_MODEL = "qwen3:1.7b";
+      PAPERLESS_AI_LLM_ENDPOINT = "${ollamaEndpoint}";
+      PAPERLESS_LLM_INDEX_TASK_CRON = "@weekly";
     };
   };
 
