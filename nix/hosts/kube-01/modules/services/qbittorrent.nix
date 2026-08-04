@@ -47,4 +47,27 @@ in
   systemd.tmpfiles.rules = [
     "d ${pathProfile} 0750 qbittorrent qbittorrent -"
   ];
+
+  services.traefik.dynamicConfigOptions.http = {
+    routers.qbittorrent = {
+      rule = "Host(`qbittorrent.${config.globals.cloudDomain}`)";
+      service = "qbittorrent";
+      tls = {
+        certResolver = "letsencrypt";
+        domains = [
+          {
+            main = "qbittorrent.${config.globals.cloudDomain}";
+          }
+        ];
+      };
+    };
+
+    services.qbittorrent.loadBalancer = {
+      servers = [
+        {
+          url = "http://127.0.0.1:${toString config.hosts.sp6catVm01.ports.qbittorrent}";
+        }
+      ];
+    };
+  };
 }
