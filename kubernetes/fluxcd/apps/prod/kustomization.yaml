@@ -5,7 +5,7 @@ resources:
   - ../base/immich
   - ../base/audiomuse-ai
   - ../base/jellyfin
-  - ../base/qbittorrent
+  # - ../base/qbittorrent
   # - ../base/changedetection-io
   # - ../base/miniflux
   # - ../base/influxdb
