@@ -8,8 +8,8 @@
   };
 
   # Bind mount the "kubernetes" dataset mountpoint to the future path
-  fileSystems."/storage/kubernetes" = {
-    device = "/storage/mirror";
+  fileSystems."/storage/mirror" = {
+    device = "/storage/kubernetes";
     fsType = "none";
     options = [ "bind" ];
   };
