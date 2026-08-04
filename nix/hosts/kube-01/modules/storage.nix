@@ -7,6 +7,13 @@
     trim.enable = true;
   };
 
+  # Bind mount the "kubernetes" dataset mountpoint to the future path
+  fileSystems."/storage/kubernetes" = {
+    device = "/storage/mirror";
+    fsType = "none";
+    options = [ "bind" ];
+  };
+
   services.sanoid = {
     enable = true;
     datasets = {
