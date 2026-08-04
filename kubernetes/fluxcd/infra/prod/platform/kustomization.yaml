@@ -4,6 +4,7 @@ resources:
   - ../../base/platform
   - ./cluster-issuer.yaml
   - ./ovh-credentials.yaml
+  - ./systemd-migration.yaml
 patches:
   - path: ./webhook-ovh-values.yaml
   - path: ./traefik-values.yaml
