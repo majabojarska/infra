@@ -65,7 +65,7 @@ in
     services.qbittorrent.loadBalancer = {
       servers = [
         {
-          url = "http://127.0.0.1:${toString config.hosts.sp6catVm01.ports.qbittorrent}";
+          url = "http://127.0.0.1:${toString config.hosts.kube01.ports.qbittorrent}";
         }
       ];
     };
