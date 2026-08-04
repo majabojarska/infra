@@ -6,6 +6,7 @@ let
 in
 {
   "borgmatic-kubernetes-enc-pass.age".publicKeys = [ kube-01 ] ++ developers;
+  "traefik.env.age".publicKeys = [ kube-01 ] ++ developers;
   "ntfy-token.age".publicKeys = [ kube-01 ] ++ developers;
   "immich.env.age".publicKeys = [ kube-01 ] ++ developers;
   "paperless.env.age".publicKeys = [ kube-01 ] ++ developers;

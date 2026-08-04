@@ -5,6 +5,7 @@
     ./services/k3s.nix
     ./services/notifications.nix
     ./services/prometheus-exporters.nix
+    ./services/traefik.nix
 
     # To migrate, once all else is prepared.
     # ./services/immich.nix

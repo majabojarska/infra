@@ -246,6 +246,24 @@
           description = "Prometheus Ping Exporter service port";
         };
 
+        traefikWebInsecure = lib.mkOption {
+          type = lib.types.port;
+          default = 8080;
+          description = "Traefik (systemd) web insecure port";
+        };
+
+        traefikWebSecure = lib.mkOption {
+          type = lib.types.port;
+          default = 8443;
+          description = "Traefik (systemd) websecure port";
+        };
+
+        traefikMetrics = lib.mkOption {
+          type = lib.types.port;
+          default = 9107;
+          description = "Prometheus Traefik metrics port";
+        };
+
         immich = lib.mkOption {
           type = lib.types.port;
           default = 8000;
