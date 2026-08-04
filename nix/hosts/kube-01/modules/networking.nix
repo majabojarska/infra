@@ -16,6 +16,7 @@
       trustedInterfaces = [
         "ens18"
         "tailscale0"
+        "cni0"
       ];
 
       allowedTCPPorts = [

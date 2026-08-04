@@ -1,0 +1,39 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: qbittorrent
+  namespace: traefik
+spec:
+  secretName: qbittorrent-tls
+  dnsNames:
+    - qbittorrent.home.majabojarska.dev
+  issuerRef:
+    name: letsencrypt
+    kind: ClusterIssuer
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: qbittorrent-systemd
+  namespace: traefik
+spec:
+  ports:
+    - name: http
+      port: 8080
+      targetPort: 8080
+---
+apiVersion: discovery.k8s.io/v1
+kind: EndpointSlice
+metadata:
+  name: qbittorrent-systemd
+  namespace: traefik
+  labels:
+    kubernetes.io/service-name: qbittorrent-systemd
+addressType: IPv4
+endpoints:
+  - addresses:
+      - 192.168.1.30
+ports:
+  - name: http
+    protocol: TCP
+    port: 8080

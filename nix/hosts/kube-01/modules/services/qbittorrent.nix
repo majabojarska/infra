@@ -50,16 +50,16 @@ in
 
   services.traefik.dynamicConfigOptions.http = {
     routers.qbittorrent = {
-      rule = "Host(`qbittorrent.${config.globals.cloudDomain}`)";
+      rule = "Host(`qbittorrent.${config.globals.homeDomain}`)";
       service = "qbittorrent";
-      tls = {
-        certResolver = "letsencrypt";
-        domains = [
-          {
-            main = "qbittorrent.${config.globals.cloudDomain}";
-          }
-        ];
-      };
+      # tls = {
+      #   certResolver = "letsencrypt";
+      #   domains = [
+      #     {
+      #       main = "qbittorrent.${config.globals.homeDomain}";
+      #     }
+      #   ];
+      # };
     };
 
     services.qbittorrent.loadBalancer = {

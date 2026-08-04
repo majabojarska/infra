@@ -31,10 +31,11 @@
         web = {
           address = ":${toString config.hosts.kube01.ports.traefikWebInsecure}";
           asDefault = true;
-          http.redirections.entrypoint = {
-            to = "websecure";
-            scheme = "https";
-          };
+          # Re-enable after migrations are done
+          # http.redirections.entrypoint = {
+          #   to = "websecure";
+          #   scheme = "https";
+          # };
         };
 
         websecure = {

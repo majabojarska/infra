@@ -15,22 +15,3 @@ spec:
     providers:
       kubernetesCRD:
         enabled: true
-
-      file:
-        enabled: true
-        watch: true
-        content:
-          http:
-            routers:
-              migrated-qbittorrent:
-                rule: Host(`qbittorrent.home.majabojarska.dev`)
-                entryPoints:
-                  - websecure
-                tls: {}
-                service: systemd-traefik
-
-            services:
-              systemd-traefik:
-                loadBalancer:
-                  servers:
-                    - url: "http://192.168.1.30:8443"
