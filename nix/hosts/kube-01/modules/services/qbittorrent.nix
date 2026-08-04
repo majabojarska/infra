@@ -1,6 +1,5 @@
 {
-  # pkgs,
-  pkgs_unstable,
+  lib,
   config,
   ...
 }:
@@ -11,8 +10,8 @@ in
   users = {
     users.qbittorrent = {
       isSystemUser = true;
-      extraGroups = [ "media" ];
-      group = "qbittorrent";
+      group = "media";
+      extraGroups = [];
       description = "qBittorrent user";
     };
 
@@ -22,7 +21,7 @@ in
   services.qbittorrent = {
     enable = true;
     user = "qbittorrent";
-    group = "qbittorrent";
+    group = "media";
     webuiPort = config.hosts.kube01.ports.qbittorrent;
     profileDir = pathProfile;
     openFirewall = false;
@@ -42,6 +41,12 @@ in
         General.Locale = "en";
       };
     };
+  };
+
+  systemd.services.qbittorrent.serviceConfig = {
+    # Allow group write permissions for files created by qBittorrent
+    # "media" group is used to allow other users (like "jellyfin") to RW these files.
+    UMask = "0007";
   };
 
   systemd.tmpfiles.rules = [
