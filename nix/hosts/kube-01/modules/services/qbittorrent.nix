@@ -21,7 +21,6 @@ in
 
   services.qbittorrent = {
     enable = true;
-    # package = pkgs_unstable.qbittorrent;
     user = "qbittorrent";
     group = "qbittorrent";
     webuiPort = config.hosts.kube01.ports.qbittorrent;
@@ -39,6 +38,7 @@ in
           # It's generally safe to keep in a public repo in this scenario, especially as this is a LAN-only service.
           Password_PBKDF2 = "@ByteArray(UWTpBxHb8Ab7ff0E5n26Gw==:HILQ74B+nOxtZksOxeUWp0dPwyYFy5T2+fbj7qqLgz7U9jrVVIrs5rAPz3IcDb0v15hyAT7Z3D8KEZeY9CBC1Q==)";
         };
+        LegalNotice.Accepted = true;
         General.Locale = "en";
       };
     };
