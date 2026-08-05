@@ -1,4 +1,4 @@
-{ lib, ... }:
+{ lib, config, ... }:
 
 {
   options.globals = {
@@ -26,9 +26,15 @@
       description = "Home subdomain";
     };
 
+    hswroDomain = lib.mkOption {
+      type = lib.types.str;
+      default = "hswro.majabojarska.dev";
+      description = "hswro subdomain";
+    };
+
     sp6catVm01HswroDomain = lib.mkOption {
       type = lib.types.str;
-      default = "sp6cat-vm-01.hswro.majabojarska.dev";
+      default = "sp6cat-vm-01.${config.globals.hswroDomain}";
       description = "sp6cat-vm-01.hswro subdomain";
     };
   };
