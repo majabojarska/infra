@@ -1,14 +1,14 @@
 {
-  # pkgs,
-  pkgs_unstable,
+  pkgs,
   config,
   ...
 }:
 let
   pathPaperless = "/storage/kubernetes/paperless/";
   pathData = "${pathPaperless}/data";
-  pathConsumption = "${pathPaperless}/consumption";
+  pathConsume = "${pathPaperless}/consume";
   pathMedia = "${pathPaperless}/media";
+  pathExport = "${pathPaperless}/export";
 
   # Adjust the endpoint once proper DNS records are set up.
   # The FQDN needs to resolve to a WG-routable IP address, otherwise Traefik will block the connection.
@@ -19,85 +19,195 @@ in
     "paperless-env" = {
       file = ../../secrets/paperless.env.age;
       mode = "0400";
-      owner = "paperless";
-      group = "paperless";
     };
   };
 
-  users = {
-    users = {
-      paperless = {
-        isSystemUser = true;
-        extraGroups = [ "paperless" ];
-        group = "paperless";
-        description = "Paperless-ng";
-      };
-    };
+  virtualisation.oci-containers = {
+    backend = "docker";
 
-    groups = {
-      paperless = { };
+    containers = {
+      "paperless-broker" = {
+        image = "ghcr.io/valkey-io/valkey:9.0-alpine3.24";
+        autoStart = true;
+
+        volumes = [
+          "/var/lib/paperless/redis:/data"
+        ];
+
+        extraOptions = [
+          "--network=paperless"
+        ];
+      };
+
+      "paperless-webserver" = {
+        image = "ghcr.io/paperless-ngx/paperless-ngx:3.0.5";
+        autoStart = true;
+
+        dependsOn = [
+          "paperless-broker"
+          "paperless-gotenberg"
+          "paperless-tika"
+        ];
+
+        ports = [
+          "127.0.0.1:${toString config.hosts.kube01.ports.paperless}:8000"
+        ];
+
+        volumes = [
+          "${pathData}:/usr/src/paperless/data"
+          "${pathMedia}:/usr/src/paperless/media"
+          "${pathConsume}:/usr/src/paperless/consume"
+          "${pathExport}/export:/usr/src/paperless/export"
+        ];
+
+        environment = {
+          # https://docs.paperless-ngx.com/configuration/
+          PAPERLESS_REDIS = "redis://paperless-broker:6379";
+
+          PAPERLESS_DBENGINE = "sqlite";
+
+          PAPERLESS_TIKA_ENABLED = "1";
+          PAPERLESS_TIKA_GOTENBERG_ENDPOINT = "http://paperless-gotenberg:3000";
+          PAPERLESS_TIKA_ENDPOINT = "http://paperless-tika:9998";
+
+          PAPERLESS_OCR_LANGUAGES = "pol eng";
+          PAPERLESS_OCR_LANGUAGE = "pol+eng";
+          PAPERLESS_OCR_DESKEW = true;
+          PAPERLESS_OCR_ROTATE_PAGES = true;
+          PAPERLESS_OCR_MODE = "auto";
+
+          PAPERLESS_TIME_ZONE = config.time.timeZone;
+          PAPERLESS_SESSION_COOKIE_AGE = toString (90 * 24 * 60 * 60); # 90 days in seconds
+          PAPERLESS_NUMBER_OF_SUGGESTED_DATES = "42";
+
+          PAPERLESS_OCR_USER_ARGS = builtins.toJSON {
+            optimize = 2;
+            pdfa_image_compression = "auto";
+            jpeg_quality = 100;
+            invalidate_digital_signatures = true;
+          };
+
+          PAPERLESS_AI_ENABLED = "true";
+          PAPERLESS_AI_LLM_EMBEDDING_BACKEND = "ollama";
+          PAPERLESS_AI_LLM_EMBEDDING_MODEL = "embeddinggemma";
+          PAPERLESS_AI_LLM_EMBEDDING_ENDPOINT = ollamaEndpoint;
+
+          PAPERLESS_AI_LLM_BACKEND = "ollama";
+          PAPERLESS_AI_LLM_MODEL = "qwen3:1.7b";
+          PAPERLESS_AI_LLM_ENDPOINT = ollamaEndpoint;
+
+          PAPERLESS_LLM_INDEX_TASK_CRON = "0 22 * * 0";
+        };
+
+        environmentFiles = [
+          config.age.secrets."paperless-env".path
+        ];
+
+        extraOptions = [
+          "--network=paperless"
+        ];
+      };
+
+      "paperless-gotenberg" = {
+        image = "docker.io/gotenberg/gotenberg:8.34";
+        autoStart = true;
+
+        cmd = [
+          "gotenberg"
+          "--chromium-disable-javascript=true"
+          "--chromium-allow-list=file:///tmp/.*"
+        ];
+
+        extraOptions = [
+          "--network=paperless"
+        ];
+      };
+
+      "paperless-tika" = {
+        image = "docker.io/apache/tika:3.3.1.0";
+        autoStart = true;
+
+        extraOptions = [
+          "--network=paperless"
+        ];
+      };
     };
   };
 
-  services.paperless = {
-    enable = true;
-    package = pkgs_unstable.paperless-ngx;
+  systemd.services.docker-paperless-network = {
+    description = "Create Docker network for Paperless";
+    wantedBy = [ "multi-user.target" ];
+    requires = [ "docker.service" ];
+    after = [ "docker.service" ];
+    before = [
+      "docker-paperless-broker.service"
+      "docker-paperless-webserver.service"
+      "docker-paperless-gotenberg.service"
+      "docker-paperless-tika.service"
+    ];
 
-    address = "127.0.0.1";
-    port = config.hosts.kube01.ports.paperless;
-    domain = "paperless.${config.globals.homeDomain}";
+    serviceConfig = {
+      Type = "oneshot";
+      ExecStart = ''
+        ${pkgs.bash}/bin/bash -c '${pkgs.docker}/bin/docker network inspect paperless >/dev/null 2>&1 || ${pkgs.docker}/bin/docker network create paperless >/dev/null'
+      '';
+      RemainAfterExit = true;
+    };
+  };
 
-    user = "paperless";
-
-    configureTika = true;
-    configureNginx = false;
-
-    mediaDir = pathMedia;
-    dataDir = pathData;
-    consumptionDir = pathConsumption;
-
-    environmentFile = config.age.secrets."paperless-env".path;
-
-    settings = {
-      # https://docs.paperless-ngx.com/configuration
-      PAPERLESS_OCR_LANGUAGES = "pol eng";
-
-      PAPERLESS_TIME_ZONE = config.time.timeZone;
-
-      PAPERLESS_SESSION_COOKIE_AGE = 90 * 24 * 60 * 60; # 90 days
-
-      PAPERLESS_NUMBER_OF_SUGGESTED_DATES = 42; # All the dates please
-
-      PAPERLESS_OCR_USER_ARGS = builtins.toJSON {
-        optimize = 2;
-        pdfa_image_compression = "auto";
-        # Doesn't do anything because GhostScript compresses down to q=95
-        # anyways; this serves to not degrade quality further
-        jpeg_quality = 100;
-
-        # Paperless refuses to handle signed PDFs (i.e. Docusign) by default
-        # because its OCR would invalidate the signature. Since paperless keeps
-        # originals however, this is of no relevance to me.
-        # https://github.com/paperless-ngx/paperless-ngx/discussions/4830
-        invalidate_digital_signatures = true;
-      };
-
-      PAPERLESS_AI_ENABLED = true;
-      PAPERLESS_AI_LLM_EMBEDDING_BACKEND = "ollama";
-      PAPERLESS_AI_LLM_EMBEDDING_MODEL = "embeddinggemma";
-      PAPERLESS_AI_LLM_EMBEDDING_ENDPOINT = "${ollamaEndpoint}";
-      PAPERLESS_AI_LLM_BACKEND = "ollama";
-      PAPERLESS_AI_LLM_MODEL = "qwen3:1.7b";
-      PAPERLESS_AI_LLM_ENDPOINT = "${ollamaEndpoint}";
-      PAPERLESS_LLM_INDEX_TASK_CRON = "@weekly";
+  systemd.services = {
+    docker-paperless-broker = {
+      requires = [ "docker-paperless-network.service" ];
+      after = [ "docker-paperless-network.service" ];
+      serviceConfig.Restart = "on-failure";
+    };
+    docker-paperless-webserver = {
+      requires = [ "docker-paperless-network.service" ];
+      after = [ "docker-paperless-network.service" ];
+      serviceConfig.Restart = "on-failure";
+    };
+    docker-paperless-gotenberg = {
+      requires = [ "docker-paperless-network.service" ];
+      after = [ "docker-paperless-network.service" ];
+      serviceConfig.Restart = "on-failure";
+    };
+    docker-paperless-tika = {
+      requires = [ "docker-paperless-network.service" ];
+      after = [ "docker-paperless-network.service" ];
+      serviceConfig.Restart = "on-failure";
     };
   };
 
   systemd.tmpfiles.rules = [
-    "d ${pathPaperless} 0750 paperless paperless -"
-    "d ${pathData} 0750 paperless paperless -"
-    "d ${pathData}/index 0750 paperless paperless -"
-    "d ${pathConsumption} 0750 paperless paperless -"
-    "d ${pathMedia} 0750 paperless paperless -"
+    "d ${pathPaperless} 0750 root root -"
+    "d ${pathData} 0750 root root -"
+    "d ${pathData}/index 0750 root root -"
+    "d ${pathConsume} 0750 root root -"
+    "d ${pathMedia} 0750 root root -"
+    "d ${pathExport} 0750 root root -"
   ];
+
+  services.traefik.dynamicConfigOptions.http = {
+    routers.paperless = {
+      rule = "Host(`paperless.${config.globals.homeDomain}`)";
+      service = "paperless";
+      # tls = {
+      #   certResolver = "letsencrypt";
+      #   domains = [
+      #     {
+      #       main = "paperless.${config.globals.homeDomain}";
+      #     }
+      #   ];
+      # };
+    };
+
+    services.paperless.loadBalancer = {
+      servers = [
+        {
+          url = "http://127.0.0.1:${toString config.hosts.kube01.ports.paperless}";
+        }
+      ];
+    };
+  };
+
 }

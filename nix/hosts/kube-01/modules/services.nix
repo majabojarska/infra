@@ -9,14 +9,12 @@
 
     # To migrate, once all else is prepared.
     # ./services/immich.nix
-    # ./services/paperless.nix
+    ./services/paperless.nix
     ./services/qbittorrent.nix
+    # ./services/audiomuse-ai.nix
     # ./services/jellyfin.nix
 
     # To impl.
-    # ./services/jellyfin.nix
     # ./services/change-detection.nix
-    # ./services/audiomuse.nix
-    # ./services/traefik.nix
   ];
 }
