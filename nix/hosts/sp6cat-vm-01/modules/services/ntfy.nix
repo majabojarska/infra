@@ -19,21 +19,36 @@
       behind-proxy = true;
 
       # Auth
-      # auth-file = "${config.hosts.sp6catVm01.storage.wdUsbHddMountPath}/ntfy/auth.db";
+      auth-file = "${config.hosts.sp6catVm01.storage.wdUsbHddMountPath}/ntfy/auth.db";
       auth-default-access = "deny-all";
       enable-login = true;
       require-login = true;
 
       # Messages
-      # attachment-cache-dir = "${config.hosts.sp6catVm01.storage.wdUsbHddMountPath}/ntfy/attachments";
+      attachment-cache-dir = "${config.hosts.sp6catVm01.storage.wdUsbHddMountPath}/ntfy/attachments";
       attachment-file-size-limit = "20M";
       attachment-total-size-limit = "1G";
-      attachment-expiry-duration = "12h";
-      # cache-file = "${config.hosts.sp6catVm01.storage.wdUsbHddMountPath}/ntfy/cache.db";
+      attachment-expiry-duration = "168h"; # 7 days
+
+      cache-duration = "168h"; # 7 days
+      cache-file = "${config.hosts.sp6catVm01.storage.wdUsbHddMountPath}/ntfy/cache.db";
     };
     # Auth users and tokens are loaded through the env file
     environmentFile = config.age.secrets."ntfy-env".path;
   };
+
+  systemd.services."ntfy-sh" = {
+    serviceConfig = {
+      User = "ntfy-sh";
+      Group = "ntfy-sh";
+      ReadWritePaths = "${config.hosts.sp6catVm01.storage.wdUsbHddMountPath}/ntfy";
+    };
+  };
+
+  systemd.tmpfiles.rules = [
+    "d ${config.hosts.sp6catVm01.storage.wdUsbHddMountPath}/ntfy/ 0700 ntfy-sh ntfy-sh -"
+    "d ${config.hosts.sp6catVm01.storage.wdUsbHddMountPath}/ntfy/attachments 0700 ntfy-sh ntfy-sh -"
+  ];
 
   services.traefik.dynamicConfigOptions.http = {
     routers = {
