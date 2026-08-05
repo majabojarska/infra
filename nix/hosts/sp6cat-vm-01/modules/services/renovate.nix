@@ -33,7 +33,7 @@
 
   services.renovate = {
     enable = true;
-    schedule = "5 min";
+    schedule = "15 min";
 
     validateSettings = true;
     settings = {
