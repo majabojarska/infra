@@ -15,6 +15,8 @@
     environmentFiles = [ config.age.secrets."traefik.env".path ];
 
     staticConfigOptions = {
+      accessLog = { };
+
       metrics = {
         prometheus = {
           addEntryPointsLabels = true;

@@ -1,29 +1,29 @@
 { config, pkgs, ... }:
 let
   pathOllamaModels = "${config.hosts.sp6catVm01.storage.wdUsbHddMountPath}/ollama-models";
-  ollamaFQDN = "ollama.${config.globals.cloudDomain}";
+  ollamaFQDN = "ollama.${config.globals.hswroDomain}";
 in
 
 {
-  # users = {
-  #   users.ollama = {
-  #     isSystemUser = true;
-  #     description = "Ollama user";
-  #     extraGroups = [ "ollama" ];
-  #     createHome = true;
-  #     home = pathOllamaModels;
-  #     group = "ollama";
-  #   };
+  users = {
+    users.ollama = {
+      isSystemUser = true;
+      description = "Ollama user";
+      extraGroups = [ "ollama" ];
+      createHome = true;
+      home = pathOllamaModels;
+      group = "ollama";
+    };
 
-  #   groups.ollama = { };
-  # };
+    groups.ollama = { };
+  };
 
   services.ollama = {
     enable = true;
     host = "127.0.0.1";
     port = config.hosts.sp6catVm01.ports.ollama;
     package = pkgs.ollama-cpu;
-    # models = pathOllamaModels;
+    models = pathOllamaModels;
     loadModels = [
       "embeddinggemma"
       "qwen3:1.7b"
@@ -37,23 +37,23 @@ in
     };
   };
 
-  # systemd.services.ollama.serviceConfig = {
-  #   # User = "ollama";
-  #   # Group = "ollama";
+  systemd.services.ollama.serviceConfig = {
+    User = "ollama";
+    Group = "ollama";
 
-  #   MemoryHigh = "4G";
-  #   MemoryMax = "4500M";
+    MemoryHigh = "4G";
+    MemoryMax = "4500M";
 
-  #   RequiresMountsFor = [ pathOllamaModels ];
-  #   ConditionPathIsReadWrite = pathOllamaModels;
-  #   # Environment = [
-  #   #   "OLLAMA_MODELS=${pathOllamaModels}"
-  #   # ];
-  # };
+    Environment = [
+      "OLLAMA_MODELS=${pathOllamaModels}"
+    ];
+  };
 
-  # systemd.tmpfiles.rules = [
-  #   "d ${pathOllamaModels} 0750 ollama ollama -"
-  # ];
+  systemd.tmpfiles.rules = [
+    "d ${pathOllamaModels} 0750 ollama ollama -"
+    "d ${pathOllamaModels}/blobs 0750 ollama ollama -"
+    "d ${pathOllamaModels}/manifests 0750 ollama ollama -"
+  ];
 
   services.traefik.dynamicConfigOptions.http = {
     routers = {
@@ -61,7 +61,10 @@ in
       ollama = {
         rule = "Host(`${ollamaFQDN}`)";
         service = "ollama";
-        middlewares = [ ];
+        middlewares = [
+          "ollamaHost"
+          "privateNetworksOnly"
+        ];
         tls = {
           certResolver = "letsencrypt";
           domains = [
@@ -77,9 +80,18 @@ in
       privateNetworksOnly = {
         ipAllowList = {
           sourceRange = [
-            "192.168.1.0/24" # LAN
+            "192.168.0.0/16" # Private networks
             "10.0.0.0/8" # WG
           ];
+        };
+      };
+
+      # Otherwise Ollama 403s out
+      ollamaHost = {
+        headers = {
+          customRequestHeaders = {
+            Host = "127.0.0.1";
+          };
         };
       };
     };
