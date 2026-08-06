@@ -10,4 +10,7 @@ in
   "ntfy-token.age".publicKeys = [ kube-01 ] ++ developers;
   "immich.env.age".publicKeys = [ kube-01 ] ++ developers;
   "paperless.env.age".publicKeys = [ kube-01 ] ++ developers;
+
+  "audiomuse-db-pass.age".publicKeys = [ kube-01 ] ++ developers;
+  "audiomuse-secret-key.age".publicKeys = [ kube-01 ] ++ developers;
 }

@@ -293,6 +293,12 @@
           default = 8086;
           description = "Jellyfin service port";
         };
+
+        audiomuse = lib.mkOption {
+          type = lib.types.port;
+          default = 8003;
+          description = "AudioMuse AI service port";
+        };
       };
     };
   };
