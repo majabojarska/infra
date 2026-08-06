@@ -72,8 +72,8 @@ in
 
           PAPERLESS_OCR_LANGUAGES = "pol eng";
           PAPERLESS_OCR_LANGUAGE = "pol+eng";
-          PAPERLESS_OCR_DESKEW = true;
-          PAPERLESS_OCR_ROTATE_PAGES = true;
+          PAPERLESS_OCR_DESKEW = "true";
+          PAPERLESS_OCR_ROTATE_PAGES = "true";
           PAPERLESS_OCR_MODE = "auto";
 
           PAPERLESS_TIME_ZONE = config.time.timeZone;
