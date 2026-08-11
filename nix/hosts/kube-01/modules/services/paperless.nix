@@ -62,6 +62,8 @@ in
 
         environment = {
           # https://docs.paperless-ngx.com/configuration/
+          PAPERLESS_URL = "https://paperless.${config.globals.homeDomain}";
+
           PAPERLESS_REDIS = "redis://paperless-broker:6379";
 
           PAPERLESS_DBENGINE = "sqlite";
