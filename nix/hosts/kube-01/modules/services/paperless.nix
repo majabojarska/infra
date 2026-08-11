@@ -116,7 +116,7 @@ in
           "--health-interval=30s"
           "--health-timeout=10s"
           "--health-retries=5"
-          "--health-start-period=60s"
+          "--health-start-period=20s"
         ];
       };
 
@@ -136,7 +136,7 @@ in
           "--health-interval=30s"
           "--health-timeout=10s"
           "--health-retries=5"
-          "--health-start-period=30s"
+          "--health-start-period=10s"
         ];
       };
 
@@ -150,7 +150,7 @@ in
           "--health-interval=30s"
           "--health-timeout=10s"
           "--health-retries=5"
-          "--health-start-period=30s"
+          "--health-start-period=10s"
         ];
       };
     };
