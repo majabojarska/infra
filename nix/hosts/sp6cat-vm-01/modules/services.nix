@@ -9,7 +9,6 @@
     ./services/copyparty.nix
     ./services/searx.nix
     ./services/redlib.nix
-    ./services/docker.nix
     ./services/uptime-kuma.nix
     ./services/fibo.nix
     ./services/ollama.nix

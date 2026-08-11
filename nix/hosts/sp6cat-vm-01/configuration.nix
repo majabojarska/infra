@@ -6,6 +6,7 @@
     ../../modules/globals.nix
     ../../modules/logrotate.nix
     ../../modules/shell-zsh-fzf.nix
+    ../../modules/docker.nix
 
     ./modules/boot.nix
     ./modules/hardware.nix
