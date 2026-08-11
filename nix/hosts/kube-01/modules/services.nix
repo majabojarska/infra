@@ -8,7 +8,7 @@
     ./services/traefik.nix
 
     # To migrate, once all else is prepared.
-    # ./services/immich.nix
+    ./services/immich.nix
     ./services/paperless.nix
     ./services/qbittorrent.nix
     # ./services/audiomuse-ai.nix
