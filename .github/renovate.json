@@ -1,5 +1,17 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "customManagers": [
+    {
+      "customType": "regex",
+      "managerFilePatterns": [
+        "/^nix\\/.*\\.nix$/"
+      ],
+      "matchStrings": [
+        "image\\s*=\\s*\"(?<depName>[^\":]+(?:\\/[^\":]+)*):(?<currentValue>[^\"@]+)(?:@(?<currentDigest>sha256:[a-f0-9]+))?\";"
+      ],
+      "datasourceTemplate": "docker"
+    }
+  ],
   "kubernetes": {
     "managerFilePatterns": [
       "/\\.yaml$/"
@@ -21,6 +33,12 @@
         "minor",
         "patch"
       ]
+    },
+    {
+      "matchDatasources": [
+        "docker"
+      ],
+      "pinDigests": true
     }
   ]
 }
