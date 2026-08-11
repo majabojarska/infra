@@ -5,7 +5,7 @@ resources:
   - namespace.yaml
   - repository.yaml
   - release.yaml
-  - ingressroute.yaml
-  - networkpolicy.yaml
-  - certificate.yaml
+  # - ingressroute.yaml
+  # - networkpolicy.yaml
+  # - certificate.yaml
   - admin-credentials.yaml
