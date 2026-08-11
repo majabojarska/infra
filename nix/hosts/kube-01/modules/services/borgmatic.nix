@@ -24,7 +24,32 @@ in
   services.borgmatic = {
     enable = true;
     enableConfigCheck = true;
-    configurations."kubernetes" = {
+    configurations."mirror" =
+      let
+        stop-docker-units-script = pkgs.writeText "borgmatic-stop-docker-units.sh" ''
+          set -euo pipefail
+
+          units_file=/run/borgmatic-docker-units
+          systemctl list-units --type=service --state=active --no-legend --plain "docker-*.service" \
+            | while read -r unit _; do
+                printf "%s\n" "$unit"
+              done > "$units_file"
+
+          if [ -s "$units_file" ]; then
+            systemctl stop $(cat "$units_file")
+          fi
+        '';
+        start-docker-units-script = pkgs.writeText "borgmatic-start-docker-units.sh" ''
+          set -euo pipefail
+
+          units_file=/run/borgmatic-docker-units
+          if [ -s "$units_file" ]; then
+            systemctl start $(cat "$units_file")
+          fi
+          rm -f "$units_file"
+        '';
+      in
+      {
       checks = [
         {
           name = "repository";
@@ -42,7 +67,8 @@ in
         # "/var/lib/rancher/k3s/server/db/snapshots"
         # "/var/lib/rancher/k3s/server/token"
         # Persistent Volumes
-        "/storage/kubernetes/"
+        # "/storage/kubernetes/"
+        "/storage/mirror/"
       ];
       exclude_patterns = [
         "*/.zfs" # Contains ZFS snapdir, backing this up would be redundant.
@@ -64,23 +90,27 @@ in
 
       commands = [
         {
-          after = "action";
-          when = [ "create" ];
-          run = [
-            # Restart k3s
-            "systemctl restart k3s.service"
-          ];
-        }
-        {
           before = "action";
           when = [ "create" ];
           run = [
+            # Persist currently active docker systemd service units and stop that set.
+            "${pkgs.bash}/bin/bash ${stop-docker-units-script}"
             # Couple volume backup with ETCD state
             "${pkgs.k3s}/bin/k3s etcd-snapshot save --name borgmatic --etcd-snapshot-compress --etcd-snapshot-dir=/storage/kubernetes/snapshots"
             # Drain node and stop K3s
             "systemctl stop k3s.service"
             # Killall k3s https://docs.k3s.io/upgrades/killall#killall-script
             "${pkgs.k3s}/bin/k3s-killall.sh"
+          ];
+        }
+        {
+          after = "action";
+          when = [ "create" ];
+          run = [
+            # Start docker systemd service units that were active before backup.
+            "${pkgs.bash}/bin/bash ${start-docker-units-script}"
+            # Restart k3s
+            "systemctl restart k3s.service"
           ];
         }
       ];
@@ -92,19 +122,19 @@ in
 
         start = {
           title = "Borgmatic backup started";
-          message = "Borgmatic backup 'kubernetes' started.";
+          message = "${config.networking.hostName} Borgmatic backup 'mirror' started.";
           priority = "min";
           tags = ntfy-tag;
-        };
+          };
         finish = {
           title = "Borgmatic backup finished";
-          message = "Borgmatic backup 'kubernetes' finished.";
+          message = "${config.networking.hostName} Borgmatic backup 'mirror' finished.";
           priority = "min";
           tags = ntfy-tag;
         };
         fail = {
           title = "Borgmatic backup failed";
-          message = "Borgmatic backup 'kubernetes' failed.";
+          message = "${config.networking.hostName} Borgmatic backup 'mirror' failed.";
           priority = "max";
           tags = ntfy-tag;
         };
@@ -121,10 +151,5 @@ in
       keep_yearly = 0;
     };
 
-  };
-
-  systemd.timers.borgmatic.timerConfig = {
-    OnCalendar = lib.mkForce "*-*-* 05:00:00";
-    Persistent = true;
   };
 }
