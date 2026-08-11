@@ -36,6 +36,11 @@ in
 
         extraOptions = [
           "--network=paperless"
+          "--health-cmd=redis-cli ping || exit 1"
+          "--health-interval=10s"
+          "--health-timeout=3s"
+          "--health-retries=5"
+          "--health-start-period=10s"
         ];
       };
 
@@ -107,6 +112,11 @@ in
 
         extraOptions = [
           "--network=paperless"
+          "--health-cmd=curl -fsS http://127.0.0.1:8000 >/dev/null || exit 1"
+          "--health-interval=30s"
+          "--health-timeout=10s"
+          "--health-retries=5"
+          "--health-start-period=60s"
         ];
       };
 
@@ -122,6 +132,11 @@ in
 
         extraOptions = [
           "--network=paperless"
+          "--health-cmd=curl -fsS http://127.0.0.1:3000/health >/dev/null || exit 1"
+          "--health-interval=30s"
+          "--health-timeout=10s"
+          "--health-retries=5"
+          "--health-start-period=30s"
         ];
       };
 
@@ -131,6 +146,11 @@ in
 
         extraOptions = [
           "--network=paperless"
+          "--health-cmd=bash -ec 'exec 3<>/dev/tcp/127.0.0.1/9998; printf \"GET / HTTP/1.1\\r\\nHost: localhost\\r\\nConnection: close\\r\\n\\r\\n\" >&3; head -n1 <&3 | grep -q \"200\"' || exit 1"
+          "--health-interval=30s"
+          "--health-timeout=10s"
+          "--health-retries=5"
+          "--health-start-period=30s"
         ];
       };
     };
