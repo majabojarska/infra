@@ -109,7 +109,7 @@ spec:
       kind: Rule
       services:
         - name: paperless-systemd
-          port: 10140
+          port: 8080
   tls:
     secretName: paperless-tls
 ---
