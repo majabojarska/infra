@@ -53,19 +53,13 @@ in
       datasources.settings = {
         datasources = [
           {
-            name = "prometheus-sp6cat-vm-01";
+            name = "prometheus";
             type = "prometheus";
             url = "http://localhost:${toString config.hosts.sp6catVm01.ports.prometheus}";
             isDefault = true;
           }
         ];
-
-        # deleteDatasources = [
-        #   {
-        #     name = "Prometheus SP6CAT VM 01";
-        #     orgId = 1;
-        #   }
-        # ];
+        prune = true;
       };
 
       dashboards.settings = {
@@ -75,6 +69,8 @@ in
           {
             name = "default";
             options.path = "/etc/grafana-dashboards";
+            disableDeletion = false;
+            allowUiUpdates = true;
           }
         ];
       };
@@ -157,6 +153,14 @@ in
       source = pkgs.fetchurl {
         url = "https://grafana.com/api/dashboards/10347/revisions/5/download";
         sha256 = "sha256-rHtSUxuvD9ZWO4QZdC2AtzhDmtXbaBmqLLt7EcaFjv8=";
+      };
+    };
+    "grafana-dashboards/nut.json" = {
+      user = "grafana";
+      group = "grafana";
+      source = pkgs.fetchurl {
+        url = "https://grafana.com/api/dashboards/15406/revisions/2/download";
+        sha256 = "sha256-c5q5lVo+G106hLD0fU/H768+qBW3+CDqzq7R3yEpo68=";
       };
     };
   };
