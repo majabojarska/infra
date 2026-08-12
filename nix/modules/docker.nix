@@ -6,13 +6,13 @@
 
     autoPrune = {
       enable = true;
-      dates = "daily";
+      dates = "hourly";
       persistent = true;
 
       allVolumes = {
         enable = true;
       };
-      randomizedDelaySec = "30min";
+      randomizedDelaySec = "5min";
     };
   };
 }
