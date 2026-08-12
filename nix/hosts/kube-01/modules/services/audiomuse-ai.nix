@@ -191,17 +191,17 @@ in
     routers.audiomuse-ai = {
       rule = "Host(`audiomuse.${config.globals.homeDomain}`)";
       service = "audiomuse";
-      # tls = {
-      #   certResolver = "letsencrypt";
-      #   domains = [
-      #     {
-      #       main = "audiomuse-ai.${config.globals.homeDomain}";
-      #     }
-      #   ];
-      # };
+      tls = {
+        certResolver = "letsencrypt";
+        domains = [
+          {
+            main = "audiomuse-ai.${config.globals.homeDomain}";
+          }
+        ];
+      };
     };
 
-    services.audiomuse-ai.loadBalancer = {
+    services.audiomuse.loadBalancer = {
       servers = [
         {
           url = "http://127.0.0.1:${toString config.hosts.kube01.ports.audiomuse}";

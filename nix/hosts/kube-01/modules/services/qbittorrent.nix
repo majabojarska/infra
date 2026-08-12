@@ -56,14 +56,14 @@ in
     routers.qbittorrent = {
       rule = "Host(`qbittorrent.${config.globals.homeDomain}`)";
       service = "qbittorrent";
-      # tls = {
-      #   certResolver = "letsencrypt";
-      #   domains = [
-      #     {
-      #       main = "qbittorrent.${config.globals.homeDomain}";
-      #     }
-      #   ];
-      # };
+      tls = {
+        certResolver = "letsencrypt";
+        domains = [
+          {
+            main = "qbittorrent.${config.globals.homeDomain}";
+          }
+        ];
+      };
     };
 
     services.qbittorrent.loadBalancer = {

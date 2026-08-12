@@ -89,14 +89,14 @@ in
     routers.jellyfin = {
       rule = "Host(`jellyfin.${config.globals.homeDomain}`)";
       service = "jellyfin";
-      # tls = {
-      #   certResolver = "letsencrypt";
-      #   domains = [
-      #     {
-      #       main = "jellyfin.${config.globals.homeDomain}";
-      #     }
-      #   ];
-      # };
+      tls = {
+        certResolver = "letsencrypt";
+        domains = [
+          {
+            main = "jellyfin.${config.globals.homeDomain}";
+          }
+        ];
+      };
     };
 
     services.jellyfin.loadBalancer = {

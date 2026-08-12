@@ -29,17 +29,16 @@
 
       entryPoints = {
         web = {
-          address = ":${toString config.hosts.kube01.ports.traefikWebInsecure}";
+          address = "0.0.0.0:${toString config.hosts.kube01.ports.traefikWebInsecure}";
           asDefault = true;
-          # Re-enable after migrations are done
-          # http.redirections.entrypoint = {
-          #   to = "websecure";
-          #   scheme = "https";
-          # };
+          http.redirections.entrypoint = {
+            to = "websecure";
+            scheme = "https";
+          };
         };
 
         websecure = {
-          address = ":${toString config.hosts.kube01.ports.traefikWebSecure}";
+          address = "0.0.0.0:${toString config.hosts.kube01.ports.traefikWebSecure}";
           asDefault = true;
           http3 = { }; # QUIC
           http.tls.certResolver = "letsencrypt";

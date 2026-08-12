@@ -213,14 +213,14 @@ in
     routers.paperless = {
       rule = "Host(`paperless.${config.globals.homeDomain}`)";
       service = "paperless";
-      # tls = {
-      #   certResolver = "letsencrypt";
-      #   domains = [
-      #     {
-      #       main = "paperless.${config.globals.homeDomain}";
-      #     }
-      #   ];
-      # };
+      tls = {
+        certResolver = "letsencrypt";
+        domains = [
+          {
+            main = "paperless.${config.globals.homeDomain}";
+          }
+        ];
+      };
     };
 
     services.paperless.loadBalancer = {

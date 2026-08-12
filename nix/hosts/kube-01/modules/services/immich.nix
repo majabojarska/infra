@@ -175,14 +175,14 @@ in
     routers.immich = {
       rule = "Host(`immich.${config.globals.homeDomain}`)";
       service = "immich";
-      # tls = {
-      #   certResolver = "letsencrypt";
-      #   domains = [
-      #     {
-      #       main = "immich.${config.globals.homeDomain}";
-      #     }
-      #   ];
-      # };
+      tls = {
+        certResolver = "letsencrypt";
+        domains = [
+          {
+            main = "immich.${config.globals.homeDomain}";
+          }
+        ];
+      };
     };
 
     services.immich.loadBalancer = {

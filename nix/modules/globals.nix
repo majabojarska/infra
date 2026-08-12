@@ -282,13 +282,13 @@ in
 
         traefikWebInsecure = lib.mkOption {
           type = lib.types.port;
-          default = 8080;
+          default = 80;
           description = "Traefik (systemd) web insecure port";
         };
 
         traefikWebSecure = lib.mkOption {
           type = lib.types.port;
-          default = 8443;
+          default = 443;
           description = "Traefik (systemd) websecure port";
         };
 
