@@ -1,5 +1,18 @@
 { lib, config, ... }:
 
+let
+  duplicatePorts = ports:
+    let
+      values = lib.attrValues ports;
+      isDuplicate = value: builtins.length (lib.filter (x: x == value) values) > 1;
+    in
+    lib.unique (lib.filter isDuplicate values);
+
+  mkUniquePortsAssertion = host: ports: {
+    assertion = duplicatePorts ports == [ ];
+    message = "Duplicate port(s) in hosts.${host}.ports: ${lib.concatMapStringsSep ", " toString (duplicatePorts ports)}";
+  };
+in
 {
   options.globals = {
     adminEmail = lib.mkOption {
@@ -88,7 +101,7 @@
 
         vikunja = lib.mkOption {
           type = lib.types.port;
-          default = 8009;
+          default = 8001;
           description = "Vikunja service port";
         };
 
@@ -138,12 +151,6 @@
           type = lib.types.port;
           default = 9090;
           description = "Prometheus service port";
-        };
-
-        prometheusMetrics = lib.mkOption {
-          type = lib.types.port;
-          default = 9090;
-          description = "Prometheus metrics scrape port";
         };
 
         prometheusExporterNode = lib.mkOption {
@@ -320,4 +327,9 @@
       };
     };
   };
+
+  config.assertions = [
+    (mkUniquePortsAssertion "sp6catVm01" config.hosts.sp6catVm01.ports)
+    (mkUniquePortsAssertion "kube01" config.hosts.kube01.ports)
+  ];
 }
