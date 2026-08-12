@@ -20,7 +20,6 @@
       ];
 
       allowedTCPPorts = [
-        6443 # kube api server
         80 # HTTP
         443 # HTTPS
       ];
