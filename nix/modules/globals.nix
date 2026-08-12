@@ -1,7 +1,8 @@
 { lib, config, ... }:
 
 let
-  duplicatePorts = ports:
+  duplicatePorts =
+    ports:
     let
       values = lib.attrValues ports;
       isDuplicate = value: builtins.length (lib.filter (x: x == value) values) > 1;
@@ -10,7 +11,9 @@ let
 
   mkUniquePortsAssertion = host: ports: {
     assertion = duplicatePorts ports == [ ];
-    message = "Duplicate port(s) in hosts.${host}.ports: ${lib.concatMapStringsSep ", " toString (duplicatePorts ports)}";
+    message = "Duplicate port(s) in hosts.${host}.ports: ${
+      lib.concatMapStringsSep ", " toString (duplicatePorts ports)
+    }";
   };
 in
 {
@@ -235,6 +238,12 @@ in
           type = lib.types.port;
           default = 8007;
           description = "CADvisor service port";
+        };
+
+        prometheusExporterNut = lib.mkOption {
+          type = lib.types.port;
+          default = 9108;
+          description = "Prometheus NUT Exporter service port";
         };
       };
     };

@@ -35,6 +35,7 @@ in
 
     globalConfig.scrape_interval = "15s";
 
+    # TODO: drop go_ metrics
     scrapeConfigs = [
       {
         job_name = "prometheus";
@@ -160,7 +161,41 @@ in
           }
         ];
       }
+      {
+        job_name = "nut-blue";
+        metrics_path = "/ups_metrics";
 
+        params = {
+          ups = [ "blue" ];
+        };
+
+        static_configs = [
+          {
+            targets = [ "127.0.0.1:${toString config.services.prometheus.exporters.nut.port}" ];
+            labels = {
+              ups = "blue";
+            };
+          }
+        ];
+      }
+
+      {
+        job_name = "nut-red";
+        metrics_path = "/ups_metrics";
+
+        params = {
+          ups = [ "red" ];
+        };
+
+        static_configs = [
+          {
+            targets = [ "127.0.0.1:${toString config.services.prometheus.exporters.nut.port}" ];
+            labels = {
+              ups = "red";
+            };
+          }
+        ];
+      }
     ];
   };
 

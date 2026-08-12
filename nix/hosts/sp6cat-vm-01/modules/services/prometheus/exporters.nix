@@ -108,6 +108,13 @@ in
       listenAddress = "127.0.0.1";
       configFile = config.age.secrets."prometheus-pve-exporter-yml".path;
     };
+
+    nut = {
+      enable = true;
+      port = config.hosts.sp6catVm01.ports.prometheusExporterNut;
+      listenAddress = "127.0.0.1";
+      nutServer = "192.168.81.99";
+    };
   };
 
   # Workaround for incorrect Service section generation, which adds an empty newline before --web.listen-address.
