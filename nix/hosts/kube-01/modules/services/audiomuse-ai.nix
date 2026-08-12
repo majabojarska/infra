@@ -1,66 +1,25 @@
-{ config, pkgs, ... }:
+{
+  config,
+  pkgs,
+  ...
+}:
 let
-  audiomuseUid = 2110;
-  audiomuseGid = 2110;
+  dbUser = "audiomuse";
+  dbName = "audiomuse";
+  audiomuseRoot = "/storage/mirror/audiomuse";
 in
 {
   age.secrets = {
-    "audiomuse-db-pass" = {
-      file = ../../secrets/audiomuse-db-pass.age;
+    "audiomuse.env" = {
+      file = ../../secrets/audiomuse.env.age;
       mode = "0400";
-      owner = "audiomuse";
     };
 
-    "audiomuse-secret-key" = {
-      file = ../../secrets/audiomuse-secret-key.age;
-      mode = "0400";
-      owner = "audiomuse";
-    };
   };
-
-  users = {
-    users.audiomuse = {
-      isSystemUser = true;
-      uid = audiomuseUid;
-      group = "audiomuse";
-      extraGroups = [ ];
-      description = "Audiomuse AI user";
-    };
-    groups."audiomuse" = {
-      gid = audiomuseGid;
-    };
-  };
-
-  virtualisation.docker.enable = true;
 
   virtualisation.oci-containers = {
-    backend = "docker";
 
     containers = {
-
-      audiomuse-redis = {
-        image = "ghcr.io/valkey-io/valkey:9.0-alpine3.24";
-
-        autoStart = true;
-
-        environment = {
-          TZ = config.time.timeZone;
-        };
-
-        # ports = [
-        #   "6379:6379"
-        # ];
-
-        volumes = [
-          "/storage/mirror/audiomuse/redis/data:/data"
-        ];
-
-        extraOptions = [
-          "--network=audiomuse"
-          "--restart=unless-stopped"
-          "--user=${toString audiomuseUid}:${toString audiomuseGid}"
-        ];
-      };
 
       audiomuse-postgres = {
         image = "postgres:15-alpine";
@@ -70,31 +29,30 @@ in
         environment = {
           TZ = config.time.timeZone;
 
-          POSTGRES_USER = "audiomuse";
-          POSTGRES_DB = "audiomusedb";
+          POSTGRES_USER = dbUser;
+          POSTGRES_DB = dbName;
         };
 
         environmentFiles = [
-          "/run/audiomuse/postgres.env"
+          config.age.secrets."audiomuse.env".path
         ];
 
-        # ports = [
-        #   "5432:5432"
-        # ];
-
         volumes = [
-          "/storage/mirror/audiomuse/postgres/data:/var/lib/postgresql/data"
+          "${audiomuseRoot}/postgres/data:/var/lib/postgresql/data"
         ];
 
         extraOptions = [
           "--network=audiomuse"
-          "--restart=unless-stopped"
-          "--user=${toString audiomuseUid}:${toString audiomuseGid}"
+          "--health-cmd=pg_isready -U ${dbUser} -d ${dbName} || exit 1"
+          "--health-interval=10s"
+          "--health-timeout=5s"
+          "--health-retries=6"
+          "--health-start-period=20s"
         ];
       };
 
       audiomuse-ai-flask = {
-        image = "ghcr.io/neptunehub/audiomuse-ai:3.1.1";
+        image = "ghcr.io/neptunehub/audiomuse-ai:3.2.0";
 
         autoStart = true;
 
@@ -107,42 +65,39 @@ in
 
           TZ = config.time.timeZone;
 
-          POSTGRES_USER = "audiomuse";
-          POSTGRES_DB = "audiomusedb";
+          POSTGRES_USER = dbUser;
+          POSTGRES_DB = dbName;
           POSTGRES_HOST = "audiomuse-postgres";
           POSTGRES_PORT = "5432";
-
-          REDIS_URL = "redis://audiomuse-redis:6379/0";
 
           TEMP_DIR = "/app/temp_audio";
         };
 
         environmentFiles = [
-          "/run/audiomuse/postgres.env"
+          config.age.secrets."audiomuse.env".path
         ];
 
         volumes = [
-          "/storage/mirror/audiomuse/flask/plugins:/app/plugin/installed"
+          "${audiomuseRoot}/flask/plugins:/app/plugin/installed"
         ];
 
-        tmpfs = {
-          "/app/temp_audio" = "rw,size=512M";
-        };
-
         dependsOn = [
-          "audiomuse-redis"
           "audiomuse-postgres"
         ];
 
         extraOptions = [
+          "--tmpfs=/app/temp_audio:rw,size=512M"
           "--network=audiomuse"
-          "--restart=unless-stopped"
-          "--user=${toString audiomuseUid}:${toString audiomuseGid}"
+          "--health-cmd=curl -fsS http://127.0.0.1:8000 >/dev/null || exit 1"
+          "--health-interval=30s"
+          "--health-timeout=10s"
+          "--health-retries=5"
+          "--health-start-period=30s"
         ];
       };
 
       audiomuse-ai-worker = {
-        image = "ghcr.io/neptunehub/audiomuse-ai:latest";
+        image = "ghcr.io/neptunehub/audiomuse-ai:3.2.0";
 
         autoStart = true;
 
@@ -152,51 +107,85 @@ in
           TZ = config.time.timeZone;
 
           POSTGRES_USER = "audiomuse";
-          POSTGRES_DB = "audiomusedb";
+          POSTGRES_DB = "audiomuse";
           POSTGRES_HOST = "audiomuse-postgres";
           POSTGRES_PORT = "5432";
-
-          REDIS_URL = "redis://audiomuse-redis:6379/0";
 
           TEMP_DIR = "/app/temp_audio";
         };
 
         environmentFiles = [
-          "/run/audiomuse/postgres.env"
+          config.age.secrets."audiomuse.env".path
         ];
 
         volumes = [
-          # "/storage/mirror/audiomuse/worker/temp_audio:/app/temp_audio"
-          "/storage/mirror/audiomuse/worker/plugins:/app/plugin/installed"
+          "${audiomuseRoot}/worker/plugins:/app/plugin/installed"
         ];
 
-        tmpfs = {
-          "/app/temp_audio" = "rw,size=512M";
-        };
-
         dependsOn = [
-          "audiomuse-redis"
           "audiomuse-postgres"
         ];
 
         extraOptions = [
+          "--tmpfs=/app/temp_audio:rw,size=512M"
           "--network=audiomuse"
-          "--restart=unless-stopped"
-          "--user=${toString audiomuseUid}:${toString audiomuseGid}"
+          "--health-cmd=ps -ef | grep -q \"[p]ython.*worker\" || exit 1"
+          "--health-interval=30s"
+          "--health-timeout=10s"
+          "--health-retries=5"
+          "--health-start-period=30s"
         ];
       };
     };
   };
 
   systemd.tmpfiles.rules = [
-    "d /storage/mirror/audiomuse 0700 audiomuse audiomuse -"
-    "d /storage/mirror/audiomuse/redis/data 0700 audiomuse audiomuse -"
-    "d /storage/mirror/audiomuse/postgres/data 0700 audiomuse audiomuse -"
-    "d /storage/mirror/audiomuse/flask 0700 audiomuse audiomuse -"
-    "d /storage/mirror/audiomuse/flask/plugins 0700 audiomuse audiomuse -"
-    "d /storage/mirror/audiomuse/worker 0700 audiomuse audiomuse -"
-    "d /storage/mirror/audiomuse/worker/plugins 0700 audiomuse audiomuse -"
+    "d ${audiomuseRoot} 0700 root root -"
+    "d ${audiomuseRoot}/postgres 0700 root root -"
+    "d ${audiomuseRoot}/postgres/data 0700 root root -"
+    "d ${audiomuseRoot}/flask 0700 root root -"
+    "d ${audiomuseRoot}/flask/plugins 0700 root root -"
+    "d ${audiomuseRoot}/worker 0700 root root -"
+    "d ${audiomuseRoot}/worker/plugins 0700 root root -"
   ];
+
+  systemd.services.docker-audiomuse-network = {
+    description = "Create Docker network for Audiomuse";
+    wantedBy = [ "multi-user.target" ];
+    requires = [ "docker.service" ];
+    after = [ "docker.service" ];
+    before = [
+      "docker-audiomuse-postgres.service"
+      "docker-audiomuse-ai-flask.service"
+      "docker-audiomuse-ai-worker.service"
+    ];
+
+    serviceConfig = {
+      Type = "oneshot";
+      ExecStart = ''
+        ${pkgs.bash}/bin/bash -c '${pkgs.docker}/bin/docker network inspect audiomuse >/dev/null 2>&1 || ${pkgs.docker}/bin/docker network create audiomuse >/dev/null'
+      '';
+      RemainAfterExit = true;
+    };
+  };
+
+  systemd.services = {
+    docker-audiomuse-postgres = {
+      requires = [ "docker-audiomuse-network.service" ];
+      after = [ "docker-audiomuse-network.service" ];
+      serviceConfig.Restart = "on-failure";
+    };
+    docker-audiomuse-ai-flask = {
+      requires = [ "docker-audiomuse-network.service" ];
+      after = [ "docker-audiomuse-network.service" ];
+      serviceConfig.Restart = "on-failure";
+    };
+    docker-audiomuse-ai-worker = {
+      requires = [ "docker-audiomuse-network.service" ];
+      after = [ "docker-audiomuse-network.service" ];
+      serviceConfig.Restart = "on-failure";
+    };
+  };
 
   services.traefik.dynamicConfigOptions.http = {
     routers.audiomuse-ai = {
