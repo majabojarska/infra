@@ -86,6 +86,12 @@
           description = "Redlib service port";
         };
 
+        vikunja = lib.mkOption {
+          type = lib.types.port;
+          default = 8009;
+          description = "Vikunja service port";
+        };
+
         anubis-redlib = lib.mkOption {
           type = lib.types.port;
           default = 8010;

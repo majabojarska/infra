@@ -21,7 +21,7 @@
     ./services/traefik.nix
     (import ./services/vikunja.nix {
       hostname = "vikunja.${config.globals.cloudDomain}";
-      port = 3456;
+      port = config.hosts.sp6catVm01.ports.vikunja;
     })
   ];
 }
