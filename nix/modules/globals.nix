@@ -228,10 +228,10 @@ in
           description = "Searx service port";
         };
 
-        ollama = lib.mkOption {
+        llama-cpp = lib.mkOption {
           type = lib.types.port;
           default = 11434;
-          description = "Ollama service port";
+          description = "Llama-cpp service port";
         };
 
         cadvisor = lib.mkOption {

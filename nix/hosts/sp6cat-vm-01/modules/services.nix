@@ -11,7 +11,7 @@
     ./services/redlib.nix
     ./services/uptime-kuma.nix
     ./services/fibo.nix
-    ./services/ollama.nix
+    ./services/llama-cpp.nix
     ./services/renovate.nix
     ./services/nginx.nix
     ./services/notifications.nix
