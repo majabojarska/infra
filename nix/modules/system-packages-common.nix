@@ -3,8 +3,8 @@
 {
   environment.systemPackages = with pkgs; [
     btop
-    curl
     cryptsetup
+    curl
     dig
     dmidecode
     file
@@ -14,6 +14,7 @@
     inetutils
     iotop
     iperf
+    lazyjournal
     lsof
     mtr
     ncdu
