@@ -37,7 +37,7 @@ in
     backend = "docker";
 
     containers.jellyfin = {
-      image = "jellyfin/jellyfin:10.10.7";
+      image = "jellyfin/jellyfin:10.11.11";
       autoStart = true;
 
       ports = [
@@ -47,6 +47,10 @@ in
       environment = {
         TZ = config.time.timeZone;
         LIBVA_DRIVER_NAME = "iHD";
+        JELLYFIN_CONFIG_DIR = "/etc/jellyfin";
+        JELLYFIN_CACHE_DIR = "/var/cache/jellyfin";
+        JELLYFIN_DATA_DIR = "/var/lib/jellyfin";
+        JELLYFIN_LOG_DIR = "/var/log/jellyfin";
       };
 
       volumes = [
