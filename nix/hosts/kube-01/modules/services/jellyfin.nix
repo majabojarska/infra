@@ -1,15 +1,16 @@
 {
-  # pkgs,
-  pkgs_unstable,
   config,
   ...
 }:
 let
-  pathJellyfin = "/storage/kubernetes/jellyfin";
+  pathJellyfin = "/storage/mirror/jellyfin";
   pathJellyfinCache = "${pathJellyfin}/cache";
   pathJellyfinConfig = "${pathJellyfin}/config";
   pathJellyfinData = "${pathJellyfin}/data";
-  pathJellyfinTranscoding = "${pathJellyfin}/transcoding";
+  pathJellyfinLog = "${pathJellyfin}/log";
+
+  pathMedia = "/storage/media";
+  hwAccelDevice = "/dev/dri/renderD128";
 in
 {
   users = {
@@ -32,24 +33,43 @@ in
     groups.jellyfin = { };
   };
 
-  services.jellyfin = {
-    enable = true;
-    user = "jellyfin";
-    group = "jellyfin";
-    cacheDir = pathJellyfinCache;
-    configDir = pathJellyfinConfig;
-    dataDir = pathJellyfinData;
+  virtualisation.oci-containers = {
+    backend = "docker";
 
-    hardwareAcceleration = {
-      enable = true;
-      device = "/dev/dri/renderD128";
-      type = "qsv";
-    };
+    containers.jellyfin = {
+      image = "jellyfin/jellyfin:10.10.7";
+      autoStart = true;
 
-    transcoding = {
-      # This will need tweaking fo-sho
-      # Hiiii, here's a link from past Maja: https://mynixos.com/nixpkgs/options/services.jellyfin.transcoding
-      enableHardwareEncoding = true;
+      ports = [
+        "127.0.0.1:${toString config.hosts.kube01.ports.jellyfin}:8096"
+      ];
+
+      environment = {
+        TZ = config.time.timeZone;
+        LIBVA_DRIVER_NAME = "iHD";
+      };
+
+      volumes = [
+        "${pathJellyfinConfig}:/etc/jellyfin"
+        "${pathJellyfinCache}:/var/cache/jellyfin"
+        "${pathJellyfinData}:/var/lib/jellyfin"
+        "${pathJellyfinLog}:/var/log/jellyfin"
+        "${pathMedia}:${pathMedia}"
+      ];
+
+      extraOptions = [
+        "--privileged" # Allow access to /dev/dri for hardware acceleration
+        "--device=${hwAccelDevice}:${hwAccelDevice}"
+        "--group-add=${toString config.users.groups.media.gid}"
+        "--group-add=${toString config.users.groups.video.gid}"
+        "--group-add=${toString config.users.groups.render.gid}"
+        "--user=${toString config.users.users.jellyfin.uid}:${toString config.users.groups.jellyfin.gid}"
+        "--health-cmd=curl -fsS http://127.0.0.1:8096 >/dev/null || exit 1"
+        "--health-interval=30s"
+        "--health-timeout=10s"
+        "--health-retries=5"
+        "--health-start-period=30s"
+      ];
     };
   };
 
@@ -58,6 +78,29 @@ in
     "d ${pathJellyfinCache} 0750 jellyfin jellyfin -"
     "d ${pathJellyfinConfig} 0750 jellyfin jellyfin -"
     "d ${pathJellyfinData} 0750 jellyfin jellyfin -"
-    "d ${pathJellyfinTranscoding} 0750 jellyfin jellyfin -"
+    "d ${pathJellyfinLog} 0750 jellyfin jellyfin -"
   ];
+
+  services.traefik.dynamicConfigOptions.http = {
+    routers.jellyfin = {
+      rule = "Host(`jellyfin.${config.globals.homeDomain}`)";
+      service = "jellyfin";
+      # tls = {
+      #   certResolver = "letsencrypt";
+      #   domains = [
+      #     {
+      #       main = "jellyfin.${config.globals.homeDomain}";
+      #     }
+      #   ];
+      # };
+    };
+
+    services.jellyfin.loadBalancer = {
+      servers = [
+        {
+          url = "http://127.0.0.1:${toString config.hosts.kube01.ports.jellyfin}";
+        }
+      ];
+    };
+  };
 }
