@@ -217,6 +217,12 @@
           default = 11434;
           description = "Ollama service port";
         };
+
+        cadvisor = lib.mkOption {
+          type = lib.types.port;
+          default = 8007;
+          description = "CADvisor service port";
+        };
       };
     };
 
@@ -298,6 +304,12 @@
           type = lib.types.port;
           default = 8003;
           description = "AudioMuse AI service port";
+        };
+
+        cadvisor = lib.mkOption {
+          type = lib.types.port;
+          default = 8007;
+          description = "CADvisor service port";
         };
       };
     };

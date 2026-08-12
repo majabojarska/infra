@@ -11,6 +11,7 @@ in
 {
   imports = [
     ./exporters.nix
+    ./cadvisor.nix
   ];
 
   # https://wiki.nixos.org/wiki/Prometheus
@@ -55,6 +56,17 @@ in
               "pve-01.home.majabojarska.dev:9100"
               "opnsense.home.majabojarska.dev:9100"
               "sp6cat-01.hswro.majabojarska.dev:9100"
+            ];
+          }
+        ];
+      }
+      {
+        job_name = "cadvisor";
+        static_configs = [
+          {
+            targets = [
+              "127.0.0.1:${toString config.hosts.sp6catVm01.ports.cadvisor}"
+              "kube-01.${config.globals.homeDomain}:${toString config.hosts.kube01.ports.cadvisor}"
             ];
           }
         ];

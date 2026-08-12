@@ -6,6 +6,7 @@
     ./services/notifications.nix
     ./services/prometheus-exporters.nix
     ./services/traefik.nix
+    ./services/cadvisor.nix
 
     # To migrate, once all else is prepared.
     ./services/immich.nix
