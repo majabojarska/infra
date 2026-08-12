@@ -4,10 +4,10 @@ resources:
   - ./traefik
   - ./flannel
   - ./cert-manager
-  - ./cloudnative-pg
-  - ./metrics-server
-  - ./monitoring
-  - ./reloader
-  - ./keda
-  - ./intel-device-plugins-operator
-  - ./node-feature-discovery
+  # - ./cloudnative-pg
+  # - ./metrics-server
+  # - ./monitoring
+  # - ./reloader
+  # - ./keda
+  # - ./intel-device-plugins-operator
+  # - ./node-feature-discovery
