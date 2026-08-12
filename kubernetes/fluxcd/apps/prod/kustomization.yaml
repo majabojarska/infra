@@ -4,7 +4,7 @@ resources:
   # - ../base/paperless-ngx
   # - ../base/immich
   # - ../base/audiomuse-ai
-  - ../base/jellyfin
+  # - ../base/jellyfin
   # - ../base/qbittorrent
   # - ../base/changedetection-io
   # - ../base/miniflux
