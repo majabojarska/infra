@@ -3,7 +3,7 @@ kind: Kustomization
 resources:
   # - ../base/paperless-ngx
   # - ../base/immich
-  - ../base/audiomuse-ai
+  # - ../base/audiomuse-ai
   - ../base/jellyfin
   # - ../base/qbittorrent
   # - ../base/changedetection-io
