@@ -14,6 +14,7 @@
     inetutils
     iotop
     iperf
+    lazydocker
     lazyjournal
     lsof
     mtr

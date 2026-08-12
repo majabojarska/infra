@@ -21,7 +21,6 @@
     intel-gpu-tools
     k3s
     kubernetes-helm
-    lazydocker
     libva-utils
     mediainfo
     parallel
