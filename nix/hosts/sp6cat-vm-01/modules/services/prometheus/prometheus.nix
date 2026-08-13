@@ -11,7 +11,7 @@ in
 {
   imports = [
     ./exporters.nix
-    ./cadvisor.nix
+    # ./cadvisor.nix
   ];
 
   # https://wiki.nixos.org/wiki/Prometheus
