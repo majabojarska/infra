@@ -49,7 +49,7 @@
 
   powerManagement = {
     powertop.enable = true;
-    cpuFreqGovernor = "conservative";
+    cpuFreqGovernor = "powersave";
   };
 
   services.cron = {
