@@ -40,8 +40,8 @@ in
       ];
 
       cmd = [
-        "-m"
-        "/models/Qwen3-1.7B-Q4_K_M.gguf"
+        "--models-dir"
+        "/models"
         "--host"
         "0.0.0.0"
         "--port"
