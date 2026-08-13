@@ -2,6 +2,7 @@
 {
   imports = [
     ./services/borgmatic.nix
+    ./services/borgbackup.nix
     ./services/notifications.nix
     ./services/prometheus-exporters.nix
     ./services/traefik.nix
