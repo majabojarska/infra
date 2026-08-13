@@ -21,7 +21,7 @@ in
     enable = true;
     port = config.hosts.sp6catVm01.ports.prometheus;
     listenAddress = "127.0.0.1";
-    retentionTime = "7d";
+    retentionTime = "30d";
 
     # extraFlags = [
     #   "--log.level=debug"
@@ -33,20 +33,19 @@ in
     # https://discourse.nixos.org/t/custom-prometheus-data-directory/50741/6
     stateDir = "prometheus";
 
-    globalConfig.scrape_interval = "15s";
+    globalConfig.scrape_interval = "60s";
 
-    # TODO: drop go_ metrics
     scrapeConfigs = [
-      {
-        job_name = "prometheus";
-        static_configs = [
-          {
-            targets = [
-              "127.0.0.1:${toString config.hosts.sp6catVm01.ports.prometheus}"
-            ];
-          }
-        ];
-      }
+      # {
+      #   job_name = "prometheus";
+      #   static_configs = [
+      #     {
+      #       targets = [
+      #         "127.0.0.1:${toString config.hosts.sp6catVm01.ports.prometheus}"
+      #       ];
+      #     }
+      #   ];
+      # }
       {
         job_name = "node";
         static_configs = [
@@ -61,17 +60,17 @@ in
           }
         ];
       }
-      {
-        job_name = "cadvisor";
-        static_configs = [
-          {
-            targets = [
-              "127.0.0.1:${toString config.hosts.sp6catVm01.ports.cadvisor}"
-              "kube-01.${config.globals.homeDomain}:${toString config.hosts.kube01.ports.cadvisor}"
-            ];
-          }
-        ];
-      }
+      # {
+      #   job_name = "cadvisor";
+      #   static_configs = [
+      #     {
+      #       targets = [
+      #         "127.0.0.1:${toString config.hosts.sp6catVm01.ports.cadvisor}"
+      #         "kube-01.${config.globals.homeDomain}:${toString config.hosts.kube01.ports.cadvisor}"
+      #       ];
+      #     }
+      #   ];
+      # }
       {
         job_name = "smartctl";
         static_configs = [
@@ -83,32 +82,32 @@ in
           }
         ];
       }
-      {
-        job_name = "zfs";
-        static_configs = [
-          {
-            targets = [
-              "127.0.0.1:${toString config.services.prometheus.exporters.zfs.port}"
-              "kube-01.${config.globals.homeDomain}:${toString config.hosts.kube01.ports.prometheusExporterZfs}"
-            ];
-          }
-        ];
-      }
-      {
-        job_name = "chrony";
-        static_configs = [
-          {
-            targets = [ "127.0.0.1:${toString config.services.prometheus.exporters.chrony.port}" ];
-          }
-        ];
-      }
+      # {
+      #   job_name = "zfs";
+      #   static_configs = [
+      #     {
+      #       targets = [
+      #         "127.0.0.1:${toString config.services.prometheus.exporters.zfs.port}"
+      #         "kube-01.${config.globals.homeDomain}:${toString config.hosts.kube01.ports.prometheusExporterZfs}"
+      #       ];
+      #     }
+      #   ];
+      # }
+      # {
+      #   job_name = "chrony";
+      #   static_configs = [
+      #     {
+      #       targets = [ "127.0.0.1:${toString config.services.prometheus.exporters.chrony.port}" ];
+      #     }
+      #   ];
+      # }
       {
         job_name = "fail2ban";
         static_configs = [
           {
             targets = [
               "127.0.0.1:${toString config.services.prometheus.exporters.fail2ban.port}"
-              "kube-01.${config.globals.homeDomain}:${toString config.hosts.kube01.ports.prometheusExporterFail2ban}"
+              # "kube-01.${config.globals.homeDomain}:${toString config.hosts.kube01.ports.prometheusExporterFail2ban}"
             ];
           }
         ];
@@ -178,7 +177,6 @@ in
           }
         ];
       }
-
       {
         job_name = "nut-red";
         metrics_path = "/ups_metrics";
