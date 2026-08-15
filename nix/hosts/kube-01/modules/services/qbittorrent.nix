@@ -1,55 +1,64 @@
 {
+  pkgs,
   config,
   ...
 }:
 let
-  pathProfile = "/storage/kubernetes/qbittorrent";
+  pathConfigRoot = "/storage/kubernetes/qbittorrent";
+  pathMedia = "/storage/media";
 in
 {
   users = {
     users.qbittorrent = {
       isSystemUser = true;
       group = "media";
-      extraGroups = [];
+      extraGroups = [ ];
       description = "qBittorrent user";
     };
 
     groups.qbittorrent = { };
   };
 
-  services.qbittorrent = {
-    enable = true;
-    user = "qbittorrent";
-    group = "media";
-    webuiPort = config.hosts.kube01.ports.qbittorrent;
-    profileDir = pathProfile;
-    openFirewall = false;
-    serverConfig = {
-      LegalNotice.Accepted = true;
-      Preferences = {
-        WebUI = {
-          Username = "admin";
+  virtualisation.oci-containers = {
+    backend = "docker";
 
-          # https://codeberg.org/feathecutie/qbittorrent_password
-          #
-          # The password was hashed using PBKDF2 with SHA256, 10000 iterations, and a 16-byte salt.
-          # It's generally safe to keep in a public repo in this scenario, especially as this is a LAN-only service.
-          Password_PBKDF2 = "@ByteArray(UWTpBxHb8Ab7ff0E5n26Gw==:HILQ74B+nOxtZksOxeUWp0dPwyYFy5T2+fbj7qqLgz7U9jrVVIrs5rAPz3IcDb0v15hyAT7Z3D8KEZeY9CBC1Q==)";
-        };
-        LegalNotice.Accepted = true;
-        General.Locale = "en";
+    containers.qbittorrent = {
+      image = "ghcr.io/linuxserver/qbittorrent:5.2.3";
+      autoStart = true;
+      autoRemoveOnStop = false;
+
+      user = "${toString config.users.users.qbittorrent.uid}:${toString config.users.groups.media.gid}";
+
+      ports = [
+        "127.0.0.1:${toString config.hosts.kube01.ports.qbittorrent}:8080"
+      ];
+
+      environment = {
+        TZ = config.time.timeZone;
+        WEBUI_PORT = "8080";
+
+        # Allow group write permissions for files created by qBittorrent
+        # "media" group is used to allow other users (like "jellyfin") to RW these files.
+        UMASK = "0007";
       };
+
+      volumes = [
+        "${pathConfigRoot}:/config"
+        "${pathMedia}:${pathMedia}"
+      ];
+
+      extraOptions = [
+        "--health-cmd=curl -fsS http://127.0.0.1:8080 >/dev/null || exit 1"
+        "--health-interval=30s"
+        "--health-timeout=10s"
+        "--health-retries=5"
+        "--health-start-period=30s"
+      ];
     };
   };
 
-  systemd.services.qbittorrent.serviceConfig = {
-    # Allow group write permissions for files created by qBittorrent
-    # "media" group is used to allow other users (like "jellyfin") to RW these files.
-    UMask = "0007";
-  };
-
   systemd.tmpfiles.rules = [
-    "d ${pathProfile} 0750 qbittorrent qbittorrent -"
+    "d ${pathConfigRoot} 0750 root root -"
   ];
 
   services.traefik.dynamicConfigOptions.http = {
