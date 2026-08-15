@@ -9,7 +9,9 @@
       "matchStrings": [
         "image\\s*=\\s*\"(?<depName>[^\"@]+):(?<currentValue>[^\"@]+)(?:@(?<currentDigest>sha256:[A-Fa-f0-9]{64}))?\";"
       ],
-      "datasourceTemplate": "docker"
+      "datasourceTemplate": "docker",
+      "versioningTemplate": "docker",
+      "autoReplaceStringTemplate": "image = \"{{{depName}}}:{{{newValue}}}@{{{newDigest}}}\";"
     }
   ],
   "kubernetes": {
