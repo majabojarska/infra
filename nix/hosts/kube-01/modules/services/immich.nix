@@ -36,7 +36,7 @@ in
       };
 
       "immich-postgres" = {
-        image = "ghcr.io/immich-app/postgres:17-vectorchord0.5.3";
+        image = "ghcr.io/immich-app/postgres:18-vectorchord0.5.3";
         autoStart = true;
 
         environment = {
