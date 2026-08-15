@@ -22,7 +22,7 @@ in
     containers = {
 
       audiomuse-postgres = {
-        image = "postgres:15-alpine";
+        image = "postgres:15-alpine@sha256:4006528dcbdd9be8c1aaa50389caea4e93c46d6f54c3533bcd3253725e526e23";
 
         autoStart = true;
 
@@ -52,7 +52,7 @@ in
       };
 
       audiomuse-ai-flask = {
-        image = "ghcr.io/neptunehub/audiomuse-ai:3.3.0";
+        image = "ghcr.io/neptunehub/audiomuse-ai:3.3.0@sha256:7405d46efa97a7ad80418db4e01c6bbd62de3b2b92f16bd40e2069be64ea1be6";
 
         autoStart = true;
 
@@ -97,7 +97,7 @@ in
       };
 
       audiomuse-ai-worker = {
-        image = "ghcr.io/neptunehub/audiomuse-ai:3.3.0";
+        image = "ghcr.io/neptunehub/audiomuse-ai:3.3.0@sha256:7405d46efa97a7ad80418db4e01c6bbd62de3b2b92f16bd40e2069be64ea1be6";
 
         autoStart = true;
 
