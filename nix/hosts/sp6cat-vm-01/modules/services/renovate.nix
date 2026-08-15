@@ -46,6 +46,11 @@
         "majabojarska/bitwarden-cli-helm"
         "majabojarska/infra"
       ];
+
+      prHourlyLimit = 50;
+      prConcurrentLimit = 50;
+      branchConcurrentLimit = 50;
+      commitHourlyLimit = 200;
     };
 
     credentials = {
