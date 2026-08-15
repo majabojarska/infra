@@ -22,7 +22,7 @@ in
     backend = "docker";
 
     containers.llama-cpp = {
-      image = "ghcr.io/ggml-org/llama.cpp:server";
+      image = "ghcr.io/ggml-org/llama.cpp:server@sha256:190813e82f33a82f506e66826f367004a3159f8b8139b11d07566437aecdac93";
       autoStart = true;
 
       ports = [

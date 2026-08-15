@@ -6,7 +6,7 @@
       backend = "docker";
       containers = {
         fibo = {
-          image = "majabojarska/fibo:0.0.3";
+          image = "majabojarska/fibo:0.0.3@sha256:993d9eea7bfbb4b49b3f56d4561cd0b6c53192cee20c22b355255450d1f08c8b";
           ports = [
             "127.0.0.1:${toString config.hosts.sp6catVm01.ports.fibo}:${toString config.hosts.sp6catVm01.ports.fibo}"
           ];
