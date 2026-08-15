@@ -27,7 +27,7 @@ in
 
     containers = {
       "paperless-broker" = {
-        image = "ghcr.io/valkey-io/valkey:9.0-alpine3.24";
+        image = "ghcr.io/valkey-io/valkey:9.1-alpine3.24";
         autoStart = true;
 
         volumes = [
@@ -121,7 +121,7 @@ in
       };
 
       "paperless-gotenberg" = {
-        image = "docker.io/gotenberg/gotenberg:8.34";
+        image = "docker.io/gotenberg/gotenberg:8.36";
         autoStart = true;
 
         cmd = [
