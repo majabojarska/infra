@@ -35,6 +35,18 @@
       "allowedVersions": "/^17(?:[.-].*)?$/"
     },
     {
+      "matchDatasources": [
+        "docker"
+      ],
+      "matchPackageNames": [
+        "postgres"
+      ],
+      "matchFileNames": [
+        "nix/hosts/kube-01/modules/services/audiomuse-ai.nix"
+      ],
+      "allowedVersions": "/^15(?:[.-].*)?$/"
+    },
+    {
       "groupName": "all non-major dependencies",
       "groupSlug": "all-minor-patch",
       "matchPackageNames": [
