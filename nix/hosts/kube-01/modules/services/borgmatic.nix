@@ -63,11 +63,7 @@ in
 
       # zfs = { }; # Enables ZFS in borgmatic # TODO:
       source_directories = [
-        # K3s state
-        # "/var/lib/rancher/k3s/server/db/snapshots"
-        # "/var/lib/rancher/k3s/server/token"
         # Persistent Volumes
-        # "/storage/kubernetes/"
         "/storage/mirror/"
       ];
       exclude_patterns = [
@@ -95,12 +91,6 @@ in
           run = [
             # Persist currently active docker systemd service units and stop that set.
             "${pkgs.bash}/bin/bash ${stop-docker-units-script}"
-            # Couple volume backup with ETCD state
-            "${pkgs.k3s}/bin/k3s etcd-snapshot save --name borgmatic --etcd-snapshot-compress --etcd-snapshot-dir=/storage/kubernetes/snapshots"
-            # Drain node and stop K3s
-            "systemctl stop k3s.service"
-            # Killall k3s https://docs.k3s.io/upgrades/killall#killall-script
-            "${pkgs.k3s}/bin/k3s-killall.sh"
           ];
         }
         {
@@ -109,8 +99,6 @@ in
           run = [
             # Start docker systemd service units that were active before backup.
             "${pkgs.bash}/bin/bash ${start-docker-units-script}"
-            # Restart k3s
-            "systemctl restart k3s.service"
           ];
         }
       ];
