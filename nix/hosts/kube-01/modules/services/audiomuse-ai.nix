@@ -52,7 +52,7 @@ in
       };
 
       audiomuse-ai-flask = {
-        image = "ghcr.io/neptunehub/audiomuse-ai:3.2.0";
+        image = "ghcr.io/neptunehub/audiomuse-ai:3.3.0";
 
         autoStart = true;
 
@@ -97,7 +97,7 @@ in
       };
 
       audiomuse-ai-worker = {
-        image = "ghcr.io/neptunehub/audiomuse-ai:3.2.0";
+        image = "ghcr.io/neptunehub/audiomuse-ai:3.3.0";
 
         autoStart = true;
 
