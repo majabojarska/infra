@@ -28,6 +28,7 @@
     rsync
     stress
     sysstat
+    systemctl-tui
     tcpdump
     tmux
     tree
