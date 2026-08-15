@@ -27,8 +27,6 @@ in
       autoStart = true;
       autoRemoveOnStop = false;
 
-      user = "${toString config.users.users.qbittorrent.uid}:${toString config.users.groups.media.gid}";
-
       ports = [
         "127.0.0.1:${toString config.hosts.kube01.ports.qbittorrent}:8080"
       ];
@@ -36,6 +34,8 @@ in
       environment = {
         TZ = config.time.timeZone;
         WEBUI_PORT = "8080";
+        PUID = "${toString config.users.users.qbittorrent.uid}";
+        PGID = "${toString config.users.groups.media.gid}";
 
         # Allow group write permissions for files created by qBittorrent
         # "media" group is used to allow other users (like "jellyfin") to RW these files.
