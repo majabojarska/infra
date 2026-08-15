@@ -10,6 +10,9 @@
       l = "ls -CF";
       la = "ls -A";
       ll = "ls -lah";
+      lj = "lazyjournal";
+      ldok = "lazydocker";
+      st = "systemctl-tui";
     };
     interactiveShellInit = ''
       bindkey -e
