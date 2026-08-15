@@ -30,6 +30,15 @@
         "docker"
       ],
       "matchPackageNames": [
+        "ghcr.io/linuxserver/qbittorrent"
+      ],
+      "versioning": "semver"
+    },
+    {
+      "matchDatasources": [
+        "docker"
+      ],
+      "matchPackageNames": [
         "ghcr.io/immich-app/postgres"
       ],
       "allowedVersions": "/^17(?:[.-].*)?$/"
