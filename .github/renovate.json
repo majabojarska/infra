@@ -3,9 +3,7 @@
   "customManagers": [
     {
       "customType": "regex",
-      "managerFilePatterns": [
-        "/^nix\\/.*\\.nix$/"
-      ],
+      "managerFilePatterns": ["/^nix\\/.*\\.nix$/"],
       "matchStrings": [
         "image\\s*=\\s*\"(?<depName>[^\"@]+):(?<currentValue>[^\"@]+)(?:@(?<currentDigest>sha256:[A-Fa-f0-9]{64}))?\";"
       ],
@@ -15,61 +13,36 @@
     }
   ],
   "kubernetes": {
-    "managerFilePatterns": [
-      "/\\.yaml$/"
-    ]
+    "managerFilePatterns": ["/\\.yaml$/"]
   },
   "flux": {
-    "managerFilePatterns": [
-      "/kubernetes/fluxcd/.+\\.yaml$/"
-    ]
+    "managerFilePatterns": ["/kubernetes/fluxcd/.+\\.yaml$/"]
   },
   "packageRules": [
     {
-      "matchDatasources": [
-        "docker"
-      ],
-      "matchPackageNames": [
-        "ghcr.io/linuxserver/qbittorrent"
-      ],
-      "versioning": "semver"
+      "matchDatasources": ["docker"],
+      "matchPackageNames": ["ghcr.io/linuxserver/qbittorrent"],
+      "versioning": "regex:^(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)$"
     },
     {
-      "matchDatasources": [
-        "docker"
-      ],
-      "matchPackageNames": [
-        "ghcr.io/immich-app/postgres"
-      ],
+      "matchDatasources": ["docker"],
+      "matchPackageNames": ["ghcr.io/immich-app/postgres"],
       "allowedVersions": "/^17(?:[.-].*)?$/"
     },
     {
-      "matchDatasources": [
-        "docker"
-      ],
-      "matchPackageNames": [
-        "postgres"
-      ],
-      "matchFileNames": [
-        "nix/hosts/kube-01/modules/services/audiomuse-ai.nix"
-      ],
+      "matchDatasources": ["docker"],
+      "matchPackageNames": ["postgres"],
+      "matchFileNames": ["nix/hosts/kube-01/modules/services/audiomuse-ai.nix"],
       "allowedVersions": "/^15(?:[.-].*)?$/"
     },
     {
       "groupName": "all non-major dependencies",
       "groupSlug": "all-minor-patch",
-      "matchPackageNames": [
-        "*"
-      ],
-      "matchUpdateTypes": [
-        "minor",
-        "patch"
-      ]
+      "matchPackageNames": ["*"],
+      "matchUpdateTypes": ["minor", "patch"]
     },
     {
-      "matchDatasources": [
-        "docker"
-      ],
+      "matchDatasources": ["docker"],
       "pinDigests": true
     }
   ]
