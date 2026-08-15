@@ -328,6 +328,12 @@ in
           description = "AudioMuse AI service port";
         };
 
+        calibre = lib.mkOption {
+          type = lib.types.port;
+          default = 8004;
+          description = "Calibre-Web-Automated service port";
+        };
+
         cadvisor = lib.mkOption {
           type = lib.types.port;
           default = 8007;

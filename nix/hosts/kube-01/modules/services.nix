@@ -14,6 +14,7 @@
     ./services/qbittorrent.nix
     ./services/audiomuse-ai.nix
     ./services/jellyfin.nix
+    ./services/calibre.nix
 
     # To impl.
     # ./services/change-detection.nix
