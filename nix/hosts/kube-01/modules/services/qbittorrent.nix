@@ -1,5 +1,4 @@
 {
-  pkgs,
   config,
   ...
 }:
@@ -34,12 +33,13 @@ in
       environment = {
         TZ = config.time.timeZone;
         WEBUI_PORT = "8080";
-        PUID = "${toString config.users.users.qbittorrent.uid}";
-        PGID = "${toString config.users.groups.media.gid}";
+        TORRENTING_PORT = "${toString config.hosts.kube01.ports.torrentingPort}";
 
         # Allow group write permissions for files created by qBittorrent
         # "media" group is used to allow other users (like "jellyfin") to RW these files.
         UMASK = "0007";
+        PUID = "${toString config.users.users.qbittorrent.uid}";
+        PGID = "${toString config.users.groups.media.gid}";
       };
 
       volumes = [

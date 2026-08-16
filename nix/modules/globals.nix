@@ -339,6 +339,12 @@ in
           default = 8007;
           description = "CADvisor service port";
         };
+
+        torrentingPort = lib.mkOption {
+          type = lib.types.port;
+          default = 52137;
+          description = "Port for torrenting (qBittorrent)";
+        };
       };
     };
   };

@@ -22,9 +22,13 @@
       allowedTCPPorts = [
         80 # HTTP
         443 # HTTPS
+        config.hosts.kube01.ports.torrentingPort
       ];
 
-      allowedUDPPorts = [ config.services.tailscale.port ];
+      allowedUDPPorts = [
+        # config.services.tailscale.port
+        config.hosts.kube01.ports.torrentingPort
+      ];
 
       extraCommands = ''
         # kubelet metrics
