@@ -28,6 +28,7 @@ in
 
       ports = [
         "127.0.0.1:${toString config.hosts.kube01.ports.qbittorrent}:8080"
+        "0.0.0.0:${toString config.hosts.kube01.ports.torrentingPort}:${toString config.hosts.kube01.ports.torrentingPort}"
       ];
 
       environment = {
