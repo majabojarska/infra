@@ -4,8 +4,16 @@
     nixpkgs_unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     agenix.url = "github:ryantm/agenix";
     copyparty.url = "github:9001/copyparty";
+    alertmanager-ntfy.url = "github:alexbakker/alertmanager-ntfy";
   };
-  outputs = { self, agenix, nixpkgs, copyparty, nixpkgs_unstable }: {
+  outputs = {
+    self,
+    agenix,
+    nixpkgs,
+    copyparty,
+    alertmanager-ntfy,
+    nixpkgs_unstable,
+  }: {
     nixosConfigurations = {
 
       kube-01 = nixpkgs.lib.nixosSystem {
@@ -27,6 +35,7 @@
           ./hosts/sp6cat-vm-01/configuration.nix
           agenix.nixosModules.default
           copyparty.nixosModules.default
+          alertmanager-ntfy.nixosModules.x86_64-linux.default
           (
             { ... }:
             {

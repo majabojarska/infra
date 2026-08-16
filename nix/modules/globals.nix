@@ -156,6 +156,18 @@ in
           description = "Prometheus service port";
         };
 
+        alertmanager = lib.mkOption {
+          type = lib.types.port;
+          default = 9096;
+          description = "Prometheus Alertmanager service port";
+        };
+
+        alertmanager-ntfy = lib.mkOption {
+          type = lib.types.port;
+          default = 9094;
+          description = "Prometheus Alertmanager Ntfy service port";
+        };
+
         prometheusExporterNode = lib.mkOption {
           type = lib.types.port;
           default = 9100;

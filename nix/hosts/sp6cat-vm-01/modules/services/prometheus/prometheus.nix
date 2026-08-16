@@ -12,6 +12,7 @@ in
   imports = [
     ./exporters.nix
     # ./cadvisor.nix
+    ./alertmanager-ntfy.nix
   ];
 
   # https://wiki.nixos.org/wiki/Prometheus
@@ -195,6 +196,60 @@ in
         ];
       }
     ];
+
+    alertmanagers = [
+      {
+        scheme = "http";
+        static_configs = [
+          {
+            targets = [ "localhost:${toString config.services.prometheus.alertmanager.port}" ];
+          }
+        ];
+      }
+    ];
+
+    alertmanager = {
+      enable = true;
+
+      # Allow alertmanager to start even if it doesn't find an RFC1918 IP on
+      # the machine's network interfaces.
+      extraFlags = [ "--cluster.listen-address='127.0.0.1:${toString config.hosts.sp6catVm01.ports.alertmanager}'" ];
+      # port = config.hosts.sp6catVm01.ports.alertmanager;
+      webExternalUrl = "http://alertmanager.${config.globals.hswroDomain}";
+      configuration = {
+      global = { };
+      route = {
+        receiver = "ignore";
+        group_wait = "30s";
+        group_interval = "5m";
+        repeat_interval = "24h";
+        group_by = [ "alertname" ];
+
+        routes = [
+          # {
+          #   receiver = "go-neb";
+          #   group_wait = "30s";
+          #   match.severity = "warning";
+          # }
+        ];
+      };
+      receivers = [
+        {
+          # with no *_config, this will drop all alerts directed to it
+          name = "ignore";
+        }
+        # {
+        #   name = "go-neb";
+        #   webhook_configs = [
+        #     {
+        #       url = "${config.services.go-neb.baseUrl}:4050/services/hooks/YWxlcnRtYW5hZ2VyX3NlcnZpY2U";
+        #       send_resolved = true;
+        #     }
+        #   ];
+        # }
+      ];
+      };
+    };
   };
 
   # This is also part of the hack
