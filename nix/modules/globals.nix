@@ -144,6 +144,12 @@ in
           description = "Anubis Searx service port";
         };
 
+        dumbpad = lib.mkOption {
+          type = lib.types.port;
+          default = 8016;
+          description = "DumbPad service port";
+        };
+
         uptimeKuma = lib.mkOption {
           type = lib.types.port;
           default = 8009;

@@ -20,5 +20,5 @@ in
   "prometheus-pve-exporter-yml.age".publicKeys = [ sp6cat-vm-01 ] ++ developers;
   "renovate-token.age".publicKeys = [ sp6cat-vm-01 ] ++ developers;
   "renovate-github-com-token.age".publicKeys = [ sp6cat-vm-01 ] ++ developers;
-
+  "dumbpad.env.age".publicKeys = [ sp6cat-vm-01 ] ++ developers;
 }
