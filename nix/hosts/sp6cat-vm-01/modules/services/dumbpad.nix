@@ -15,7 +15,7 @@ in
     backend = "docker";
 
     containers.dumbpad = {
-      image = "dumbwareio/dumbpad:latest";
+      image = "dumbwareio/dumbpad:latest@sha256:495a109141c28d990fedb9ed06e2d68db08a898b493479cdb12132d90f99d708";
       autoStart = true;
       autoRemoveOnStop = false;
       user = "1000:1000";
