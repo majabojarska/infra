@@ -7,8 +7,8 @@
     autoPrune = {
       enable = true;
       dates = "hourly";
-      persistent = true;
-
+      # So that the prune service doesn't run on boot,
+      # which would wipe images for containers that are about to start.
       allVolumes = {
         enable = true;
       };
