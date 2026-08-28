@@ -352,6 +352,12 @@ in
           description = "Calibre-Web-Automated service port";
         };
 
+        couchdb = lib.mkOption {
+          type = lib.types.port;
+          default = 8005;
+          description = "CouchDB service port";
+        };
+
         cadvisor = lib.mkOption {
           type = lib.types.port;
           default = 8007;

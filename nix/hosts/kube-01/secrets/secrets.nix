@@ -13,4 +13,6 @@ in
 
   "audiomuse.env.age".publicKeys = [ kube-01 ] ++ developers;
   "audiomuse-secret-key.age".publicKeys = [ kube-01 ] ++ developers;
+
+  "couchdb-pass.age".publicKeys = [ kube-01 ] ++ developers;
 }

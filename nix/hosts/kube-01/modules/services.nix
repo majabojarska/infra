@@ -15,6 +15,7 @@
     ./services/audiomuse-ai.nix
     ./services/jellyfin.nix
     ./services/calibre.nix
+    ./services/couchdb.nix
 
     # To impl.
     # ./services/change-detection.nix
