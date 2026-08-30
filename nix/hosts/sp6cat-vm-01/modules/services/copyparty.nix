@@ -87,7 +87,7 @@ in
         # see `copyparty --help-accounts` for available options
         access = {
           r = "*";
-          rw = [ "@users" ];
+          rwmd = [ "@users" ];
         };
         flags = {
           # scan for new files every 60sec
