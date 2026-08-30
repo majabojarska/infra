@@ -19,6 +19,7 @@
     ./services/grafana/grafana.nix
     ./services/ntfy.nix
     ./services/dumbpad.nix
+    ./services/stemdeck.nix
     ./services/traefik.nix
     (import ./services/vikunja.nix {
       hostname = "vikunja.${config.globals.cloudDomain}";

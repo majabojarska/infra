@@ -150,6 +150,18 @@ in
           description = "DumbPad service port";
         };
 
+        stemdeck = lib.mkOption {
+          type = lib.types.port;
+          default = 8017;
+          description = "Stemdeck service port";
+        };
+
+        anubis-stemdeck = lib.mkOption {
+          type = lib.types.port;
+          default = 8018;
+          description = "Anubis Stemdeck service port";
+        };
+
         uptimeKuma = lib.mkOption {
           type = lib.types.port;
           default = 8009;
