@@ -96,19 +96,27 @@ in
           e2d = true;
         };
       };
-      "/private" = {
-        # share the contents of "/srv/copyparty"
-        path = "${config.hosts.sp6catVm01.storage.wdUsbHddMountPath}/copyparty/private";
-        # see `copyparty --help-accounts` for available options
+      "/shared" = {
+        path = "${config.hosts.sp6catVm01.storage.wdUsbHddMountPath}/copyparty/shared";
         access = {
-          rw = [ "@users" ];
+          r = [ "@users" ];
+          rwmd = [ "@admins" ];
+
         };
         flags = {
-          # "fk" enables filekeys (necessary for upget permission) (4 chars long)
           fk = 4;
-          # scan for new files every 60sec
           scan = 60;
-          # volflag "e2d" enables the uploads database
+          e2d = true;
+        };
+      };
+      "/private" = {
+        path = "${config.hosts.sp6catVm01.storage.wdUsbHddMountPath}/copyparty/private";
+        access = {
+          rwmd = [ "@admins" ];
+        };
+        flags = {
+          fk = 4;
+          scan = 60;
           e2d = true;
         };
       };
@@ -121,6 +129,13 @@ in
       extraPackages = [ pkgs.exiftool ];
     };
   };
+
+  systemd.tmpfiles.rules = [
+    "d ${config.hosts.sp6catVm01.storage.wdUsbHddMountPath}/copyparty 0700 copyparty copyparty -"
+    "d ${config.hosts.sp6catVm01.storage.wdUsbHddMountPath}/copyparty/private 0700 copyparty copyparty -"
+    "d ${config.hosts.sp6catVm01.storage.wdUsbHddMountPath}/copyparty/shared 0700 copyparty copyparty -"
+    "d ${config.hosts.sp6catVm01.storage.wdUsbHddMountPath}/copyparty/public 0700 copyparty copyparty -"
+  ];
 
   services.anubis.instances.copyparty.settings = {
     BIND = ":${toString config.hosts.sp6catVm01.ports.anubis-copyparty}";
