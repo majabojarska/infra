@@ -1,4 +1,4 @@
-{ ... }:
+{ config, ... }:
 
 {
   imports = [
@@ -7,6 +7,9 @@
     ../../modules/logrotate.nix
     ../../modules/shell-zsh-fzf.nix
     ../../modules/docker.nix
+    {
+      dataRoot = "${config.hosts.sp6catVm01.storage.wdUsbHddMountPath}/docker";
+    }
 
     ./modules/boot.nix
     ./modules/hardware.nix
