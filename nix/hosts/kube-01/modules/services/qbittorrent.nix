@@ -22,7 +22,7 @@ in
     backend = "docker";
 
     containers.qbittorrent = {
-      image = "ghcr.io/linuxserver/qbittorrent:5.2.3@sha256:212b86dff59e3962b4082b5ef20a577e76c8f8527d2ab505cfa887b4bcecb0b0";
+      image = "ghcr.io/linuxserver/qbittorrent:5.2.3@sha256:a00b6a597a3832a1814cde0ef60abc55c94644f3f80902c3432f6af6de8d4a96";
       autoStart = true;
       autoRemoveOnStop = false;
 
