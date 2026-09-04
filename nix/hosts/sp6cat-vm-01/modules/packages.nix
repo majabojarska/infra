@@ -6,6 +6,7 @@
   environment.systemPackages = with pkgs; [
     busybox
     copyparty
+    nodejs-slim
     wireguard-tools
     smartmontools
     sqlite-utils
