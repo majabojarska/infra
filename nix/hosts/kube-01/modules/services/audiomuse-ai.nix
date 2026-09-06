@@ -52,7 +52,7 @@ in
       };
 
       audiomuse-ai-flask = {
-        image = "ghcr.io/neptunehub/audiomuse-ai:3.5.1@sha256:9881304597ce7ea4938b670509e227a97aab42dcf8ca349139cebab321f2dd33";
+        image = "ghcr.io/neptunehub/audiomuse-ai:3.5.2@sha256:726d30981a601cb4556c6caece162ac15df247a7e7f09e36b64e8afd2f8f0b60";
 
         autoStart = true;
 
@@ -97,7 +97,7 @@ in
       };
 
       audiomuse-ai-worker = {
-        image = "ghcr.io/neptunehub/audiomuse-ai:3.5.1@sha256:9881304597ce7ea4938b670509e227a97aab42dcf8ca349139cebab321f2dd33";
+        image = "ghcr.io/neptunehub/audiomuse-ai:3.5.2@sha256:726d30981a601cb4556c6caece162ac15df247a7e7f09e36b64e8afd2f8f0b60";
 
         autoStart = true;
 
