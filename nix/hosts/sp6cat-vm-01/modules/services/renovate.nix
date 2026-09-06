@@ -46,6 +46,7 @@
         "majabojarska/bitwarden-cli-helm"
         "majabojarska/infra"
         # "majabojarska/OpenChocolate"
+        "majabojarska/redlib-docker"
       ];
 
       prHourlyLimit = 50;
