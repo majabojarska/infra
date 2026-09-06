@@ -45,7 +45,7 @@
         "majabojarska/bitwarden-cli-docker"
         "majabojarska/bitwarden-cli-helm"
         "majabojarska/infra"
-        "majabojarska/OpenChocolate"
+        # "majabojarska/OpenChocolate"
       ];
 
       prHourlyLimit = 50;
