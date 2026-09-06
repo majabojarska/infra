@@ -6,7 +6,7 @@
   imports = [
     ../../modules/globals.nix
     ../../modules/logrotate.nix
-    ../../modules/shell-zsh-fzf.nix
+    ../../modules/shell-bash-fzf.nix
     ../../modules/docker.nix
 
     ./modules/boot.nix

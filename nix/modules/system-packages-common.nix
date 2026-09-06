@@ -36,6 +36,5 @@
     vim
     wget
     zerofree
-    zsh
   ];
 }

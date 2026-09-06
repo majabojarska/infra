@@ -7,7 +7,7 @@
 {
   imports = [
     ../../modules/globals.nix
-    ../../modules/shell-zsh-fzf.nix
+    ../../modules/shell-bash-fzf.nix
 
     ./modules/networking.nix
     ./modules/i18n.nix
