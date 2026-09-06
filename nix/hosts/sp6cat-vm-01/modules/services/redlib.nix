@@ -6,46 +6,36 @@
 }:
 let
   healthchecks = import ../../../../modules/healthchecks.nix { inherit lib pkgs; };
-  src = pkgs.fetchFromGitHub {
-    owner = "redlib-org";
-    repo = "redlib";
-    rev = "a4d36e954cf1bd64f209cd8868c5a29edc81b374";
-    hash = "sha256-siyD6A12UALQIV7BMd7zu1TaojleTEYtpxPszuhx1/Y=";
-  };
-  redlib-latest = pkgs.redlib.overrideAttrs (oldAttrs: {
-    version = "0.36.0-unstable-2026-04-24-vendor";
-    inherit src;
-    cargoDeps = pkgs.rustPlatform.fetchCargoVendor {
-      inherit src;
-      name = "redlib-0.36.0-unstable-2026-04-24-vendor";
-      hash = "sha256-eO3c7rlFna3DuO31etJ6S4c7NmcvgvIWZ1KVkNIuUqQ=";
-    };
-    nativeBuildInputs =
-      (oldAttrs.nativeBuildInputs or [ ])
-      ++ (with pkgs; [
-        cmake
-        go
-        perl
-        git
-        rustPlatform.bindgenHook
-      ]);
-    checkFlags = (oldAttrs.checkFlags or [ ]) ++ [
-      "--skip=oauth::tests::test_generic_web_backend"
-      "--skip=oauth::tests::test_mobile_spoof_backend"
-    ];
-  });
 in
 {
-  services.redlib = {
-    enable = true;
-    package = redlib-latest;
-    address = "127.0.0.1";
-    port = config.hosts.sp6catVm01.ports.redlib;
-    settings = {
-      REDLIB_DEFAULT_THEME = "catppuccinMocha";
-      REDLIB_DEFAULT_LAYOUT = "clean";
-      REDLIB_DEFAULT_WIDE = true;
-      REDLIB_HOME_FROM_COLLECTIONS = "on";
+  virtualisation.oci-containers = {
+    backend = "docker";
+
+    containers.redlib = {
+      image = "ghcr.io/majabojarska/redlib-docker:2026.9.6.0";
+      autoStart = true;
+      autoRemoveOnStop = false;
+
+      ports = [
+        "127.0.0.1:${toString config.hosts.sp6catVm01.ports.redlib}:8080"
+      ];
+
+      environment = {
+        REDLIB_ADDRESS = "0.0.0.0";
+        REDLIB_PORT = "8080";
+        REDLIB_DEFAULT_THEME = "catppuccinMocha";
+        REDLIB_DEFAULT_LAYOUT = "clean";
+        REDLIB_DEFAULT_WIDE = "on";
+        REDLIB_HOME_FROM_COLLECTIONS = "on";
+      };
+
+      extraOptions = [
+        "--health-cmd=curl -fsS http://127.0.0.1:8080 >/dev/null || exit 1"
+        "--health-interval=30s"
+        "--health-timeout=10s"
+        "--health-retries=5"
+        "--health-start-period=15s"
+      ];
     };
   };
 
@@ -149,14 +139,13 @@ in
           Type = "oneshot";
           ExecStart = ''
             ${pkgs.bash}/bin/bash -c '
-              ${pkgs.curl}/bin/curl --fail --silent http://127.0.0.1:${toString config.services.redlib.port} \
-                || ${pkgs.systemd}/bin/systemctl restart redlib.service
+              ${pkgs.curl}/bin/curl --fail --silent http://127.0.0.1:${toString config.hosts.sp6catVm01.ports.redlib} \
+                || ${pkgs.systemd}/bin/systemctl restart docker-redlib.service
             '
           '';
         };
 
       };
-      redlib.serviceConfig.Restart = "always";
     };
 
     timers.redlib-healthcheck = {
