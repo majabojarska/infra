@@ -12,7 +12,7 @@ in
     backend = "docker";
 
     containers.redlib = {
-      image = "ghcr.io/majabojarska/redlib-docker:2026.9.6.0";
+      image = "ghcr.io/majabojarska/redlib-docker:2026.9.6.0@sha256:a6c7a46dbc437ad8bb2f0b34b746a7ad1141e22b00e1d8be2a181cb2f405851f";
       autoStart = true;
       autoRemoveOnStop = false;
 
