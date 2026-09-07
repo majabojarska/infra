@@ -27,7 +27,7 @@ in
 
     containers = {
       "paperless-broker" = {
-        image = "ghcr.io/valkey-io/valkey:9.1.2-alpine3.24@sha256:ccfa19b0d743e48927e1c8c14e39e0acb97b5cea347fef0bfe340247fea920cd";
+        image = "ghcr.io/valkey-io/valkey:9.1.2-alpine3.24@sha256:a0dbf4c1d5708782907c10e2c72deff317518518b5288a58416981d9db95d30b";
         autoStart = true;
 
         volumes = [
