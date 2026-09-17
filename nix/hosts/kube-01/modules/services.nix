@@ -6,16 +6,14 @@
     ./services/notifications.nix
     ./services/prometheus-exporters.nix
     ./services/traefik.nix
-    ./services/cadvisor.nix
-
-    # To migrate, once all else is prepared.
+    # ./services/cadvisor.nix
     ./services/immich.nix
     ./services/paperless.nix
     ./services/qbittorrent.nix
-    ./services/audiomuse-ai.nix
+    # ./services/audiomuse-ai.nix
     ./services/jellyfin.nix
     ./services/calibre.nix
-    ./services/couchdb.nix
+    # ./services/couchdb.nix
 
     # To impl.
     # ./services/change-detection.nix
