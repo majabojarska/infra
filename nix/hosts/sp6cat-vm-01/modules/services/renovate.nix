@@ -53,6 +53,8 @@
       prConcurrentLimit = 50;
       branchConcurrentLimit = 50;
       commitHourlyLimit = 200;
+      minimumReleaseAge = "7 days";
+      internalChecksFilter = "strict";
     };
 
     credentials = {
