@@ -149,40 +149,14 @@ in
     "d ${audiomuseRoot}/worker/plugins 0700 root root -"
   ];
 
-  systemd.services.docker-audiomuse-network = {
-    description = "Create Docker network for Audiomuse";
-    wantedBy = [ "multi-user.target" ];
-    requires = [ "docker.service" ];
-    after = [ "docker.service" ];
-    before = [
-      "docker-audiomuse-postgres.service"
-      "docker-audiomuse-ai-flask.service"
-      "docker-audiomuse-ai-worker.service"
-    ];
-
-    serviceConfig = {
-      Type = "oneshot";
-      ExecStart = ''
-        ${pkgs.bash}/bin/bash -c '${pkgs.docker}/bin/docker network inspect audiomuse >/dev/null 2>&1 || ${pkgs.docker}/bin/docker network create audiomuse >/dev/null'
-      '';
-      RemainAfterExit = true;
-    };
-  };
-
   systemd.services = {
     docker-audiomuse-postgres = {
-      requires = [ "docker-audiomuse-network.service" ];
-      after = [ "docker-audiomuse-network.service" ];
       serviceConfig.Restart = "on-failure";
     };
     docker-audiomuse-ai-flask = {
-      requires = [ "docker-audiomuse-network.service" ];
-      after = [ "docker-audiomuse-network.service" ];
       serviceConfig.Restart = "on-failure";
     };
     docker-audiomuse-ai-worker = {
-      requires = [ "docker-audiomuse-network.service" ];
-      after = [ "docker-audiomuse-network.service" ];
       serviceConfig.Restart = "on-failure";
     };
   };
