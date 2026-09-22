@@ -3,7 +3,7 @@
   "customManagers": [
     {
       "customType": "regex",
-      "managerFilePatterns": ["/^nix\\/.*\\.nix$/"],
+      "fileMatch": ["^nix\\/.*\\.nix$"],
       "matchStrings": [
         "image\\s*=\\s*\"(?<depName>[^\"@:]+):(?<currentValue>[^\"@]+)(?:@(?<currentDigest>sha256:[A-Fa-f0-9]{64}))?\";"
       ],
@@ -13,10 +13,10 @@
     }
   ],
   "kubernetes": {
-    "managerFilePatterns": ["/\\.yaml$/"]
+    "fileMatch": ["\\.yaml$"]
   },
   "flux": {
-    "managerFilePatterns": ["/kubernetes/fluxcd/.+\\.yaml$/"]
+    "fileMatch": ["kubernetes/fluxcd/.+\\.yaml$"]
   },
   "packageRules": [
     {
