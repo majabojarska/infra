@@ -22,7 +22,7 @@ in
 
     containers = {
       "immich-redis" = {
-        image = "ghcr.io/valkey-io/valkey:9.1.2-alpine3.24@sha256:a0dbf4c1d5708782907c10e2c72deff317518518b5288a58416981d9db95d30b";
+        image = "ghcr.io/valkey-io/valkey:9.1.2-alpine3.24@sha256:48332870af354a799964c0012ae1194a0bf2bf894eb508f945810596dc2d8d11";
         autoStart = true;
 
         extraOptions = [
