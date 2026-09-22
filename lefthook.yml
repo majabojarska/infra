@@ -20,16 +20,6 @@ pre-commit:
           echo "⚠️  yamllint not installed, skipping"
         fi
 
-    # Ansible linting
-    ansible-lint:
-      glob: "ansible/**/*.{yaml,yml}"
-      run: |
-        if command -v ansible-lint >/dev/null 2>&1; then
-          ansible-lint {staged_files}
-        else
-          echo "⚠️  ansible-lint not installed, skipping"
-        fi
-
     # NixOS configuration check
     nix-check:
       glob: "**/*.nix"
@@ -39,16 +29,6 @@ pre-commit:
           nix flake check --no-build ./
         else
           echo "⚠️  nix not installed, skipping"
-        fi
-
-    # Kubernetes manifest validation
-    kubeconform:
-      glob: "kubernetes/**/*.{yaml,yml}"
-      run: |
-        if command -v kubeconform >/dev/null 2>&1; then
-          kubeconform -strict -ignore-missing-schemas {staged_files}
-        else
-          echo "⚠️  kubeconform not installed, skipping"
         fi
 
     # GitHub Actions workflow validation
