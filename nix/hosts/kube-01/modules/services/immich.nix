@@ -120,46 +120,17 @@ in
     };
   };
 
-  systemd.services.docker-immich-network = {
-    description = "Create Docker network for Immich";
-    wantedBy = [ "multi-user.target" ];
-    requires = [ "docker.service" ];
-    after = [ "docker.service" ];
-    before = [
-      "docker-immich-redis.service"
-      "docker-immich-postgres.service"
-      "docker-immich-machine-learning.service"
-      "docker-immich-server.service"
-    ];
-
-    serviceConfig = {
-      Type = "oneshot";
-      ExecStart = ''
-        ${pkgs.bash}/bin/bash -c '${pkgs.docker}/bin/docker network inspect immich >/dev/null 2>&1 || ${pkgs.docker}/bin/docker network create immich >/dev/null'
-      '';
-      RemainAfterExit = true;
-    };
-  };
-
   systemd.services = {
     docker-immich-redis = {
-      requires = [ "docker-immich-network.service" ];
-      after = [ "docker-immich-network.service" ];
       serviceConfig.Restart = "on-failure";
     };
     docker-immich-postgres = {
-      requires = [ "docker-immich-network.service" ];
-      after = [ "docker-immich-network.service" ];
       serviceConfig.Restart = "on-failure";
     };
     docker-immich-machine-learning = {
-      requires = [ "docker-immich-network.service" ];
-      after = [ "docker-immich-network.service" ];
       serviceConfig.Restart = "on-failure";
     };
     docker-immich-server = {
-      requires = [ "docker-immich-network.service" ];
-      after = [ "docker-immich-network.service" ];
       serviceConfig.Restart = "on-failure";
     };
   };

@@ -156,46 +156,17 @@ in
     };
   };
 
-  systemd.services.docker-paperless-network = {
-    description = "Create Docker network for Paperless";
-    wantedBy = [ "multi-user.target" ];
-    requires = [ "docker.service" ];
-    after = [ "docker.service" ];
-    before = [
-      "docker-paperless-broker.service"
-      "docker-paperless-webserver.service"
-      "docker-paperless-gotenberg.service"
-      "docker-paperless-tika.service"
-    ];
-
-    serviceConfig = {
-      Type = "oneshot";
-      ExecStart = ''
-        ${pkgs.bash}/bin/bash -c '${pkgs.docker}/bin/docker network inspect paperless >/dev/null 2>&1 || ${pkgs.docker}/bin/docker network create paperless >/dev/null'
-      '';
-      RemainAfterExit = true;
-    };
-  };
-
   systemd.services = {
     docker-paperless-broker = {
-      requires = [ "docker-paperless-network.service" ];
-      after = [ "docker-paperless-network.service" ];
       serviceConfig.Restart = "on-failure";
     };
     docker-paperless-webserver = {
-      requires = [ "docker-paperless-network.service" ];
-      after = [ "docker-paperless-network.service" ];
       serviceConfig.Restart = "on-failure";
     };
     docker-paperless-gotenberg = {
-      requires = [ "docker-paperless-network.service" ];
-      after = [ "docker-paperless-network.service" ];
       serviceConfig.Restart = "on-failure";
     };
     docker-paperless-tika = {
-      requires = [ "docker-paperless-network.service" ];
-      after = [ "docker-paperless-network.service" ];
       serviceConfig.Restart = "on-failure";
     };
   };
