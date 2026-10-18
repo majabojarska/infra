@@ -15,4 +15,6 @@ in
   "audiomuse-secret-key.age".publicKeys = [ kube-01 ] ++ developers;
 
   "couchdb-pass.age".publicKeys = [ kube-01 ] ++ developers;
+
+  "samba-maja-password.age".publicKeys = [ kube-01 ] ++ developers;
 }
