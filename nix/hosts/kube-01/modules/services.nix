@@ -14,6 +14,7 @@
     ./services/jellyfin.nix
     ./services/calibre.nix
     # ./services/couchdb.nix
+    ./services/samba.nix
 
     # To impl.
     # ./services/change-detection.nix

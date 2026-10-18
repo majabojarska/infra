@@ -1,0 +1,7 @@
+---
+- name: "RPi-3B Server"
+  hosts: rpi-3b
+  become: true
+  roles:
+    - role: majabojarska.apt_upgrade
+    - role: majabojarska.apt_packages

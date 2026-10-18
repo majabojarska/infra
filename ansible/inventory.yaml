@@ -14,7 +14,7 @@ nixos:
 
 debian:
   hosts:
-    # rpi-3b:
+    rpi-3b:
     pve-01:
     sp6cat-01:
 
