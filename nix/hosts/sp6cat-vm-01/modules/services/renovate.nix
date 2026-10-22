@@ -53,13 +53,17 @@
       prConcurrentLimit = 50;
       branchConcurrentLimit = 50;
       commitHourlyLimit = 200;
-      minimumReleaseAge = "7 days";
+      # minimumReleaseAge = "7 days";
       internalChecksFilter = "strict";
     };
 
     credentials = {
       RENOVATE_TOKEN = config.age.secrets."renovate-token".path;
       RENOVATE_GITHUB_COM_TOKEN = config.age.secrets."renovate-github-com-token".path;
+    };
+
+    environment = {
+      # LOG_LEVEL = "debug";
     };
 
   };

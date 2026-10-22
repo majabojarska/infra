@@ -23,7 +23,7 @@ in
     backend = "docker";
 
     containers.calibre-web-automated = {
-      image = "crocodilestick/calibre-web-automated:latest@sha256:c31a738b6d5ec6982c050063dd3f063b6943eb1051fc81144789f840d9093a8d";
+      image = "crocodilestick/calibre-web-automated:latest@sha256:5e00373854247750cc3e4479b492ae09293ff5e06ed10177f226634d97888679";
       autoStart = true;
       autoRemoveOnStop = false;
 
