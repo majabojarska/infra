@@ -9,7 +9,7 @@ in
     backend = "docker";
 
     containers.couchdb = {
-      image = "couchdb:latest@sha256:8cf5f8442585c346d2717ff0ad95605731d2f19f67b8367840baa8d3b24ebc31";
+      image = "couchdb:latest@sha256:4e8e0a366208a87d5059b0f4fcbefff13c32401a655d4629c19be6288ea77675";
       autoStart = true;
       autoRemoveOnStop = false;
 
