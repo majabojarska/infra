@@ -60,7 +60,7 @@ in
       };
 
       "immich-machine-learning" = {
-        image = "ghcr.io/immich-app/immich-machine-learning:v3.2.2@sha256:60dfcf266a9ef3b7376f5678e8c980d4fb61db5fc48c078fe8a326ab1535d60d";
+        image = "ghcr.io/immich-app/immich-machine-learning:v3.3.5@sha256:5b28c9352c8374b8a1ed96fbdd8d6755fea6e43510ec43fdf6538aa02ea40f56";
         autoStart = true;
 
         environment = {
@@ -82,7 +82,7 @@ in
       };
 
       "immich-server" = {
-        image = "ghcr.io/immich-app/immich-server:v3.2.2@sha256:79cc1623323d5894922686d8743b4780181428f98eecbfb58ce12c41ef02d1ea";
+        image = "ghcr.io/immich-app/immich-server:v3.3.5@sha256:485d546a2e31d6a8b4db8423fcba5c109de8c218d93410af115fd1ccfc4352a6";
         autoStart = true;
 
         dependsOn = [
