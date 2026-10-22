@@ -16,7 +16,7 @@ in
     backend = "docker";
 
     containers.stemdeck = {
-      image = "ghcr.io/stemdeckapp/stemdeck:0.17.3@sha256:786b8f78c322d3c1f7df3d98b2ce3f98fed4325493c01b166f6ebdc97bdd5193";
+      image = "ghcr.io/stemdeckapp/stemdeck:0.17.3@sha256:371b8d393974ca39b336895e857217b68a68f921942b19bd6464ea454dc4b70c";
       autoStart = true;
       autoRemoveOnStop = false;
 
