@@ -51,6 +51,7 @@ in
     kernel.sysctl = {
       "net.ipv4.ip_forward" = 1;
       "kernel.task_delayacct" = 1;
+      "net.mptcp.enabled" = 0;
     };
     blacklistedKernelModules = [ "algif_aead" ];
 
