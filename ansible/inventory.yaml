@@ -6,12 +6,6 @@ all:
     pve-01:
     sp6cat-01:
 
-nixos:
-  hosts:
-    kube-01:
-    nas:
-    sp6cat-vm-01:
-
 debian:
   hosts:
     rpi-3b:
