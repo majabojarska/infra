@@ -1,8 +1,0 @@
----
-- name: Setup server
-  hosts:
-    - kube-01
-
-  tasks:
-    - name: Get kubeconfig
-      ansible.builtin.import_tasks: "tasks/get_kubeconfig_k3s.yaml"
