@@ -3,6 +3,7 @@
   hosts:
     - pve
   roles:
+    - role: majabojarska.authorized_keys
     - role: majabojarska.apt_upgrade
     - role: majabojarska.apt_packages
       vars:

@@ -1,0 +1,6 @@
+---
+- name: Add GitHub public keys
+  ansible.posix.authorized_key:
+    user: "{{ authorized_keys_user }}"
+    key: "{{ lookup('ansible.builtin.url', authorized_keys_url) }}"
+    state: present
