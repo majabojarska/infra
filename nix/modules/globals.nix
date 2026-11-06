@@ -156,6 +156,18 @@ in
           description = "Stemdeck service port";
         };
 
+        cloudreve = lib.mkOption {
+          type = lib.types.port;
+          default = 8019;
+          description = "Cloudreve service port";
+        };
+
+        anubis-cloudreve = lib.mkOption {
+          type = lib.types.port;
+          default = 8020;
+          description = "Anubis Cloudreve service port";
+        };
+
         anubis-stemdeck = lib.mkOption {
           type = lib.types.port;
           default = 8018;
