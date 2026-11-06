@@ -25,6 +25,5 @@
       hostname = "vikunja.${config.globals.cloudDomain}";
       port = config.hosts.sp6catVm01.ports.vikunja;
     })
-    ./services/cloudreve.nix
   ];
 }
