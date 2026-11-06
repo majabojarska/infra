@@ -10,7 +10,7 @@
     ./services/immich.nix
     ./services/paperless.nix
     ./services/qbittorrent.nix
-    # ./services/audiomuse-ai.nix
+    ./services/audiomuse-ai.nix
     ./services/jellyfin.nix
     ./services/calibre.nix
     # ./services/couchdb.nix
