@@ -24,6 +24,15 @@ in
     zigbee = {
       gid = 10007;
     };
+    docmost = {
+      gid = 10008;
+    };
+    docmost-postgres = {
+      gid = 10009;
+    };
+    docmost-valkey = {
+      gid = 10010;
+    };
   };
 
   users.users = {
@@ -88,6 +97,24 @@ in
       group = "zigbee";
       uid = 10007;
       description = "ZigBee";
+    };
+    docmost = {
+      isSystemUser = true;
+      group = "docmost";
+      uid = 10008;
+      description = "Docmost";
+    };
+    docmost-postgres = {
+      isSystemUser = true;
+      group = "docmost-postgres";
+      uid = 10009;
+      description = "Docmost PostgreSQL";
+    };
+    docmost-valkey = {
+      isSystemUser = true;
+      group = "docmost-valkey";
+      uid = 10010;
+      description = "Docmost Valkey";
     };
   };
 

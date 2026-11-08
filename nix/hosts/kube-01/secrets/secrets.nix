@@ -9,6 +9,7 @@ in
   "traefik.env.age".publicKeys = [ kube-01 ] ++ developers;
   "ntfy-token.age".publicKeys = [ kube-01 ] ++ developers;
   "immich.env.age".publicKeys = [ kube-01 ] ++ developers;
+  "docmost.env.age".publicKeys = [ kube-01 ] ++ developers;
   "paperless.env.age".publicKeys = [ kube-01 ] ++ developers;
 
   "audiomuse.env.age".publicKeys = [ kube-01 ] ++ developers;

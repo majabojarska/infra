@@ -334,6 +334,12 @@ in
           description = "Immich service port";
         };
 
+        docmost = lib.mkOption {
+          type = lib.types.port;
+          default = 8008;
+          description = "Docmost service port";
+        };
+
         paperless = lib.mkOption {
           type = lib.types.port;
           default = 8001;
