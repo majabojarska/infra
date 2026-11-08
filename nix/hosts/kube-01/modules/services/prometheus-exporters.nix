@@ -6,6 +6,13 @@
 }:
 let
   healthchecks = import ../../../../modules/healthchecks.nix { inherit lib pkgs; };
+  exporterHealthCheck =
+    exporter:
+    healthchecks.curlHealthCheck {
+      url = "http://${config.services.prometheus.exporters.${exporter}.listenAddress}:${
+        toString config.services.prometheus.exporters.${exporter}.port
+      }/metrics";
+    };
 in
 {
   services.prometheus.exporters = {
@@ -98,20 +105,9 @@ in
   );
 
   system.preSwitchChecks = {
-    exporterNodeLocalhostNoHttpError = healthchecks.curlHealthCheck {
-      url = "http://${config.services.prometheus.exporters.node.listenAddress}:${toString config.services.prometheus.exporters.node.port}/metrics";
-    };
-
-    exporterSmartctlLocalhostNoHttpError = healthchecks.curlHealthCheck {
-      url = "http://${config.services.prometheus.exporters.smartctl.listenAddress}:${toString config.services.prometheus.exporters.smartctl.port}/metrics";
-    };
-
-    exporterZfsLocalhostNoHttpError = healthchecks.curlHealthCheck {
-      url = "http://${config.services.prometheus.exporters.zfs.listenAddress}:${toString config.services.prometheus.exporters.zfs.port}/metrics";
-    };
-
-    exporterPingLocalhostNoHttpError = healthchecks.curlHealthCheck {
-      url = "http://${config.services.prometheus.exporters.ping.listenAddress}:${toString config.services.prometheus.exporters.ping.port}/metrics";
-    };
+    exporterNodeLocalhostNoHttpError = exporterHealthCheck "node";
+    exporterSmartctlLocalhostNoHttpError = exporterHealthCheck "smartctl";
+    exporterZfsLocalhostNoHttpError = exporterHealthCheck "zfs";
+    exporterPingLocalhostNoHttpError = exporterHealthCheck "ping";
   };
 }
