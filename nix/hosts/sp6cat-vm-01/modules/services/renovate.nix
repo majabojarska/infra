@@ -53,6 +53,12 @@
       prConcurrentLimit = 50;
       branchConcurrentLimit = 50;
       commitHourlyLimit = 200;
+      hostRules = [
+        {
+          matchHost = "github.com";
+          maxRequestsPerSecond = 0.25;
+        }
+      ];
       # minimumReleaseAge = "7 days";
       internalChecksFilter = "strict";
     };
