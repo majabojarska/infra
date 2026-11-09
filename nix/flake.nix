@@ -17,11 +17,13 @@
     nixosConfigurations = {
 
       kube-01 = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
         specialArgs = {
           pkgs_unstable = nixpkgs_unstable.legacyPackages.x86_64-linux;
         };
         modules = [
+          {
+            nixpkgs.hostPlatform = "x86_64-linux";
+          }
           ./hosts/kube-01/hardware-configuration.nix
           ./hosts/kube-01/configuration.nix
           agenix.nixosModules.default
@@ -29,8 +31,10 @@
       };
 
       sp6cat-vm-01 = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
         modules = [
+          {
+            nixpkgs.hostPlatform = "x86_64-linux";
+          }
           ./hosts/sp6cat-vm-01/hardware-configuration.nix
           ./hosts/sp6cat-vm-01/configuration.nix
           agenix.nixosModules.default
@@ -47,16 +51,20 @@
       };
 
       nas-old = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
         modules = [
+          {
+            nixpkgs.hostPlatform = "x86_64-linux";
+          }
           ./hosts/nas/hardware-configuration.nix
           ./hosts/nas/configuration.nix
         ];
       };
 
       nas = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
         modules = [
+          {
+            nixpkgs.hostPlatform = "x86_64-linux";
+          }
           ./hosts/nas/configuration.nix
           ./hosts/nas/hardware-configuration.nix
         ];

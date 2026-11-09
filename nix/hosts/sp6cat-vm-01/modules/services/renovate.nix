@@ -33,7 +33,7 @@
 
   services.renovate = {
     enable = true;
-    schedule = "*:0/15";
+    schedule = "8h";
 
     validateSettings = true;
     settings = {
@@ -53,19 +53,20 @@
       prConcurrentLimit = 50;
       branchConcurrentLimit = 50;
       commitHourlyLimit = 200;
-      hostRules = [
-        {
-          matchHost = "github.com";
-          maxRequestsPerSecond = 0.25;
-        }
-      ];
+      # hostRules = [
+      #   {
+      #     matchHost = "github.com";
+      #     maxRequestsPerSecond = 0.25;
+      #   }
+      # ];
       # minimumReleaseAge = "7 days";
       internalChecksFilter = "strict";
     };
 
     credentials = {
       RENOVATE_TOKEN = config.age.secrets."renovate-token".path;
-      RENOVATE_GITHUB_COM_TOKEN = config.age.secrets."renovate-github-com-token".path;
+      # RENOVATE_GITHUB_COM_TOKEN = config.age.secrets."renovate-github-com-token".path;
+      RENOVATE_GITHUB_COM_TOKEN = config.age.secrets."renovate-token".path;
     };
 
     environment = {
