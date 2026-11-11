@@ -22,7 +22,7 @@ in
     containers = {
 
       audiomuse-postgres = {
-        image = "postgres:15.19-alpine3.23@sha256:e4c48893f7771538194643b602387deb2fa6b5e2e751f1b923d04766c5f0b394";
+        image = "postgres:15.19-alpine3.23@sha256:8b52caed6eb08ebe373b7019c818e08fded28fd5202edfc99643cbe3e464baa5";
 
         autoStart = true;
 
