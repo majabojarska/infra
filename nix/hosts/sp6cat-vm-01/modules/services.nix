@@ -8,7 +8,6 @@
     ./services/chrony.nix
     ./services/copyparty.nix
     ./services/searx.nix
-    # ./services/redlib.nix
     ./services/uptime-kuma.nix
     ./services/fibo.nix
     # ./services/llama-cpp.nix
