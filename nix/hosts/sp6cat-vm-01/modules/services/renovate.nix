@@ -1,82 +1,61 @@
-{ pkgs, config, ... }:
+{ config, lib, ... }:
+
+let
+  renovateRepositories = [
+    "majabojarska/bitwarden-cli-docker"
+    "majabojarska/bitwarden-cli-helm"
+    "majabojarska/infra"
+    # "majabojarska/OpenChocolate"
+    "majabojarska/redlib-docker"
+  ];
+
+in
 {
-  age.secrets = {
-    "renovate-token" = {
-      file = ../../secrets/renovate-token.age;
-      mode = "0400";
-      owner = "renovate";
+  users = {
+    users.renovate = {
+      isSystemUser = true;
       group = "renovate";
+      description = "Renovate Bot";
     };
-    "renovate-github-com-token" = {
-      file = ../../secrets/renovate-github-com-token.age;
-      mode = "0400";
-      owner = "renovate";
-      group = "renovate";
-    };
+    groups.renovate = { };
   };
 
-  users = {
-    users = {
-      renovate = {
-        isSystemUser = true;
-        group = "renovate";
-        description = "Renovate Bot";
-        home = "/home/renovate";
-        createHome = true;
-        shell = pkgs.bashInteractive;
+  age.secrets."renovate-env" = {
+    file = ../../secrets/renovate-env.age;
+    mode = "0400";
+    owner = "renovate";
+    group = "renovate";
+  };
+
+  virtualisation.oci-containers = {
+    backend = "docker";
+
+    containers.renovate = {
+      image = "renovate/renovate:44.234";
+      autoStart = true;
+      user = "${toString config.users.users.renovate.uid}:${toString config.users.groups.renovate.gid}";
+      environmentFiles = [
+        config.age.secrets."renovate-env".path
+      ];
+      environment = {
+        TZ = config.time.timeZone;
+        LOG_LEVEL = "info";
+
+        RENOVATE_PLATFORM = "github";
+        RENOVATE_AUTODISCOVER = "false";
+        RENOVATE_REPOSITORIES = lib.concatStringsSep "," renovateRepositories;
+        RENOVATE_GIT_AUTHOR = "Renovate Bot <bot@renovateapp.com>";
+        RENOVATE_PR_HOURLY_LIMIT = "50";
+        RENOVATE_PR_CONCURRENT_LIMIT = "50";
+        RENOVATE_BRANCH_CONCURRENT_LIMIT = "50";
+        RENOVATE_COMMIT_HOURLY_LIMIT = "200";
+        RENOVATE_INTERNAL_CHECKS_FILTER = "strict";
       };
     };
-    groups = {
-      renovate = { };
-    };
   };
 
-  services.renovate = {
-    enable = true;
-    schedule = "8h";
-
-    validateSettings = true;
-    settings = {
-      platform = "github";
-      gitAuthor = "Renovate Bot <bot@renovateapp.com>";
-      autodiscover = false;
-
-      repositories = [
-        "majabojarska/bitwarden-cli-docker"
-        "majabojarska/bitwarden-cli-helm"
-        "majabojarska/infra"
-        # "majabojarska/OpenChocolate"
-        "majabojarska/redlib-docker"
-      ];
-
-      prHourlyLimit = 50;
-      prConcurrentLimit = 50;
-      branchConcurrentLimit = 50;
-      commitHourlyLimit = 200;
-      # hostRules = [
-      #   {
-      #     matchHost = "github.com";
-      #     maxRequestsPerSecond = 0.25;
-      #   }
-      # ];
-      # minimumReleaseAge = "7 days";
-      internalChecksFilter = "strict";
-    };
-
-    credentials = {
-      RENOVATE_TOKEN = config.age.secrets."renovate-token".path;
-      # RENOVATE_GITHUB_COM_TOKEN = config.age.secrets."renovate-github-com-token".path;
-      RENOVATE_GITHUB_COM_TOKEN = config.age.secrets."renovate-token".path;
-    };
-
-    environment = {
-      # LOG_LEVEL = "debug";
-    };
-
-  };
-
-  systemd.services.renovate.serviceConfig = {
-    User = "renovate";
-    Group = "renovate";
+  systemd.services.docker-renovate.serviceConfig = {
+    Restart = "on-failure";
+    RestartSec = "8h";
   };
 }
