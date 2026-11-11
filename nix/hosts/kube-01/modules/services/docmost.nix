@@ -19,7 +19,7 @@ in
 
     containers = {
       docmost = {
-        image = "docmost/docmost:latest";
+        image = "docmost/docmost:latest@sha256:40c454d74ffdd9ecb15833e4d96f3a630d59aad862a1869381ae6ee086454419";
         autoStart = true;
         dependsOn = [
           "docmost-db"
@@ -45,7 +45,7 @@ in
       };
 
       docmost-db = {
-        image = "docker.io/library/postgres:18";
+        image = "docker.io/library/postgres:18@sha256:e3d24f6906d0760bf4da0dae872415391ededefad23fd471c47dc53b0ddf3c42";
         user = "${toString config.users.users."docmost-postgres".uid}:${
           toString config.users.groups."docmost-postgres".gid
         }";
