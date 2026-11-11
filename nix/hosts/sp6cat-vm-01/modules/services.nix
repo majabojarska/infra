@@ -11,14 +11,14 @@
     # ./services/redlib.nix
     ./services/uptime-kuma.nix
     ./services/fibo.nix
-    ./services/llama-cpp.nix
+    # ./services/llama-cpp.nix
     ./services/renovate.nix
     ./services/nginx.nix
     ./services/notifications.nix
     ./services/prometheus/prometheus.nix
     ./services/grafana/grafana.nix
     ./services/ntfy.nix
-    ./services/dumbpad.nix
+    # ./services/dumbpad.nix
     ./services/stemdeck.nix
     ./services/traefik.nix
     (import ./services/vikunja.nix {
