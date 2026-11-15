@@ -340,6 +340,12 @@ in
           description = "Docmost service port";
         };
 
+        patreon-dl = lib.mkOption {
+          type = lib.types.port;
+          default = 8006;
+          description = "Patreon-dl service port";
+        };
+
         paperless = lib.mkOption {
           type = lib.types.port;
           default = 8001;

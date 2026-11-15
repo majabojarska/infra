@@ -9,6 +9,7 @@
     # ./services/cadvisor.nix
     ./services/immich.nix
     ./services/docmost.nix
+    ./services/patreon-dl.nix
     ./services/paperless.nix
     ./services/qbittorrent.nix
     ./services/audiomuse-ai.nix

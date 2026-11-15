@@ -33,6 +33,9 @@ in
     docmost-valkey = {
       gid = 10010;
     };
+    patreon-dl = {
+      gid = 10011;
+    };
   };
 
   users.users = {
@@ -115,6 +118,12 @@ in
       group = "docmost-valkey";
       uid = 10010;
       description = "Docmost Valkey";
+    };
+    patreon-dl = {
+      isSystemUser = true;
+      group = "patreon-dl";
+      uid = 10011;
+      description = "Patreon-dl";
     };
   };
 
