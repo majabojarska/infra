@@ -31,7 +31,7 @@ in
     backend = "docker";
 
     containers.renovate = {
-      image = "renovate/renovate:44.239@sha256:7dba1a3b916a2cf302ba0df458ddcc8fcbac3c92d0fe9882ac13ba0363de656b";
+      image = "renovate/renovate:44.241@sha256:7397a1b4893806ca4f25b175236932e2496bca52e9230668ac79ea0ef3868e5f";
       autoStart = true;
       user = "${toString config.users.users.renovate.uid}:${toString config.users.groups.renovate.gid}";
       environmentFiles = [
