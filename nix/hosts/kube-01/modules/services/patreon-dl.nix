@@ -10,7 +10,7 @@ in
     backend = "docker";
 
     containers.patreon-dl = {
-      image = "majabojarska/patreon-dl:2026-11-15";
+      image = "majabojarska/patreon-dl:2026-11-15@sha256:323b185ffeea36d9575899fbd5704aac7c6c340232af6567f025fd06aca369f7";
       autoStart = true;
       user = "${toString config.users.users.patreon-dl.uid}:${toString config.users.groups.patreon-dl.gid}";
       cmd = [
