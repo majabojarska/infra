@@ -4,7 +4,7 @@
   virtualisation.oci-containers = {
     backend = "docker";
     containers.osbp = {
-      image = "majabojarska/omni-support-bundle-parser:latest@sha256:75527a506bece871cb41fee1428ac9bc94852dceeffb20e89559a014fb5696a1";
+      image = "majabojarska/omni-support-bundle-parser:latest@sha256:05629d56098e6168c26ea5ca311a7b6f9b74a3e84621ccdd68d88562a560e9d0";
       autoStart = true;
       ports = [
         "127.0.0.1:${toString config.hosts.sp6catVm01.ports.osbp}:8080"
