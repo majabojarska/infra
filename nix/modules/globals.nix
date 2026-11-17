@@ -162,6 +162,18 @@ in
           description = "Anubis Stemdeck service port";
         };
 
+        osbp = lib.mkOption {
+          type = lib.types.port;
+          default = 8019;
+          description = "Omni Support Bundle Parser service port";
+        };
+
+        anubis-osbp = lib.mkOption {
+          type = lib.types.port;
+          default = 8020;
+          description = "Anubis Omni Support Bundle Parser service port";
+        };
+
         uptimeKuma = lib.mkOption {
           type = lib.types.port;
           default = 8009;

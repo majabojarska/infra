@@ -10,6 +10,7 @@
     ./services/searx.nix
     ./services/uptime-kuma.nix
     ./services/fibo.nix
+    ./services/osbp.nix
     # ./services/llama-cpp.nix
     ./services/renovate.nix
     ./services/nginx.nix
