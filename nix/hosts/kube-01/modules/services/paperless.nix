@@ -27,7 +27,7 @@ in
 
     containers = {
       "paperless-broker" = {
-        image = "ghcr.io/valkey-io/valkey:9.1.3-alpine3.24@sha256:bf09d58e96d6b4524a15396b65b242bbe18beebbcc15a04d8ee75ddac62fae0b";
+        image = "ghcr.io/valkey-io/valkey:9.1.4-alpine3.24@sha256:56729e68bdda139cbd3f6a2538683dc3523325fc5711ea1a379938f1b37893f0";
         autoStart = true;
 
         volumes = [
@@ -121,7 +121,7 @@ in
       };
 
       "paperless-gotenberg" = {
-        image = "docker.io/gotenberg/gotenberg:9.7@sha256:3f00eba12da1d3fc1795be0d3ba66e2e97b31087c92ae238ed23937441c7a941";
+        image = "docker.io/gotenberg/gotenberg:9.8@sha256:5467aaf0bb2a8b296b589a388bc7fd2a0b245fd71e63a64bb42baba63cbf3914";
         autoStart = true;
 
         cmd = [
