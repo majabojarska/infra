@@ -40,7 +40,9 @@
         websecure = {
           address = "0.0.0.0:${toString config.hosts.kube01.ports.traefikWebSecure}";
           asDefault = true;
-          http3 = { }; # QUIC
+          http3 = {
+            advertisedPort = config.hosts.kube01.ports.traefikWebSecure;
+          }; # QUIC
           http.tls.certResolver = "letsencrypt";
           transport = {
             respondingTimeouts = {

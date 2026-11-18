@@ -40,7 +40,9 @@
         websecure = {
           address = ":443";
           asDefault = true;
-          http3 = { };
+          http3 = {
+            advertisedPort = config.hosts.sp6catVm01.ports.traefikWebSecure;
+          };
           http.tls.certResolver = "letsencrypt";
           transport = {
             respondingTimeouts = {
