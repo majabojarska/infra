@@ -25,7 +25,7 @@ in
 
     containers = {
       "bookorbit-app" = {
-        image = "ghcr.io/bookorbit/bookorbit:latest";
+        image = "ghcr.io/bookorbit/bookorbit:latest@sha256:79cd9c66c990a82944514e3e82d5be5987f21eda96cb37a378ed1484043716fc";
         autoStart = true;
         user = "${bookorbitUid}:${bookorbitGid}";
 
@@ -80,7 +80,7 @@ in
       };
 
       "bookorbit-postgres" = {
-        image = "pgvector/pgvector:pg18";
+        image = "pgvector/pgvector:pg18@sha256:38681dc6eaf55308e2a4c6de392d131652dcfac70e1263e35cd9b5ea3fe39782";
         autoStart = true;
         user = "${bookorbitUid}:${bookorbitGid}";
 
