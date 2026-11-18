@@ -346,6 +346,12 @@ in
           description = "Immich service port";
         };
 
+        bookorbit = lib.mkOption {
+          type = lib.types.port;
+          default = 8009;
+          description = "BookOrbit service port";
+        };
+
         docmost = lib.mkOption {
           type = lib.types.port;
           default = 8008;

@@ -36,6 +36,9 @@ in
     patreon-dl = {
       gid = 10011;
     };
+    bookorbit = {
+      gid = 10012;
+    };
   };
 
   users.users = {
@@ -124,6 +127,12 @@ in
       group = "patreon-dl";
       uid = 10011;
       description = "Patreon-dl";
+    };
+    bookorbit = {
+      isSystemUser = true;
+      group = "bookorbit";
+      uid = 10012;
+      description = "BookOrbit";
     };
   };
 
