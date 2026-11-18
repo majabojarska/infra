@@ -252,6 +252,12 @@ in
           description = "Prometheus Traefik metrics port";
         };
 
+        traefikWebSecure = lib.mkOption {
+          type = lib.types.port;
+          default = 443;
+          description = "Traefik websecure port";
+        };
+
         grafana = lib.mkOption {
           type = lib.types.port;
           default = 3000;
