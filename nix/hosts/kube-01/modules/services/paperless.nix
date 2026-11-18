@@ -67,6 +67,8 @@ in
 
         environment = {
           # https://docs.paperless-ngx.com/configuration/
+          PAPERLESS_ALLOWED_HOSTS = "127.0.0.1,localhost,paperless.${config.globals.homeDomain}";
+
           PAPERLESS_URL = "https://paperless.${config.globals.homeDomain}";
 
           PAPERLESS_REDIS = "redis://paperless-broker:6379";
