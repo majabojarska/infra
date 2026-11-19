@@ -8,7 +8,7 @@
     ./services/traefik.nix
     # ./services/cadvisor.nix
     ./services/immich.nix
-    # ./services/bookorbit.nix
+    ./services/bookorbit.nix
     ./services/docmost.nix
     ./services/patreon-dl.nix
     ./services/paperless.nix
