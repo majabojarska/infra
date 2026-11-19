@@ -123,7 +123,7 @@ in
     "d ${pathBookOrbitRoot} 0750 ${bookorbitUid} ${bookorbitGid} -"
     "d ${pathBooks} 0750 ${bookorbitUid} ${bookorbitGid} -"
     "d ${pathAppData} 0750 ${bookorbitUid} ${bookorbitGid} -"
-    "d ${pathPostgres} 0750 ${bookorbitUid} ${bookorbitGid} -"
+    "z ${pathPostgres} 0750 ${bookorbitUid} ${bookorbitGid} -"
   ];
 
   services.traefik.dynamicConfigOptions.http = {
