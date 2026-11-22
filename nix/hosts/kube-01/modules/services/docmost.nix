@@ -45,7 +45,7 @@ in
       };
 
       docmost-db = {
-        image = "docker.io/library/postgres:18@sha256:37586cb420551a1d64a424c5d02e93642692499f70919dda80e4bdafbb0a9533";
+        image = "docker.io/library/postgres:19@sha256:bb6e70add742cd868fb62cb3b2f67d1dd2bdd2b65a521e778420748753687c60";
         user = "${toString config.users.users."docmost-postgres".uid}:${
           toString config.users.groups."docmost-postgres".gid
         }";
