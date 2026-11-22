@@ -19,6 +19,13 @@ in
       image = "ghcr.io/stemdeckapp/stemdeck:0.21.0@sha256:e2ac3128b3208142712d5cf391490f1db6ab3bfdb52e15a92368456ac2922b46";
       autoStart = true;
       autoRemoveOnStop = false;
+      extraOptions = [
+        "--health-cmd=bash -c 'exec 3<>/dev/tcp/127.0.0.1/8000'"
+        "--health-interval=30s"
+        "--health-timeout=5s"
+        "--health-retries=3"
+        "--health-start-period=10s"
+      ];
 
       ports = [
         "127.0.0.1:${toString config.hosts.sp6catVm01.ports.stemdeck}:8000"
