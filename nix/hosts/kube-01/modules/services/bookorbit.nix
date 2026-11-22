@@ -71,7 +71,7 @@ in
           "--cap-add=SETGID"
           "--cap-add=SETUID"
           "--security-opt=no-new-privileges:true"
-          "--health-cmd=curl -fsS http://127.0.0.1:3000 >/dev/null || exit 1"
+          "--health-cmd=wget --no-verbose --tries=1 --spider http://127.0.0.1:3000 >/dev/null || exit 1"
           "--health-interval=30s"
           "--health-timeout=10s"
           "--health-retries=5"
