@@ -75,6 +75,7 @@ in
           enable = true;
         };
         randomizedDelaySec = "5min";
+        # https://docs.docker.com/reference/cli/docker/image/prune/#filter
         flags = [
           "--all"
           "--volumes"
