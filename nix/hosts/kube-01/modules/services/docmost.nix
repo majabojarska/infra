@@ -19,7 +19,7 @@ in
 
     containers = {
       docmost = {
-        image = "docmost/docmost:0.98.0";
+        image = "docmost/docmost:0.98.0@sha256:c3bdc84767de0fc9431763523636ddfd783c35c25ef7d4a3c95c064628e78d7a";
         autoStart = true;
         dependsOn = [
           "docmost-db"
