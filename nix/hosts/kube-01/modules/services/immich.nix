@@ -3,7 +3,7 @@
   ...
 }:
 let
-  pathImmichRoot = "/storage/kubernetes/immich/";
+  pathImmichRoot = "${config.hosts.kube01.storageMirror}/immich/";
   pathImmichMedia = "${pathImmichRoot}/data";
   pathImmichPostgres = "${pathImmichRoot}/postgres";
   pathImmichModelCache = "${pathImmichRoot}/model-cache";
