@@ -42,7 +42,7 @@ in
 
       docmost-db = {
         # renovate: datasource=docker depName=docker.io/library/postgres allowedVersions=/^18$/
-        image = "docker.io/library/postgres:18@sha256:eb63372c1e05c755f55fa30cbd07aecc443676fc6c0fa90b9002d01537841e1a";
+        image = "docker.io/library/postgres:18@sha256:c699303802144847d238196173655dbbecf7a96aeca1565f2b02eb671a1f0b6b";
         user = "${toString config.users.users."docmost-postgres".uid}:${
           toString config.users.groups."docmost-postgres".gid
         }";
