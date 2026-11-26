@@ -8,6 +8,7 @@
     ./services/traefik.nix
     # ./services/cadvisor.nix
     ./services/immich.nix
+    ./services/prusa-connect.nix
     ./services/bookorbit.nix
     ./services/docmost.nix
     ./services/patreon-dl.nix

@@ -412,6 +412,12 @@ in
           description = "CouchDB service port";
         };
 
+        prusaConnect = lib.mkOption {
+          type = lib.types.port;
+          default = 8010;
+          description = "Prusa Connect service port";
+        };
+
         cadvisor = lib.mkOption {
           type = lib.types.port;
           default = 8007;

@@ -39,6 +39,9 @@ in
     bookorbit = {
       gid = 10012;
     };
+    prusaconnect = {
+      gid = 10013;
+    };
   };
 
   users.users = {
@@ -133,6 +136,12 @@ in
       group = "bookorbit";
       uid = 10012;
       description = "BookOrbit";
+    };
+    prusaconnect = {
+      isSystemUser = true;
+      group = "prusaconnect";
+      uid = 10013;
+      description = "Prusa Connect";
     };
   };
 
