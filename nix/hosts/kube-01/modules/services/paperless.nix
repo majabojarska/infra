@@ -27,7 +27,7 @@ in
 
     containers = {
       "paperless-broker" = {
-        image = "ghcr.io/valkey-io/valkey:9.2.0-alpine3.24@sha256:c8e2d17498838af5d91e12eb7c11220b3434a7b7131a333e3af52ad5e0b80882";
+        image = "ghcr.io/valkey-io/valkey:9.2.1-alpine3.24@sha256:3ad5a213cb1bc2fd4a113c89b6248a88655a6bf1dda69519d04e03cd3e3d2742";
         autoStart = true;
 
         volumes = [
@@ -123,7 +123,7 @@ in
       };
 
       "paperless-gotenberg" = {
-        image = "docker.io/gotenberg/gotenberg:9.9@sha256:9731688d1b6290e4c04d9a47dbd5fb29f92aa0076feb6592c5c777525892cd72";
+        image = "docker.io/gotenberg/gotenberg:9.10@sha256:daede2c52129da3b9eef655fdad5de0c0a978f1119bb1c459ee88388982b1b70";
         autoStart = true;
 
         cmd = [
@@ -143,7 +143,7 @@ in
       };
 
       "paperless-tika" = {
-        image = "docker.io/apache/tika:3.3.3.1@sha256:3049611264bb18cf66e6629f59818cad75ea5d46f770c504ae46537949838c67";
+        image = "docker.io/apache/tika:3.4.0.0@sha256:9f3e5bb9da4229a971a4839416b3204499f20668ee834fa741a6a7504bbea7bf";
         autoStart = true;
 
         extraOptions = [

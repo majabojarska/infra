@@ -64,7 +64,7 @@ in
       };
 
       docmost-valkey = {
-        image = "ghcr.io/valkey-io/valkey:9.2.0-alpine3.24@sha256:c8e2d17498838af5d91e12eb7c11220b3434a7b7131a333e3af52ad5e0b80882";
+        image = "ghcr.io/valkey-io/valkey:9.2.1-alpine3.24@sha256:3ad5a213cb1bc2fd4a113c89b6248a88655a6bf1dda69519d04e03cd3e3d2742";
         user = "${toString config.users.users."docmost-valkey".uid}:${
           toString config.users.groups."docmost-valkey".gid
         }";
