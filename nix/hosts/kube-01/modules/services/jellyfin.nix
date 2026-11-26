@@ -3,7 +3,7 @@
   ...
 }:
 let
-  pathJellyfin = "/storage/mirror/jellyfin";
+  pathJellyfin = "${config.hosts.kube01.storageMirror}/jellyfin";
   pathJellyfinCache = "${pathJellyfin}/cache";
   pathJellyfinConfig = "${pathJellyfin}/config";
   pathJellyfinData = "${pathJellyfin}/data";

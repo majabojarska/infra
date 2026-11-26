@@ -38,7 +38,7 @@
       };
 
       "mirror" = {
-        "path" = "/storage/mirror/";
+        "path" = "${config.hosts.kube01.storageMirror}/";
         "browseable" = "yes";
         "read only" = "no";
         "guest ok" = "no";

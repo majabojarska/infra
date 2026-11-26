@@ -3,7 +3,7 @@
   ...
 }:
 let
-  pathDocmost = "/storage/mirror/services/docmost";
+  pathDocmost = "${config.hosts.kube01.storageMirror}/services/docmost";
   pathStorage = "${pathDocmost}/storage";
   pathPostgres = "${pathDocmost}/postgres";
   pathValkey = "${pathDocmost}/valkey";

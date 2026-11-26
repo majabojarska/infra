@@ -297,6 +297,12 @@ in
     };
 
     kube01 = {
+      storageMirror = lib.mkOption {
+        type = lib.types.path;
+        default = "/storage/mirror";
+        description = "Root directory for mirrored kube-01 service storage";
+      };
+
       ports = {
         prometheusExporterNode = lib.mkOption {
           type = lib.types.port;

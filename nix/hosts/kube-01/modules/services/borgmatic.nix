@@ -64,7 +64,7 @@ in
       # zfs = { }; # Enables ZFS in borgmatic # TODO:
       source_directories = [
         # Persistent Volumes
-        "/storage/mirror/"
+        config.hosts.kube01.storageMirror
       ];
       exclude_patterns = [
         "*/.zfs" # Contains ZFS snapdir, backing this up would be redundant.

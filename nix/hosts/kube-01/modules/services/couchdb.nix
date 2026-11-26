@@ -1,6 +1,6 @@
 { config, ... }:
 let
-  pathPersistenceRoot = "/storage/mirror/services/couchdb";
+  pathPersistenceRoot = "${config.hosts.kube01.storageMirror}/services/couchdb";
   pathData = "${pathPersistenceRoot}/data";
   pathEtc = "${pathPersistenceRoot}/etc";
 in

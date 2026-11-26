@@ -3,7 +3,7 @@
   ...
 }:
 let
-  pathBookOrbitRoot = "/storage/mirror/services/bookorbit";
+  pathBookOrbitRoot = "${config.hosts.kube01.storageMirror}/services/bookorbit";
   pathBooks = "${pathBookOrbitRoot}/books";
   pathAppData = "${pathBookOrbitRoot}/data";
   pathPostgres = "${pathBookOrbitRoot}/postgres";

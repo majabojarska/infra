@@ -3,7 +3,7 @@
   ...
 }:
 let
-  pathPatreonDl = "/storage/mirror/services/patreon-dl";
+  pathPatreonDl = "${config.hosts.kube01.storageMirror}/services/patreon-dl";
 in
 {
   virtualisation.oci-containers = {

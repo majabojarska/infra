@@ -3,10 +3,10 @@
   ...
 }:
 let
-  pathCalibre = "/storage/mirror/calibre-web-automated";
+  pathCalibre = "${config.hosts.kube01.storageMirror}/calibre-web-automated";
   pathConfig = "${pathCalibre}/config";
   pathIngest = "${pathCalibre}/cwa-book-ingest";
-  pathLibrary = "/storage/mirror/books";
+  pathLibrary = "${config.hosts.kube01.storageMirror}/books";
 in
 {
   users = {

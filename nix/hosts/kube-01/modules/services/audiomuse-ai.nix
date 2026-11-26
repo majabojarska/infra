@@ -6,7 +6,7 @@
 let
   dbUser = "audiomuse";
   dbName = "audiomuse";
-  audiomuseRoot = "/storage/mirror/audiomuse";
+  audiomuseRoot = "${config.hosts.kube01.storageMirror}/audiomuse";
 in
 {
   age.secrets = {
