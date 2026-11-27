@@ -60,6 +60,7 @@
 
       log = {
         level = "INFO";
+        # level = "DEBUG"; # A lil' treat for unfucking the proxy
         filePath = "${config.services.traefik.dataDir}/traefik.log";
         format = "json";
       };

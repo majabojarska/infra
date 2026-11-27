@@ -15,19 +15,33 @@ in
     group = "prusaconnect";
     mode = "0440";
     text = ''
-    core:
-      api:
-        addr: ":8080"
-      log:
-        level: info
-        format: text
+      core:
+        api:
+          addr: ":8080"
+        connectors:
+          xbuddy:
+            config:
+              listener:
+                addr: :10443
+                tls:
+                  certificate: /config/config.d/certs/printer.crt
+                  key: /config/config.d/certs/printer.key
+            type: xbuddy
+        frontend:
+          printer_address: https://prusa-connect.lan:10443
+          printer_custom_ca: true
+        log:
+          level: info
+          format: text
+        trusted_proxies:
+          - "172.16.0.0/12"
 
-    resources:
-      storage:
-        local:
-          type: filesystem
-          config:
-            root: ./storage
+      resources:
+        storage:
+          local:
+            type: filesystem
+            config:
+              root: ./storage
     '';
   };
 
@@ -38,7 +52,8 @@ in
       autoStart = true;
       user = "${prusaConnectUid}:${prusaConnectGid}";
       ports = [
-        "127.0.0.1:${toString config.hosts.kube01.ports.prusaConnect}:8080"
+        "127.0.0.1:${toString config.hosts.kube01.ports.prusaConnectWeb}:8080"
+        "0.0.0.0:${toString config.hosts.kube01.ports.prusaConnectPrinterAPI}:${toString config.hosts.kube01.ports.prusaConnectPrinterAPI}"
       ];
       volumes = [
         "${config.environment.etc."prusa-connect/config.yaml".source}:/config/config.yaml:ro"
@@ -70,16 +85,16 @@ in
   ];
 
   services.traefik.dynamicConfigOptions.http = {
-    routers.prusa-connect = {
+    routers.prusaConnect = {
       rule = "Host(`prusa-connect.home.majabojarska.dev`)";
-      service = "prusa-connect";
+      service = "prusaConnect";
       tls = {
         certResolver = "letsencrypt";
         domains = [ { main = "prusa-connect.home.majabojarska.dev"; } ];
       };
     };
-    services.prusa-connect.loadBalancer.servers = [
-      { url = "http://127.0.0.1:${toString config.hosts.kube01.ports.prusaConnect}"; }
+    services.prusaConnect.loadBalancer.servers = [
+      { url = "http://127.0.0.1:${toString config.hosts.kube01.ports.prusaConnectWeb}"; }
     ];
   };
 }

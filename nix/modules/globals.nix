@@ -412,10 +412,16 @@ in
           description = "CouchDB service port";
         };
 
-        prusaConnect = lib.mkOption {
+        prusaConnectWeb = lib.mkOption {
           type = lib.types.port;
-          default = 8010;
-          description = "Prusa Connect service port";
+          default = 8080;
+          description = "Prusa Connect local server port";
+        };
+
+        prusaConnectPrinterAPI = lib.mkOption {
+          type = lib.types.port;
+          default = 10443;
+          description = "Prusa Connect printer API port (IP-only, no FQDN)";
         };
 
         cadvisor = lib.mkOption {
